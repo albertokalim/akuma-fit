@@ -46,6 +46,7 @@ function Login() {
                 <div style={styles.inputGroup}>
                     <Label text="Correo Electrónico" htmlFor="email-input" />
                     <TextInput
+                        id="email-input"
                         type="email"
                         placeholder="ejemplo@correo.com"
                         onChange={(e) => setEmail(e.target.value)}
@@ -54,6 +55,7 @@ function Login() {
                 <div style={styles.inputGroup}>
                     <Label text="Contraseña" htmlFor="password-input" />
                     <TextInput
+                        id="password-input"
                         type="password"
                         placeholder="Tu contraseña"
                         onChange={(e) => setPassword(e.target.value)}
@@ -68,6 +70,9 @@ function Login() {
                     text="Iniciar sesión con Google"
                     onClick={handleGoogleLogin}
                 />
+            </div>
+            <div>
+                {loading ? <text>Iniciando sesión...</text> : null}
             </div>
         </div>
     );
