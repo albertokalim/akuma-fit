@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import Button from './Button';
-import Label from './Label';
-import TextInput from './TextInput';
-import {supabase} from "../supabaseClient.js";
+import Button from './components/Button.jsx';
+import Label from './components/Label.jsx';
+import TextInput from './components/TextInput.jsx';
+import Link from './components/Link.jsx';
+import {supabase} from "./supabaseClient.js";
+import { FcGoogle } from 'react-icons/fc';
+import './Login.css';
 
-function Login() {
+function Login({ onNavigateToRegister, onLoginSuccess }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -22,7 +25,7 @@ function Login() {
         if(error){
             alert('Error al iniciar sesión: ' + error.message);
         } else {
-            alert('Sesión iniciada con éxito');
+            onLoginSuccess(email);
         }
     };
 
@@ -40,76 +43,47 @@ function Login() {
     };
 
     return (
-        <div style={styles.container}>
+        <div className="auth-container">
             <h2>Iniciar Sesión</h2>
-            <form onSubmit={handleLogin} style={styles.form}>
-                <div style={styles.inputGroup}>
+            <form onSubmit={handleLogin} className="auth-form">
+                <div className="input-group">
                     <Label text="Correo Electrónico" htmlFor="email-input" />
                     <TextInput
                         id="email-input"
                         type="email"
                         placeholder="ejemplo@correo.com"
                         onChange={(e) => setEmail(e.target.value)}
+                        className="text-input"
                     />
                 </div>
-                <div style={styles.inputGroup}>
+                <div className="input-group">
                     <Label text="Contraseña" htmlFor="password-input" />
                     <TextInput
                         id="password-input"
                         type="password"
                         placeholder="Tu contraseña"
                         onChange={(e) => setPassword(e.target.value)}
+                        className="text-input"
                     />
                 </div>
 
                 <Button text="Entrar" onClick={handleLogin} />
             </form>
 
-            <div style={styles.googleContainer}>
-                <Button
-                    text="Iniciar sesión con Google"
-                    onClick={handleGoogleLogin}
-                />
+            <div className="google-container">
+                <button className="google-button" onClick={handleGoogleLogin}>
+                    <FcGoogle size={20} />
+                    <span>Iniciar sesión con Google</span>
+                </button>
             </div>
             <div>
                 {loading ? <text>Iniciando sesión...</text> : null}
             </div>
+            <div className="register-link">
+                <p>¿No tienes cuenta? <Link text="Regístrate aquí" onClick={onNavigateToRegister} className="link" /></p>
+            </div>
         </div>
     );
 }
-
-//Los estilos hay que hacerlos guay
-// Unos estilos rápidos para que no se vea desordenado
-const styles = {
-    container: {
-        maxWidth: '400px',
-        margin: '50px auto',
-        padding: '20px',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        fontFamily: 'Arial, sans-serif'
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '15px'
-    },
-    inputGroup: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '5px'
-    },
-    divider: {
-        textAlign: 'center',
-        margin: '20px 0',
-        borderBottom: '1px solid #eee',
-        lineHeight: '0.1em'
-    },
-    googleContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: '10px'
-    }
-};
 
 export default Login;

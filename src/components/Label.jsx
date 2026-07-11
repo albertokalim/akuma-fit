@@ -1,5 +1,5 @@
-function Label({ text, htmlFor }) {
-    return <label htmlFor={htmlFor} >
+function Label({ text, htmlFor, className }) {
+    return <label htmlFor={htmlFor} className={className}>
         {text || 'Label'}
     </label>
 }

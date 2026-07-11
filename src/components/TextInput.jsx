@@ -1,10 +1,12 @@
+function TextInput({ id, type, placeholder, onChange, hasError, className }){
+    const inputClass = hasError ? `${className} input-error` : className;
 
-function TextInput({ id, type, placeholder, onChange }){
     return <input
         id={id}
         type={type}
         placeholder={placeholder || 'TextInput'}
         onChange={onChange}
+        className={inputClass}
     />
 }
 
