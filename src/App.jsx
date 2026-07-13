@@ -3,11 +3,18 @@ import { useState } from 'react';
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
 import Dashboard from "./Dashboard.jsx";
+import TestComponent from "./TestComponent.jsx";
 import { supabase } from './supabaseClient';
+
+const ENABLE_TEST_MODE = true;
 
 export default function App() {
     const [currentPage, setCurrentPage] = useState('login');
     const [user, setUser] = useState(null);
+
+    if (ENABLE_TEST_MODE) {
+        return <TestComponent />;
+    }
 
     const handleLoginSuccess = (email) => {
         setUser(email);

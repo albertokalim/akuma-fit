@@ -4,8 +4,8 @@ import Label from './components/Label.jsx';
 import TextInput from './components/TextInput.jsx';
 import Link from './components/Link.jsx';
 import {supabase} from "./supabaseClient.js";
-import { FcGoogle } from 'react-icons/fc';
 import './Login.css';
+import {FcGoogle} from "react-icons/fc";
 
 function Login({ onNavigateToRegister, onLoginSuccess }) {
     const [email, setEmail] = useState('');
@@ -29,17 +29,29 @@ function Login({ onNavigateToRegister, onLoginSuccess }) {
         }
     };
 
-    const handleGoogleLogin = async () => {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: window.location.origin
-            }
-        });
+    const handleGoogleLogin = async (e) => {
+        e.preventDefault();
+        alert('Función no soportada.');
+        // try {
+            // const { data, error } = await supabase.auth.signInWithOAuth({
+            //     provider: 'google',
+            //     options: {
+            //         redirectTo: window.location.origin,
+            //         skipBrowserRedirect: true
+            //     }
+            // });
 
-        if(error){
-            alert('Error al iniciar sesión con Google: ' + error.message);
-        }
+            // if (error) {
+            //     alert('Error al iniciar sesión con Google: ' + error.message);
+                // return;
+            // }
+        //
+        //     if (data?.url) {
+        //         window.location.href = data.url;
+        //     }
+        // } catch (exception) {
+        //     alert('Error al iniciar sesión con Google: ' + exception.message);
+        // }
     };
 
     return (
@@ -67,15 +79,12 @@ function Login({ onNavigateToRegister, onLoginSuccess }) {
                     />
                 </div>
 
-                <Button text="Entrar" onClick={handleLogin} />
+                <div className="buttons-container">
+                    <Button text="Entrar" onClick={handleLogin} className="login-button" />
+                    <Button text="Iniciar sesión con Google" onClick={handleGoogleLogin} className="google-button" icon={<FcGoogle size={20} />} />
+                </div>
             </form>
 
-            <div className="google-container">
-                <button className="google-button" onClick={handleGoogleLogin}>
-                    <FcGoogle size={20} />
-                    <span>Iniciar sesión con Google</span>
-                </button>
-            </div>
             <div>
                 {loading ? <text>Iniciando sesión...</text> : null}
             </div>
