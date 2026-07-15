@@ -101,7 +101,7 @@ function DynamicForm({ onFormDataChange }) {
 
     return (
         <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-            <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>📋 Valoración Inicial</h1>
+            <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Valoración Inicial</h1>
 
             {formConfig.sections.map(section => (
                 <FormSection key={section.id} title={section.title}>
