@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import FormField from './components/FormField.jsx';
-import RadioGroupField from './components/RadioGroupField.jsx';
-import CheckboxGroupField from './components/CheckboxGroupField.jsx';
-import ScaleField from './components/ScaleField.jsx';
-import FormSection from './components/FormSection.jsx';
-import Button from './components/Button.jsx';
-import formConfig from './formConfig.json';
+import FormField from '../../components/complex/FormField/FormField.jsx';
+import RadioGroupField from '../../components/complex/RadioGroupField/RadioGroupField.jsx';
+import CheckboxGroupField from '../../components/complex/CheckboxGroupField/CheckboxGroupField.jsx';
+import ScaleField from '../../components/complex/ScaleField/ScaleField.jsx';
+import FormSection from '../../components/complex/FormSection/FormSection.jsx';
+import Button from '../../components/primitives/Button/Button.jsx';
+import formConfig from '../../formConfig.json';
 
 function DynamicForm({ onFormDataChange }) {
     const [formData, setFormData] = useState(() => {

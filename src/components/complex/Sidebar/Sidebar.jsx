@@ -1,4 +1,4 @@
-import Label from './Label.jsx';
+import Label from '../../primitives/Label/Label.jsx';
 import './Sidebar.css';
 
 function Sidebar({ items, activeItem, onSelect }) {

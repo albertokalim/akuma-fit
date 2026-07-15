@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Button from './components/Button.jsx';
-import Label from './components/Label.jsx';
-import TextInput from './components/TextInput.jsx';
-import Link from './components/Link.jsx';
-import {supabase} from "./supabaseClient.js";
+import Button from '../../components/primitives/Button/Button.jsx';
+import Label from '../../components/primitives/Label/Label.jsx';
+import TextInput from '../../components/primitives/TextInput/TextInput.jsx';
+import Link from '../../components/primitives/Link/Link.jsx';
+import {supabase} from "../../supabaseClient.js";
 import './Login.css';
 import {FcGoogle} from "react-icons/fc";
 

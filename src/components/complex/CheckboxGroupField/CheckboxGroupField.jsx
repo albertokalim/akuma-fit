@@ -1,4 +1,4 @@
-import Label from './Label.jsx';
+import Label from '../../primitives/Label/Label.jsx';
 import './CheckboxGroupField.css';
 
 function CheckboxGroupField({ label, id, options, value, onChange, required = false, multiple = true }) {

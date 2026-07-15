@@ -1,8 +1,8 @@
 import './index.css';
 import { useState } from 'react';
-import Login from "./Login.jsx";
-import Register from "./Register.jsx";
-import Dashboard from "./Dashboard.jsx";
+import Login from "./views/Login/Login.jsx";
+import Register from "./views/Register/Register.jsx";
+import Dashboard from "./views/Dashboard/Dashboard.jsx";
 import TestComponent from "./TestComponent.jsx";
 import { supabase } from './supabaseClient';
 

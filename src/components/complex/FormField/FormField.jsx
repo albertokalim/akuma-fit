@@ -1,5 +1,5 @@
-import Label from './Label.jsx';
-import TextInput from './TextInput.jsx';
+import Label from '../../primitives/Label/Label.jsx';
+import TextInput from '../../primitives/TextInput/TextInput.jsx';
 import './FormField.css';
 
 function FormField({ label, id, type = 'text', placeholder, value, onChange, required = false }) {

@@ -1,4 +1,4 @@
-import Label from './Label.jsx';
+import Label from '../../primitives/Label/Label.jsx';
 import './StatCard.css';
 
 function StatCard({ value, label, icon }) {

@@ -1,0 +1,56 @@
+import React, { useState } from 'react';
+import StatCard from '../../components/complex/StatCard/StatCard.jsx';
+import EventList from '../../components/complex/EventList/EventList.jsx';
+import LineChart from '../../components/complex/LineChart/LineChart.jsx';
+import './Dashboard.css';
+
+function Dashboard({ email, onLogout }) {
+    const stats = [
+        { value: '24', label: 'Clientes activos', icon: '👥' },
+        { value: '31', label: 'Planes activos', icon: '📋' },
+        { value: '18', label: 'Check-ins esta semana', icon: '✅' },
+        { value: '5', label: 'Entrenamientos hoy', icon: '🏋️' },
+    ];
+
+    const upcomingEvents = [
+        { text: 'Sesión Juan López', time: '14:30' },
+        { text: 'Check-in María García', time: '16:00' },
+        { text: 'Plan nueva cliente', time: '17:30' },
+    ];
+
+    const expiringPlans = [
+        { text: 'Plan Carlos - Vence en 3 días', time: '18/07' },
+        { text: 'Plan Laura - Vence en 5 días', time: '20/07' },
+        { text: 'Plan Pedro - Vence en 7 días', time: '22/07' },
+    ];
+
+    return (
+        <div className="dashboard-main">
+            <div className="dashboard-title">
+                <h1>Dashboard</h1>
+            </div>
+
+            {/* Stats Cards */}
+            <section className="stats-section">
+                <div className="stats-grid">
+                    {stats.map((stat, index) => (
+                        <StatCard key={index} value={stat.value} label={stat.label} icon={stat.icon} />
+                    ))}
+                </div>
+            </section>
+
+            {/* Chart and Events */}
+            <section className="chart-events-section">
+                <div className="chart-container">
+                    <LineChart title="Evolución Mensual" data={[]} />
+                </div>
+                <div className="events-container">
+                    <EventList title="Próximos eventos" items={upcomingEvents} />
+                    <EventList title="Planes próximos a vencer" items={expiringPlans} />
+                </div>
+            </section>
+        </div>
+    );
+}
+
+export default Dashboard;

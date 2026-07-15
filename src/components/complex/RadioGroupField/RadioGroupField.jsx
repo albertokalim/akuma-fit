@@ -1,4 +1,4 @@
-import Label from './Label.jsx';
+import Label from '../../primitives/Label/Label.jsx';
 import './RadioGroupField.css';
 
 function RadioGroupField({ label, id, options, value, onChange, required = false }) {

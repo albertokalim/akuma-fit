@@ -1,4 +1,4 @@
-import Label from './Label.jsx';
+import Label from '../../primitives/Label/Label.jsx';
 import './ScaleField.css';
 
 function ScaleField({ label, id, min = 1, max = 10, value, onChange, leftLabel = '', rightLabel = '', required = false }) {

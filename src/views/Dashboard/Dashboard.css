@@ -1,0 +1,60 @@
+.dashboard-main {
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.dashboard-title {
+    margin-bottom: 30px;
+}
+
+.dashboard-title h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Stats Section */
+.stats-section {
+    margin-bottom: 40px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Chart and Events Section */
+.chart-events-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (max-width: 1200px) {
+    .chart-events-section {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

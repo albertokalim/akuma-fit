@@ -1,6 +1,6 @@
-import Avatar from './Avatar.jsx';
-import Button from './Button.jsx';
-import Label from './Label.jsx';
+import Avatar from '../../primitives/Avatar/Avatar.jsx';
+import Button from '../../primitives/Button/Button.jsx';
+import Label from '../../primitives/Label/Label.jsx';
 import './Header.css';
 
 function Header({ userName, userAvatar, onLogout }) {
