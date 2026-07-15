@@ -6,7 +6,7 @@ import Dashboard from "./views/Dashboard/Dashboard.jsx";
 import TestComponent from "./TestComponent.jsx";
 import { supabase } from './supabaseClient';
 
-const ENABLE_TEST_MODE = true;
+const ENABLE_TEST_MODE = false;
 
 export default function App() {
     const [currentPage, setCurrentPage] = useState('login');
