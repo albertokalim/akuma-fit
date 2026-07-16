@@ -17,7 +17,7 @@ function RadioGroupField({ label, id, options, value, onChange, required = false
                             name={id}
                             value={option.value}
                             checked={value === option.value}
-                            onChange={(e) => onChange(e.target.value)}
+                            onChange={onChange}
                         />
                         <label htmlFor={`${id}-${option.value}`}>{option.label}</label>
                     </div>

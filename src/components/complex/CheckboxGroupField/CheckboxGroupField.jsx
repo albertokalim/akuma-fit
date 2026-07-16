@@ -2,18 +2,6 @@ import Label from '../../primitives/Label/Label.jsx';
 import './CheckboxGroupField.css';
 
 function CheckboxGroupField({ label, id, options, value, onChange, required = false, multiple = true }) {
-    const handleChange = (optionValue) => {
-        if (multiple) {
-            if (value.includes(optionValue)) {
-                onChange(value.filter(v => v !== optionValue));
-            } else {
-                onChange([...value, optionValue]);
-            }
-        } else {
-            onChange(value.includes(optionValue) ? [] : [optionValue]);
-        }
-    };
-
     return (
         <div className="checkbox-group-field">
             <div className="checkbox-group-label">
@@ -24,12 +12,12 @@ function CheckboxGroupField({ label, id, options, value, onChange, required = fa
                 {options.map((option) => (
                     <div key={option.value} className="checkbox-option">
                         <input
-                            type="checkbox"
+                            type={multiple ? 'checkbox' : 'radio'}
                             id={`${id}-${option.value}`}
                             name={id}
                             value={option.value}
-                            checked={value.includes(option.value)}
-                            onChange={() => handleChange(option.value)}
+                            checked={multiple ? value.includes(option.value) : value === option.value}
+                            onChange={onChange}
                         />
                         <label htmlFor={`${id}-${option.value}`}>{option.label}</label>
                     </div>

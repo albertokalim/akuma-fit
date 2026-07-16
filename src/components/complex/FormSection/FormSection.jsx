@@ -3,7 +3,7 @@ import './FormSection.css';
 function FormSection({ title, children }) {
     return (
         <div className="form-section">
-            <h1 className="form-section-title">{title}</h1>
+            <h2 className="form-section-title">{title}</h2>
             <div className="form-section-content">
                 {children}
             </div>

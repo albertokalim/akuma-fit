@@ -11,6 +11,7 @@ const ENABLE_TEST_MODE = false;
 export default function App() {
     const [currentPage, setCurrentPage] = useState('login');
     const [user, setUser] = useState(null);
+    const [initialTest, setInitialTest] = useState(false);
 
     if (ENABLE_TEST_MODE) {
         return <TestComponent />;

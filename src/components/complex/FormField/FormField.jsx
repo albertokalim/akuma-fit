@@ -2,7 +2,7 @@ import Label from '../../primitives/Label/Label.jsx';
 import TextInput from '../../primitives/TextInput/TextInput.jsx';
 import './FormField.css';
 
-function FormField({ label, id, type = 'text', placeholder, value, onChange, required = false }) {
+function FormField({ label, id, type = 'text', step, placeholder, value, onChange, required = false }) {
     return (
         <div className="form-field">
             <div className="form-field-label">
@@ -12,6 +12,7 @@ function FormField({ label, id, type = 'text', placeholder, value, onChange, req
             <TextInput
                 id={id}
                 type={type}
+                step={step}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}

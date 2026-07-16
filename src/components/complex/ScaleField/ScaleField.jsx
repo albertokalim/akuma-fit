@@ -27,7 +27,7 @@ function ScaleField({ label, id, min = 1, max = 10, value, onChange, leftLabel =
                             name={id}
                             value={option.value}
                             checked={value === option.value}
-                            onChange={(e) => onChange(e.target.value)}
+                            onChange={onChange}
                         />
                     </div>
                 ))}

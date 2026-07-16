@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import Header from '../../components/complex/Header/Header.jsx';
 import Sidebar from '../../components/complex/Sidebar/Sidebar.jsx';
 import Dashboard from '../Dashboard/Dashboard.jsx';
-import menuConfig from '../../menuConfig.json';
+import menuConfig from '../../config/menuConfig.json';
 import './Home.css';
 
 function Home({ email, onLogout, userRole = 'coach' }) {
