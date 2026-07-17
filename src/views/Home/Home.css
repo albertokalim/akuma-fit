@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #f5f5f5;
+    background-color: var(--color-bg);
 }
 
 .home-content {
@@ -14,7 +14,7 @@
 .home-main {
     flex: 1;
     overflow-y: auto;
-    background-color: #f5f5f5;
+    background-color: var(--color-bg);
 }
 
 .placeholder-component {
@@ -23,5 +23,5 @@
 }
 
 .placeholder-component h2 {
-    color: #999;
+    color: var(--color-text-muted);
 }

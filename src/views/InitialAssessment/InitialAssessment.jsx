@@ -1,46 +1,61 @@
-import FormSection from "../../components/complex/FormSection/FormSection.jsx";
+﻿import FormSection from "../../components/complex/FormSection/FormSection.jsx";
 import FormField from "../../components/complex/FormField/FormField.jsx";
-import {useState, useRef} from "react";
+import {useState, useRef, useCallback} from "react";
 import RadioGroupField from "../../components/complex/RadioGroupField/RadioGroupField.jsx";
 import CheckboxGroupField from "../../components/complex/CheckboxGroupField/CheckboxGroupField.jsx";
 import ScaleField from "../../components/complex/ScaleField/ScaleField.jsx";
 import Button from "../../components/primitives/Button/Button.jsx";
 import {supabase} from "../../supabaseClient.js";
+import FORM_SECTIONS from "../../config/initialAssessmentFields.json";
 import './InitialAssessment.css';
 
 // Campos de initialAssessment que se guardan como número (int2) en Supabase
 const NUMERIC_ASSESSMENT_FIELDS = ['motivation_level', 'current_stress_level', 'expected_adherence'];
 
+// El registro de campos del formulario (título de sección, id, grupo de estado, tipo de
+// control, si es required, opciones, etc.) vive en src/config/initialAssessmentFields.json,
+// como única fuente de verdad para renderizado y validación.
+
+// Aplana todos los campos de todas las secciones para poder iterarlos fácilmente.
+const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
+
+// Mapa id -> label, usado únicamente para componer el mensaje de error (no para validar:
+// la validación la hace cada componente por sí mismo y la reporta al padre).
+const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
+
 function InitialAssessment({ onComplete }) {
     const [initialAssessment, setInitialAssessment] = useState({});
     const [measurement, setMeasurement] = useState({});
     const [userInfo, setUserInfo] = useState({});
+    // Mapa id -> boolean, alimentado por cada campo a través de onValidityChange.
+    // El padre no sabe (ni necesita saber) qué hace válido o inválido a cada campo:
+    // simplemente pregunta a cada componente y agrega el resultado.
+    const [fieldValidity, setFieldValidity] = useState({});
+    // Solo mostramos los errores visuales tras el primer intento de envío.
+    const [submitAttempted, setSubmitAttempted] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const isSubmittingRef = useRef(false);
     const formatResults = (results) => JSON.stringify(results, null, 2);
 
-    const handleUserInfoChange = (event) => {
+    // Valores y setters de cada estado, indexados por el nombre de "group" usado en FORM_SECTIONS.
+    const groupValues = { userInfo, measurement, initialAssessment };
+    const groupSetters = { userInfo: setUserInfo, measurement: setMeasurement, initialAssessment: setInitialAssessment };
+
+    const handleFieldChange = (group, event) => {
         const { id, name, value } = event.target;
         const key = name || id;
 
-        setUserInfo((prev) => ({ ...prev, [key]: value }));
+        groupSetters[group]((prev) => ({ ...prev, [key]: value }));
     };
 
-    const handleMeasurementChange = (event) => {
-        const { id, name, value } = event.target;
-        const key = name || id;
-
-        setMeasurement((prev) => ({ ...prev, [key]: value }));
-    };
-
-    const handleInitialAssessmentChange = (event) => {
-        const { id, name, value } = event.target;
-        const key = name || id;
-
-        setInitialAssessment((prev) => ({ ...prev, [key]: value }));
-    };
+    // Callback estable que cada campo invoca para reportar su propia validez.
+    // Si el valor no cambia respecto al que ya teníamos, no se genera un nuevo objeto
+    // de estado, evitando renders innecesarios.
+    const handleValidityChange = useCallback((id, isValid) => {
+        setFieldValidity((prev) => (prev[id] === isValid ? prev : { ...prev, [id]: isValid }));
+    }, []);
 
     const getOrCreateProfile = async (authUser) => {
         // Buscamos si el usuario ya tiene un profile creado
@@ -84,10 +99,29 @@ function InitialAssessment({ onComplete }) {
         if (isSubmittingRef.current) {
             return;
         }
-        isSubmittingRef.current = true;
 
         setSubmitError('');
         setSubmitSuccess(false);
+        setSubmitAttempted(true);
+
+        // Validación genérica: cada campo ya nos ha dicho si es válido o no a través de
+        // onValidityChange. Aquí solo preguntamos al mapa resultante, sin importar
+        // cuántos campos haya ni qué los haga inválidos.
+        const invalidFieldIds = Object.entries(fieldValidity)
+            .filter(([, isValid]) => !isValid)
+            .map(([id]) => id);
+
+        if (invalidFieldIds.length > 0) {
+            const invalidLabels = invalidFieldIds.map((id) => FIELD_LABELS_BY_ID[id] || id);
+            setSubmitError(
+                invalidLabels.length === 1
+                    ? `Falta por completar el campo obligatorio: "${invalidLabels[0]}".`
+                    : `Faltan ${invalidLabels.length} campos obligatorios por completar: ${invalidLabels.map((l) => `"${l}"`).join(', ')}.`
+            );
+            return;
+        }
+
+        isSubmittingRef.current = true;
         setSubmitting(true);
 
         try {
@@ -152,326 +186,90 @@ function InitialAssessment({ onComplete }) {
         }
     };
 
+    const renderField = (field) => {
+        const value = groupValues[field.group][field.id];
+        const onChange = (event) => handleFieldChange(field.group, event);
+        // Solo mostramos el error visual si ya se intentó enviar y el propio campo
+        // ha reportado que no es válido.
+        const hasError = submitAttempted && fieldValidity[field.id] === false;
+
+        switch (field.component) {
+            case 'radio':
+                return (
+                    <RadioGroupField
+                        key={field.id}
+                        id={field.id}
+                        label={field.label}
+                        required={field.required}
+                        value={value || ''}
+                        onChange={onChange}
+                        options={field.options}
+                        hasError={hasError}
+                        onValidityChange={handleValidityChange}
+                    />
+                );
+            case 'checkbox':
+                return (
+                    <CheckboxGroupField
+                        key={field.id}
+                        multiple={false}
+                        id={field.id}
+                        label={field.label}
+                        required={field.required}
+                        value={value || ''}
+                        onChange={onChange}
+                        options={field.options}
+                        hasError={hasError}
+                        onValidityChange={handleValidityChange}
+                    />
+                );
+            case 'scale':
+                return (
+                    <ScaleField
+                        key={field.id}
+                        id={field.id}
+                        label={field.label}
+                        required={field.required}
+                        value={value || ''}
+                        onChange={onChange}
+                        leftLabel={field.leftLabel}
+                        rightLabel={field.rightLabel}
+                        min={field.min}
+                        max={field.max}
+                        hasError={hasError}
+                        onValidityChange={handleValidityChange}
+                    />
+                );
+            case 'text':
+            default:
+                return (
+                    <FormField
+                        key={field.id}
+                        id={field.id}
+                        label={field.label}
+                        value={value || ''}
+                        onChange={onChange}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                        type={field.type || 'text'}
+                        step={field.step}
+                        hasError={hasError}
+                        onValidityChange={handleValidityChange}
+                    />
+                );
+        }
+    };
+
     return (
         <div className="initial-assessment">
             <h1 className="initial-assessment-title">Valoración inicial - entrenamiento y nutrición</h1>
             <p className="initial-assessment-description">Este cuestionario sirve para realizar una valoración inicial antes de diseñar un plan de entrenamiento y nutrición. La información permitirá adaptar el programa a tu objetivo, nivel, disponibilidad, salud, lesiones, estilo de vida y preferencias. Responde con la mayor sinceridad posible.</p>
 
-            <FormSection title='Datos personales'>
-                <FormField
-                    label='Nombre'
-                    value={userInfo.name || ''}
-                    id='name'
-                    onChange={handleUserInfoChange}
-                    placeholder='Tu nombre'
-                    required={true}
-                />
-                <FormField
-                    label='Apellidos'
-                    value={userInfo.surname || ''}
-                    id='surname'
-                    onChange={handleUserInfoChange}
-                    placeholder='Tus apellidos'
-                    required={true}
-                />
-                <FormField
-                    label='Fecha de nacimiento'
-                    value={userInfo.birthdate || ''}
-                    id='birthdate'
-                    onChange={handleUserInfoChange}
-                    placeholder='Fecha de nacimiento'
-                    required={true}
-                    type='date'
-                />
-                <RadioGroupField
-                    onChange={handleUserInfoChange}
-                    id='gender'
-                    label='Sexo'
-                    required={true}
-                    value={userInfo.gender || ''}
-                    options={[
-                        { label: 'Hombre', value: 'Hombre' },
-                        { label: 'Mujer', value: 'Mujer' },
-                        { label: 'Prefiero no decirlo', value: 'Prefiero no decirlo' },
-                    ]}
-                />
-                <FormField
-                    label='Peso actual en kg'
-                    value={measurement.weight || ''}
-                    id='weight'
-                    onChange={handleMeasurementChange}
-                    placeholder='Peso en kg'
-                    required={true}
-                    type='number'
-                />
-                <FormField
-                    label='Altura en cm'
-                    value={measurement.height || ''}
-                    id='height'
-                    onChange={handleMeasurementChange}
-                    placeholder='Altura en cm'
-                    required={true}
-                    type='number'
-                    step='any'
-                />
-                <FormField
-                    label='Teléfono de contacto'
-                    value={userInfo.phone || ''}
-                    id='phone'
-                    onChange={handleUserInfoChange}
-                    placeholder='Número de teléfono'
-                    required={true}
-                    type='tel'
-                />
-            </FormSection>
-            <FormSection title='Objetivo y motivación'>
-                <CheckboxGroupField
-                    multiple={false}
-                    id='goals'
-                    label='¿Cuál es tu objetivo principal?'
-                    required={true}
-                    value={initialAssessment.goals || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Salud', value: 'Salud' },
-                        { label: 'Pérdida de grasa', value: 'Pérdida de grasa' },
-                        { label: 'Hipertrofia / ganar masa muscular', value: 'Hipertrofia / ganar masa muscular' },
-                        { label: 'Fuerza', value: 'Fuerza' },
-                        { label: 'Definición', value: 'Definición' },
-                        { label: 'Rendimiento deportivo', value: 'Rendimiento deportivo' },
-                        { label: 'Reacondicionamiento tras parón o lesión', value: 'Reacondicionamiento tras parón o lesión' },
-                    ]}
-                />
-                <FormField
-                    label='¿En qué plazo te gustaría conseguirlo? Ejemplo: 3 meses, 6 meses, 1 año'
-                    value={initialAssessment.deadline || ''}
-                    id='deadline'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-                <ScaleField
-                    required={true}
-                    id='motivation_level'
-                    onChange={handleInitialAssessmentChange}
-                    label='Nivel de motivación actual'
-                    value={initialAssessment.motivation_level || ''}
-                    leftLabel='muy baja'
-                    rightLabel='muy alta'
-                    max={10}
-                    min={1}
-                />
-                <FormField
-                    label='¿Qué has intentado antes y qué resultado tuviste?'
-                    value={initialAssessment.past || ''}
-                    id='past'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-            </FormSection>
-            <FormSection title='Disponibilidad y preferencias'>
-                <CheckboxGroupField
-                    multiple={false}
-                    id='current_level'
-                    label='Nivel actual'
-                    required={true}
-                    value={initialAssessment.current_level || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Sedentario/a', value: 'Sedentario/a' },
-                        { label: 'Vuelvo tras mucho tiempo sin entrenar', value: 'Vuelvo tras mucho tiempo sin entrenar' },
-                        { label: 'Principiante', value: 'Principiante' },
-                        { label: 'Intermedio', value: 'Intermedio' },
-                        { label: 'Avanzado', value: 'Avanzado' }
-                    ]}
-                />
-                <CheckboxGroupField
-                    multiple={false}
-                    id='training_freq'
-                    label='¿Cuántos días puedes entrenar por semana?'
-                    required={true}
-                    value={initialAssessment.training_freq || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: '1 día', value: '1 día' },
-                        { label: '2 días', value: '2 días' },
-                        { label: '3 días', value: '3 días' },
-                        { label: '4 días', value: '4 días' },
-                        { label: '5 días', value: '5 días' },
-                        { label: '6 días', value: '6 días' }
-                    ]}
-                />
-                <CheckboxGroupField
-                    multiple={false}
-                    id='time_per_session'
-                    label='¿Cuánto tiempo tienes por sesión?'
-                    required={true}
-                    value={initialAssessment.time_per_session || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Menos de 30 minutos', value: 'Menos de 30 minutos' },
-                        { label: '30-45 minutos', value: '30-45 minutos' },
-                        { label: '45-60 minutos', value: '45-60 minutos' },
-                        { label: 'Más de 60 minutos', value: 'Más de 60 minutos' }
-                    ]}
-                />
-                <CheckboxGroupField
-                    multiple={false}
-                    id='where'
-                    label='¿Dónde entrenarás?'
-                    required={true}
-                    value={initialAssessment.where || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Gimnasio', value: 'Gimnasio' },
-                        { label: 'Casa', value: 'Casa' },
-                        { label: 'Exterior', value: 'Exterior' },
-                        { label: 'Otro', value: 'Otro' }
-                    ]}
-                />
-                <CheckboxGroupField
-                    multiple={false}
-                    id='equipment'
-                    label='Material disponible'
-                    required={true}
-                    value={initialAssessment.equipment || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Gimnasio completo', value: 'Gimnasio completo' },
-                        { label: 'Máquina', value: 'Máquina' },
-                        { label: 'Mancuernas', value: 'Mancuernas' },
-                        { label: 'Barra y discos', value: 'Barra y discos' },
-                        { label: 'Bandas elásticas', value: 'Bandas elásticas' },
-                        { label: 'Peso corporal', value: 'Peso corporal' },
-                        { label: 'Ninguno', value: 'Ninguno' },
-                    ]}
-                />
-            </FormSection>
-            <FormSection title='Salud y lesiones'>
-                <FormField
-                    label='¿Tienes alguna patología, enfermedad o condición médica relevante?'
-                    value={initialAssessment.disease || ''}
-                    id='disease'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-                <FormField
-                    label='¿Tomas medicación actualmente?'
-                    value={initialAssessment.medication || ''}
-                    id='medication'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-                <FormField
-                    label='¿Tienes lesiones actuales o dolor? Si es que sí, indica zona, intensidad 0-10 y cuándo aparece el dolor'
-                    value={initialAssessment.current_injuries || ''}
-                    id='current_injuries'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-                <FormField
-                    label='¿Tienes lesiones previas, cirugías, hernias o restricciones médicas?'
-                    value={initialAssessment.medical_restrictions || ''}
-                    id='medical_restrictions'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-            </FormSection>
-            <FormSection title='Estilo de vida'>
-                <CheckboxGroupField
-                    multiple={false}
-                    id='daily_activity'
-                    label='Nivel de actividad diaria'
-                    required={true}
-                    value={initialAssessment.daily_activity || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Muy bajo (- de 5.000 pasos)', value: 'Muy bajo (- de 5.000 pasos)' },
-                        { label: 'Bajo', value: 'Bajo' },
-                        { label: 'Medio (+ de 5.000 pasos)', value: 'Medio (+ de 5.000 pasos)' },
-                        { label: 'Alto', value: 'Alto' },
-                        { label: 'Muy alto (+ de 15.000 pasos)', value: 'Muy alto (+ de 15.000 pasos)' }
-                    ]}
-                />
-                <CheckboxGroupField
-                    multiple={false}
-                    id='sleep_time'
-                    label='Horas de sueño por noche'
-                    required={true}
-                    value={initialAssessment.sleep_time || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Menos de 5 h', value: 'Menos de 5 h' },
-                        { label: '5-6 h', value: '5-6 h' },
-                        { label: '6-7 h', value: '6-7 h' },
-                        { label: '7-8 h', value: '7-8 h' },
-                        { label: 'Más de 8 h', value: 'Más de 8 h' }
-                    ]}
-                />
-                <ScaleField
-                    required={true}
-                    value={initialAssessment.current_stress_level}
-                    id='current_stress_level'
-                    onChange={handleInitialAssessmentChange}
-                    label='Nivel de estrés actual'
-                    max={10}
-                    min={1}
-                />
-            </FormSection>
-            <FormSection title='Nutrición'>
-                <FormField
-                    label='Describe un día normal de alimentación'
-                    value={initialAssessment.current_diet || ''}
-                    id='current_diet'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-                <FormField
-                    label='¿Tienes alergias, intolerancias, restricciones o alimentos que no quieras comer?'
-                    value={initialAssessment.food_restrictions || ''}
-                    id='food_restrictions'
-                    onChange={handleInitialAssessmentChange}
-                    placeholder=''
-                    required={true}
-                    type='text'
-                />
-                <CheckboxGroupField
-                    multiple={false}
-                    id='water'
-                    label='Consumo de agua diario aproximado'
-                    required={true}
-                    value={initialAssessment.water || ''}
-                    onChange={handleInitialAssessmentChange}
-                    options={[
-                        { label: 'Menos de 1 litro', value: 'Menos de 1 litro' },
-                        { label: '1-2 litros', value: '1-2 litros' },
-                        { label: '2-3 litros', value: '2-3 litros' },
-                        { label: 'Más de 3 litros', value: 'Más de 3 litros' }
-                    ]}
-                />
-                <ScaleField
-                    required={true}
-                    value={initialAssessment.expected_adherence}
-                    id='expected_adherence'
-                    onChange={handleInitialAssessmentChange}
-                    label='Adherencia prevista al plan'
-                    max={10}
-                    min={1}
-                />
-            </FormSection>
+            {FORM_SECTIONS.map((section) => (
+                <FormSection key={section.title} title={section.title}>
+                    {section.fields.map(renderField)}
+                </FormSection>
+            ))}
 
             <div className="initial-assessment-submit-row">
                 {submitError && <div className="error-message">{submitError}</div>}

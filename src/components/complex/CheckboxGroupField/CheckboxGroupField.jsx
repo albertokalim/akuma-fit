@@ -1,9 +1,17 @@
 import Label from '../../primitives/Label/Label.jsx';
+import { useEffect } from 'react';
 import './CheckboxGroupField.css';
 
-function CheckboxGroupField({ label, id, options, value, onChange, required = false, multiple = true }) {
+function CheckboxGroupField({ label, id, options, value, onChange, required = false, multiple = true, hasError = false, onValidityChange }) {
+    useEffect(() => {
+        if (!onValidityChange) return;
+        // El criterio de "vacío" depende de si el campo admite selección múltiple (array) o única (string).
+        const isEmpty = multiple ? !Array.isArray(value) || value.length === 0 : (value === undefined || value === null || value === '');
+        onValidityChange(id, !required || !isEmpty);
+    }, [id, value, required, multiple, onValidityChange]);
+
     return (
-        <div className="checkbox-group-field">
+        <div className={`checkbox-group-field${hasError ? ' has-error' : ''}`}>
             <div className="checkbox-group-label">
                 <Label text={label} htmlFor={id} />
                 {required && <span className="required-asterisk">*</span>}

@@ -1,9 +1,16 @@
 import Label from '../../primitives/Label/Label.jsx';
+import { useEffect } from 'react';
 import './RadioGroupField.css';
 
-function RadioGroupField({ label, id, options, value, onChange, required = false }) {
+function RadioGroupField({ label, id, options, value, onChange, required = false, hasError = false, onValidityChange }) {
+    useEffect(() => {
+        if (!onValidityChange) return;
+        const isEmpty = value === undefined || value === null || value === '';
+        onValidityChange(id, !required || !isEmpty);
+    }, [id, value, required, onValidityChange]);
+
     return (
-        <div className="radio-group-field">
+        <div className={`radio-group-field${hasError ? ' has-error' : ''}`}>
             <div className="radio-group-label">
                 <Label text={label} htmlFor={id} />
                 {required && <span className="required-asterisk">*</span>}

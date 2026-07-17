@@ -1,14 +1,21 @@
 import Label from '../../primitives/Label/Label.jsx';
+import { useEffect } from 'react';
 import './ScaleField.css';
 
-function ScaleField({ label, id, min = 1, max = 10, value, onChange, leftLabel = '', rightLabel = '', required = false }) {
+function ScaleField({ label, id, min = 1, max = 10, value, onChange, leftLabel = '', rightLabel = '', required = false, hasError = false, onValidityChange }) {
     const options = Array.from({ length: max - min + 1 }, (_, i) => ({
         value: (i + min).toString(),
         label: (i + min).toString()
     }));
 
+    useEffect(() => {
+        if (!onValidityChange) return;
+        const isEmpty = value === undefined || value === null || value === '';
+        onValidityChange(id, !required || !isEmpty);
+    }, [id, value, required, onValidityChange]);
+
     return (
-        <div className="scale-field">
+        <div className={`scale-field${hasError ? ' has-error' : ''}`}>
             <div className="scale-label">
                 <Label text={label} htmlFor={id} />
                 {required && <span className="required-asterisk">*</span>}

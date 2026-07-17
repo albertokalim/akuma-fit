@@ -1,0 +1,149 @@
+[
+    {
+        "title": "Datos personales",
+        "fields": [
+            { "id": "name", "group": "userInfo", "component": "text", "label": "Nombre", "placeholder": "Tu nombre", "required": true },
+            { "id": "surname", "group": "userInfo", "component": "text", "label": "Apellidos", "placeholder": "Tus apellidos", "required": true },
+            { "id": "birthdate", "group": "userInfo", "component": "text", "type": "date", "label": "Fecha de nacimiento", "placeholder": "Fecha de nacimiento", "required": true },
+            {
+                "id": "gender", "group": "userInfo", "component": "radio", "label": "Sexo", "required": true,
+                "options": [
+                    { "label": "Hombre", "value": "Hombre" },
+                    { "label": "Mujer", "value": "Mujer" },
+                    { "label": "Prefiero no decirlo", "value": "Prefiero no decirlo" }
+                ]
+            },
+            { "id": "weight", "group": "measurement", "component": "text", "type": "number", "label": "Peso actual en kg", "placeholder": "Peso en kg", "required": true },
+            { "id": "height", "group": "measurement", "component": "text", "type": "number", "step": "any", "label": "Altura en cm", "placeholder": "Altura en cm", "required": true },
+            { "id": "phone", "group": "userInfo", "component": "text", "type": "tel", "label": "Teléfono de contacto", "placeholder": "Número de teléfono", "required": true }
+        ]
+    },
+    {
+        "title": "Objetivo y motivación",
+        "fields": [
+            {
+                "id": "goals", "group": "initialAssessment", "component": "checkbox", "label": "¿Cuál es tu objetivo principal?", "required": true,
+                "options": [
+                    { "label": "Salud", "value": "Salud" },
+                    { "label": "Pérdida de grasa", "value": "Pérdida de grasa" },
+                    { "label": "Hipertrofia / ganar masa muscular", "value": "Hipertrofia / ganar masa muscular" },
+                    { "label": "Fuerza", "value": "Fuerza" },
+                    { "label": "Definición", "value": "Definición" },
+                    { "label": "Rendimiento deportivo", "value": "Rendimiento deportivo" },
+                    { "label": "Reacondicionamiento tras parón o lesión", "value": "Reacondicionamiento tras parón o lesión" }
+                ]
+            },
+            { "id": "deadline", "group": "initialAssessment", "component": "text", "label": "¿En qué plazo te gustaría conseguirlo? Ejemplo: 3 meses, 6 meses, 1 año", "placeholder": "", "required": true },
+            { "id": "motivation_level", "group": "initialAssessment", "component": "scale", "label": "Nivel de motivación actual", "leftLabel": "muy baja", "rightLabel": "muy alta", "min": 1, "max": 10, "required": true },
+            { "id": "past", "group": "initialAssessment", "component": "text", "label": "¿Qué has intentado antes y qué resultado tuviste?", "placeholder": "", "required": true }
+        ]
+    },
+    {
+        "title": "Disponibilidad y preferencias",
+        "fields": [
+            {
+                "id": "current_level", "group": "initialAssessment", "component": "checkbox", "label": "Nivel actual", "required": true,
+                "options": [
+                    { "label": "Sedentario/a", "value": "Sedentario/a" },
+                    { "label": "Vuelvo tras mucho tiempo sin entrenar", "value": "Vuelvo tras mucho tiempo sin entrenar" },
+                    { "label": "Principiante", "value": "Principiante" },
+                    { "label": "Intermedio", "value": "Intermedio" },
+                    { "label": "Avanzado", "value": "Avanzado" }
+                ]
+            },
+            {
+                "id": "training_freq", "group": "initialAssessment", "component": "checkbox", "label": "¿Cuántos días puedes entrenar por semana?", "required": true,
+                "options": [
+                    { "label": "1 día", "value": "1 día" },
+                    { "label": "2 días", "value": "2 días" },
+                    { "label": "3 días", "value": "3 días" },
+                    { "label": "4 días", "value": "4 días" },
+                    { "label": "5 días", "value": "5 días" },
+                    { "label": "6 días", "value": "6 días" }
+                ]
+            },
+            {
+                "id": "time_per_session", "group": "initialAssessment", "component": "checkbox", "label": "¿Cuánto tiempo tienes por sesión?", "required": true,
+                "options": [
+                    { "label": "Menos de 30 minutos", "value": "Menos de 30 minutos" },
+                    { "label": "30-45 minutos", "value": "30-45 minutos" },
+                    { "label": "45-60 minutos", "value": "45-60 minutos" },
+                    { "label": "Más de 60 minutos", "value": "Más de 60 minutos" }
+                ]
+            },
+            {
+                "id": "where", "group": "initialAssessment", "component": "checkbox", "label": "¿Dónde entrenarás?", "required": true,
+                "options": [
+                    { "label": "Gimnasio", "value": "Gimnasio" },
+                    { "label": "Casa", "value": "Casa" },
+                    { "label": "Exterior", "value": "Exterior" },
+                    { "label": "Otro", "value": "Otro" }
+                ]
+            },
+            {
+                "id": "equipment", "group": "initialAssessment", "component": "checkbox", "label": "Material disponible", "required": true,
+                "options": [
+                    { "label": "Gimnasio completo", "value": "Gimnasio completo" },
+                    { "label": "Máquina", "value": "Máquina" },
+                    { "label": "Mancuernas", "value": "Mancuernas" },
+                    { "label": "Barra y discos", "value": "Barra y discos" },
+                    { "label": "Bandas elásticas", "value": "Bandas elásticas" },
+                    { "label": "Peso corporal", "value": "Peso corporal" },
+                    { "label": "Ninguno", "value": "Ninguno" }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Salud y lesiones",
+        "fields": [
+            { "id": "disease", "group": "initialAssessment", "component": "text", "label": "¿Tienes alguna patología, enfermedad o condición médica relevante?", "placeholder": "", "required": true },
+            { "id": "medication", "group": "initialAssessment", "component": "text", "label": "¿Tomas medicación actualmente?", "placeholder": "", "required": true },
+            { "id": "current_injuries", "group": "initialAssessment", "component": "text", "label": "¿Tienes lesiones actuales o dolor? Si es que sí, indica zona, intensidad 0-10 y cuándo aparece el dolor", "placeholder": "", "required": true },
+            { "id": "medical_restrictions", "group": "initialAssessment", "component": "text", "label": "¿Tienes lesiones previas, cirugías, hernias o restricciones médicas?", "placeholder": "", "required": true }
+        ]
+    },
+    {
+        "title": "Estilo de vida",
+        "fields": [
+            {
+                "id": "daily_activity", "group": "initialAssessment", "component": "checkbox", "label": "Nivel de actividad diaria", "required": true,
+                "options": [
+                    { "label": "Muy bajo (- de 5.000 pasos)", "value": "Muy bajo (- de 5.000 pasos)" },
+                    { "label": "Bajo", "value": "Bajo" },
+                    { "label": "Medio (+ de 5.000 pasos)", "value": "Medio (+ de 5.000 pasos)" },
+                    { "label": "Alto", "value": "Alto" },
+                    { "label": "Muy alto (+ de 15.000 pasos)", "value": "Muy alto (+ de 15.000 pasos)" }
+                ]
+            },
+            {
+                "id": "sleep_time", "group": "initialAssessment", "component": "checkbox", "label": "Horas de sueño por noche", "required": true,
+                "options": [
+                    { "label": "Menos de 5 h", "value": "Menos de 5 h" },
+                    { "label": "5-6 h", "value": "5-6 h" },
+                    { "label": "6-7 h", "value": "6-7 h" },
+                    { "label": "7-8 h", "value": "7-8 h" },
+                    { "label": "Más de 8 h", "value": "Más de 8 h" }
+                ]
+            },
+            { "id": "current_stress_level", "group": "initialAssessment", "component": "scale", "label": "Nivel de estrés actual", "min": 1, "max": 10, "required": true }
+        ]
+    },
+    {
+        "title": "Nutrición",
+        "fields": [
+            { "id": "current_diet", "group": "initialAssessment", "component": "text", "label": "Describe un día normal de alimentación", "placeholder": "", "required": true },
+            { "id": "food_restrictions", "group": "initialAssessment", "component": "text", "label": "¿Tienes alergias, intolerancias, restricciones o alimentos que no quieras comer?", "placeholder": "", "required": true },
+            {
+                "id": "water", "group": "initialAssessment", "component": "checkbox", "label": "Consumo de agua diario aproximado", "required": true,
+                "options": [
+                    { "label": "Menos de 1 litro", "value": "Menos de 1 litro" },
+                    { "label": "1-2 litros", "value": "1-2 litros" },
+                    { "label": "2-3 litros", "value": "2-3 litros" },
+                    { "label": "Más de 3 litros", "value": "Más de 3 litros" }
+                ]
+            },
+            { "id": "expected_adherence", "group": "initialAssessment", "component": "scale", "label": "Adherencia prevista al plan", "min": 1, "max": 10, "required": true }
+        ]
+    }
+]
