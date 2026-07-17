@@ -1,14 +1,25 @@
 import FormSection from "../../components/complex/FormSection/FormSection.jsx";
 import FormField from "../../components/complex/FormField/FormField.jsx";
-import {useState} from "react";
+import {useState, useRef} from "react";
 import RadioGroupField from "../../components/complex/RadioGroupField/RadioGroupField.jsx";
 import CheckboxGroupField from "../../components/complex/CheckboxGroupField/CheckboxGroupField.jsx";
 import ScaleField from "../../components/complex/ScaleField/ScaleField.jsx";
+import Button from "../../components/primitives/Button/Button.jsx";
+import {supabase} from "../../supabaseClient.js";
+import './InitialAssessment.css';
 
-function InitialAssessment() {
+// Campos de initialAssessment que se guardan como número (int2) en Supabase
+const NUMERIC_ASSESSMENT_FIELDS = ['motivation_level', 'current_stress_level', 'expected_adherence'];
+
+function InitialAssessment({ onComplete }) {
     const [initialAssessment, setInitialAssessment] = useState({});
     const [measurement, setMeasurement] = useState({});
     const [userInfo, setUserInfo] = useState({});
+    const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState('');
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+    const isSubmittingRef = useRef(false);
+    const formatResults = (results) => JSON.stringify(results, null, 2);
 
     const handleUserInfoChange = (event) => {
         const { id, name, value } = event.target;
@@ -31,10 +42,120 @@ function InitialAssessment() {
         setInitialAssessment((prev) => ({ ...prev, [key]: value }));
     };
 
+    const getOrCreateProfile = async (authUser) => {
+        // Buscamos si el usuario ya tiene un profile creado
+        const { data: existingProfile, error: fetchError } = await supabase
+            .from('profile')
+            .select('id')
+            .eq('user', authUser.id)
+            .maybeSingle();
+
+        if (fetchError) {
+            throw new Error(`No se pudo comprobar el perfil existente: ${fetchError.message}`);
+        }
+
+        if (existingProfile) {
+            return existingProfile.id;
+        }
+
+        // Si no existe, lo creamos con los datos del formulario
+        const { data: newProfile, error: insertError } = await supabase
+            .from('profile')
+            .insert({
+                user: authUser.id,
+                name: userInfo.name || null,
+                surname: userInfo.surname || null,
+                birthdate: userInfo.birthdate || null,
+                gender: userInfo.gender || null,
+                role: 'client',
+            })
+            .select('id')
+            .single();
+
+        if (insertError) {
+            throw new Error(`No se pudo crear el perfil: ${insertError.message}`);
+        }
+
+        return newProfile.id;
+    };
+
+    const handleSubmit = async () => {
+        // Evita envíos duplicados por doble click mientras la petición está en curso
+        if (isSubmittingRef.current) {
+            return;
+        }
+        isSubmittingRef.current = true;
+
+        setSubmitError('');
+        setSubmitSuccess(false);
+        setSubmitting(true);
+
+        try {
+            const { data: authData, error: authError } = await supabase.auth.getUser();
+
+            if (authError || !authData?.user) {
+                throw new Error('Debes iniciar sesión para enviar la valoración inicial.');
+            }
+
+            const clientId = await getOrCreateProfile(authData.user);
+
+            // Evita duplicar filas si el usuario ya había completado la valoración
+            // (p. ej. reintentos tras un error, doble envío, refrescos, etc.)
+            const { data: existingAssessment, error: existingAssessmentError } = await supabase
+                .from('initial_assessment')
+                .select('id')
+                .eq('client', clientId)
+                .maybeSingle();
+
+            if (existingAssessmentError) {
+                throw new Error(`No se pudo comprobar si ya existía una valoración: ${existingAssessmentError.message}`);
+            }
+
+            if (existingAssessment) {
+                throw new Error('Ya has completado tu valoración inicial anteriormente.');
+            }
+
+            const measurementPayload = {
+                client: clientId,
+                weight: measurement.weight ? Number(measurement.weight) : null,
+                height: measurement.height ? Number(measurement.height) : null,
+            };
+
+            const assessmentPayload = { ...initialAssessment, client: clientId };
+            NUMERIC_ASSESSMENT_FIELDS.forEach((field) => {
+                assessmentPayload[field] = assessmentPayload[field] ? Number(assessmentPayload[field]) : null;
+            });
+
+            console.log('Enviando a Supabase:', formatResults({ measurementPayload, assessmentPayload }));
+
+            const { error: measurementError } = await supabase.from('measurement').insert(measurementPayload);
+            if (measurementError) {
+                throw new Error(`No se pudo guardar la medición: ${measurementError.message}`);
+            }
+
+            const { error: assessmentError } = await supabase.from('initial_assessment').insert(assessmentPayload);
+            if (assessmentError) {
+                throw new Error(`No se pudo guardar la valoración inicial: ${assessmentError.message}`);
+            }
+
+            setSubmitSuccess(true);
+
+            if (onComplete) {
+                // Pequeña pausa para que el usuario vea el mensaje de éxito antes de navegar
+                setTimeout(() => onComplete(), 1200);
+            }
+        } catch (exception) {
+            setSubmitError(exception.message);
+        } finally {
+            setSubmitting(false);
+            isSubmittingRef.current = false;
+        }
+    };
+
     return (
-        <div>
-            <h1>Valoración inicial - entrenamiento y nutrición</h1>
-            <p>Este cuestionario sirve para realizar una valoración inicial antes de diseñar un plan de entrenamiento y nutrición. La información permitirá adaptar el programa a tu objetivo, nivel, disponibilidad, salud, lesiones, estilo de vida y preferencias. Responde con la mayor sinceridad posible.</p>
+        <div className="initial-assessment">
+            <h1 className="initial-assessment-title">Valoración inicial - entrenamiento y nutrición</h1>
+            <p className="initial-assessment-description">Este cuestionario sirve para realizar una valoración inicial antes de diseñar un plan de entrenamiento y nutrición. La información permitirá adaptar el programa a tu objetivo, nivel, disponibilidad, salud, lesiones, estilo de vida y preferencias. Responde con la mayor sinceridad posible.</p>
 
             <FormSection title='Datos personales'>
                 <FormField
@@ -71,7 +192,7 @@ function InitialAssessment() {
                     options={[
                         { label: 'Hombre', value: 'Hombre' },
                         { label: 'Mujer', value: 'Mujer' },
-                        { label: 'Otro', value: 'Otro' },
+                        { label: 'Prefiero no decirlo', value: 'Prefiero no decirlo' },
                     ]}
                 />
                 <FormField
@@ -351,6 +472,18 @@ function InitialAssessment() {
                     min={1}
                 />
             </FormSection>
+
+            <div className="initial-assessment-submit-row">
+                {submitError && <div className="error-message">{submitError}</div>}
+                {submitSuccess && <div className="success-message">¡Valoración inicial enviada correctamente!</div>}
+
+                <Button
+                    text={submitting ? 'Enviando...' : 'Enviar'}
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    className="initial-assessment-submit-button"
+                />
+            </div>
         </div>
     );
 }

@@ -63,6 +63,9 @@ function Register({ onNavigateToLogin }) {
                     <p className="success-text">
                         Confirme su correo electrónico para poder iniciar sesión. Hemos enviado un enlace de verificación a su bandeja de entrada.
                     </p>
+                    <div className="login-link">
+                        <p><Link text="Ir a iniciar sesión" onClick={onNavigateToLogin} className="link" /></p>
+                    </div>
                 </div>
             </div>
         );
