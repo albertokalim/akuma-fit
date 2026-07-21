@@ -21,6 +21,16 @@
     gap: 5px;
 }
 
+.error-message {
+    color: var(--color-error);
+    background-color: var(--color-error-bg);
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    border: 1px solid var(--color-primary-border);
+    margin-bottom: 10px;
+}
+
 .divider {
     text-align: center;
     margin: 20px 0;

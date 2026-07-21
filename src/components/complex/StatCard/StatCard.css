@@ -11,6 +11,9 @@
 
 .stat-icon {
     font-size: 32px;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
 }
 
 .stat-content {

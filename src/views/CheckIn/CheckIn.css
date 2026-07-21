@@ -1,0 +1,79 @@
+.check-in {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 32px;
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-main);
+}
+
+.check-in-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 12px;
+}
+
+.check-in-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: 32px;
+}
+
+.check-in-submit-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+}
+
+.check-in-submit-button {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.check-in-submit-button:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.check-in-submit-button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.check-in-submit-button:disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+.error-message {
+    width: 100%;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 6px;
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
+    font-size: 14px;
+}
+
+.success-message {
+    width: 100%;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 6px;
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+    font-size: 14px;
+}

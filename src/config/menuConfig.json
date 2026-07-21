@@ -1,17 +1,19 @@
 {
   "coach": [
-    { "id": "dashboard", "label": "Dashboard", "icon": "📊" },
-    { "id": "clients", "label": "Clientes", "icon": "👥" },
-    { "id": "exercises", "label": "Ejercicios", "icon": "💪" },
-    { "id": "alimentos", "label": "Alimentos", "icon": "🍎" },
-    { "id": "plans", "label": "Planes", "icon": "📋" },
-    { "id": "reportes", "label": "Reportes", "icon": "📈" }
+    { "id": "dashboard", "label": "Dashboard", "icon": "dashboard" },
+    { "id": "clients", "label": "Clientes", "icon": "clients" },
+    { "id": "exercises", "label": "Ejercicios", "icon": "exercises" },
+    { "id": "alimentos", "label": "Alimentos", "icon": "nutrition" },
+    { "id": "plans", "label": "Planes", "icon": "plans" },
+    { "id": "reportes", "label": "Reportes", "icon": "reports" }
   ],
   "client": [
-    { "id": "dashboard", "label": "Mi Dashboard", "icon": "📊" },
-    { "id": "my-plan", "label": "Mi Plan", "icon": "📋" },
-    { "id": "exercises", "label": "Ejercicios", "icon": "💪" },
-    { "id": "nutrition", "label": "Nutrición", "icon": "🍎" },
-    { "id": "progress", "label": "Progreso", "icon": "📈" }
+    { "id": "dashboard", "label": "Mi Dashboard", "icon": "dashboard" },
+    { "id": "checkin", "label": "Check-In", "icon": "checkin" },
+    { "id": "weight-log", "label": "Registro de peso", "icon": "weight-log" },
+    { "id": "my-plan", "label": "Mi Plan", "icon": "plans" },
+    { "id": "exercises", "label": "Ejercicios", "icon": "exercises" },
+    { "id": "nutrition", "label": "Nutrición", "icon": "nutrition" },
+    { "id": "progress", "label": "Progreso", "icon": "progress" }
   ]
 }

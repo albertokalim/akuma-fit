@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import EventList from '../../components/complex/EventList/EventList.jsx';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
+import { FiUsers, FiClipboard, FiCheckCircle } from 'react-icons/fi';
+import { GiWeightLiftingUp } from 'react-icons/gi';
 import './Dashboard.css';
 
 function Dashboard({ email, onLogout }) {
     const stats = [
-        { value: '24', label: 'Clientes activos', icon: '👥' },
-        { value: '31', label: 'Planes activos', icon: '📋' },
-        { value: '18', label: 'Check-ins esta semana', icon: '✅' },
-        { value: '5', label: 'Entrenamientos hoy', icon: '🏋️' },
+        { value: '24', label: 'Clientes activos', icon: <FiUsers /> },
+        { value: '31', label: 'Planes activos', icon: <FiClipboard /> },
+        { value: '18', label: 'Check-ins esta semana', icon: <FiCheckCircle /> },
+        { value: '5', label: 'Entrenamientos hoy', icon: <GiWeightLiftingUp /> },
     ];
 
     const upcomingEvents = [

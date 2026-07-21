@@ -14,7 +14,7 @@
                 ]
             },
             { "id": "weight", "group": "measurement", "component": "text", "type": "number", "label": "Peso actual en kg", "placeholder": "Peso en kg", "required": true },
-            { "id": "height", "group": "measurement", "component": "text", "type": "number", "step": "any", "label": "Altura en cm", "placeholder": "Altura en cm", "required": true },
+            { "id": "height", "group": "initialAssessment", "component": "text", "type": "number", "step": "any", "label": "Altura en cm", "placeholder": "Altura en cm", "required": true },
             { "id": "phone", "group": "userInfo", "component": "text", "type": "tel", "label": "Teléfono de contacto", "placeholder": "Número de teléfono", "required": true }
         ]
     },
@@ -33,9 +33,9 @@
                     { "label": "Reacondicionamiento tras parón o lesión", "value": "Reacondicionamiento tras parón o lesión" }
                 ]
             },
-            { "id": "deadline", "group": "initialAssessment", "component": "text", "label": "¿En qué plazo te gustaría conseguirlo? Ejemplo: 3 meses, 6 meses, 1 año", "placeholder": "", "required": true },
+            { "id": "deadline", "group": "initialAssessment", "component": "text", "label": "¿En qué plazo te gustaría conseguirlo? Ejemplo: 3 meses, 6 meses, 1 año", "placeholder": "Ej: 6 meses", "required": true },
             { "id": "motivation_level", "group": "initialAssessment", "component": "scale", "label": "Nivel de motivación actual", "leftLabel": "muy baja", "rightLabel": "muy alta", "min": 1, "max": 10, "required": true },
-            { "id": "past", "group": "initialAssessment", "component": "text", "label": "¿Qué has intentado antes y qué resultado tuviste?", "placeholder": "", "required": true }
+            { "id": "past", "group": "initialAssessment", "component": "text", "label": "¿Qué has intentado antes y qué resultado tuviste?", "placeholder": "Cuéntanos qué has probado antes y cómo te fue", "required": true }
         ]
     },
     {
@@ -97,10 +97,10 @@
     {
         "title": "Salud y lesiones",
         "fields": [
-            { "id": "disease", "group": "initialAssessment", "component": "text", "label": "¿Tienes alguna patología, enfermedad o condición médica relevante?", "placeholder": "", "required": true },
-            { "id": "medication", "group": "initialAssessment", "component": "text", "label": "¿Tomas medicación actualmente?", "placeholder": "", "required": true },
-            { "id": "current_injuries", "group": "initialAssessment", "component": "text", "label": "¿Tienes lesiones actuales o dolor? Si es que sí, indica zona, intensidad 0-10 y cuándo aparece el dolor", "placeholder": "", "required": true },
-            { "id": "medical_restrictions", "group": "initialAssessment", "component": "text", "label": "¿Tienes lesiones previas, cirugías, hernias o restricciones médicas?", "placeholder": "", "required": true }
+            { "id": "disease", "group": "initialAssessment", "component": "text", "label": "¿Tienes alguna patología, enfermedad o condición médica relevante?", "placeholder": "Indica cuál o escribe 'Ninguna'", "required": true },
+            { "id": "medication", "group": "initialAssessment", "component": "text", "label": "¿Tomas medicación actualmente?", "placeholder": "Indica cuál o escribe 'Ninguna'", "required": true },
+            { "id": "current_injuries", "group": "initialAssessment", "component": "text", "label": "¿Tienes lesiones actuales o dolor? Si es que sí, indica zona, intensidad 0-10 y cuándo aparece el dolor", "placeholder": "Indica zona, intensidad y cuándo aparece o escribe 'Ninguna'", "required": true },
+            { "id": "medical_restrictions", "group": "initialAssessment", "component": "text", "label": "¿Tienes lesiones previas, cirugías, hernias o restricciones médicas?", "placeholder": "Indica cuáles o escribe 'Ninguna'", "required": true }
         ]
     },
     {
@@ -132,8 +132,8 @@
     {
         "title": "Nutrición",
         "fields": [
-            { "id": "current_diet", "group": "initialAssessment", "component": "text", "label": "Describe un día normal de alimentación", "placeholder": "", "required": true },
-            { "id": "food_restrictions", "group": "initialAssessment", "component": "text", "label": "¿Tienes alergias, intolerancias, restricciones o alimentos que no quieras comer?", "placeholder": "", "required": true },
+            { "id": "current_diet", "group": "initialAssessment", "component": "text", "label": "Describe un día normal de alimentación", "placeholder": "Ej: desayuno, comida, cena y snacks habituales", "required": true },
+            { "id": "food_restrictions", "group": "initialAssessment", "component": "text", "label": "¿Tienes alergias, intolerancias, restricciones o alimentos que no quieras comer?", "placeholder": "Indica cuáles o escribe 'Ninguna'", "required": true },
             {
                 "id": "water", "group": "initialAssessment", "component": "checkbox", "label": "Consumo de agua diario aproximado", "required": true,
                 "options": [
@@ -144,6 +144,14 @@
                 ]
             },
             { "id": "expected_adherence", "group": "initialAssessment", "component": "scale", "label": "Adherencia prevista al plan", "min": 1, "max": 10, "required": true }
+        ]
+    },
+    {
+        "title": "Consentimiento de datos",
+        "fields": [
+            {
+                "id": "data_consent", "group": "initialAssessment", "component": "boolean-checkbox", "label": "Autorizo el tratamiento de mis datos personales y de salud (incluidos en este formulario) para la elaboración de mi plan de entrenamiento y nutrición, conforme a la normativa de protección de datos", "required": true
+            }
         ]
     }
 ]
