@@ -47,3 +47,31 @@
     font-weight: bold;
     font-size: 16px;
 }
+
+@media (max-width: 768px) {
+    .boolean-checkbox-field {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .boolean-checkbox-option input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+
+    .boolean-checkbox-label-row label {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .boolean-checkbox-field {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .boolean-checkbox-option input[type="checkbox"] {
+        width: 22px;
+        height: 22px;
+    }
+}

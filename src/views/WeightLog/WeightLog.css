@@ -77,3 +77,37 @@
     color: var(--color-success);
     font-size: 14px;
 }
+
+@media (max-width: 1024px) {
+    .weight-log {
+        max-width: 100%;
+        margin: 20px;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .weight-log {
+        margin: 16px;
+        padding: 20px;
+    }
+
+    .weight-log-title {
+        font-size: 24px;
+    }
+
+    .weight-log-description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .weight-log {
+        margin: 12px;
+        padding: 16px;
+    }
+
+    .weight-log-title {
+        font-size: 20px;
+    }
+}

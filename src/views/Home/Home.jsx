@@ -3,7 +3,7 @@ import Header from '../../components/complex/Header/Header.jsx';
 import Sidebar from '../../components/complex/Sidebar/Sidebar.jsx';
 import Dashboard from '../Dashboard/Dashboard.jsx';
 import CheckIn from '../CheckIn/CheckIn.jsx';
-import WeightLog from '../WeightLog/WeightLog.jsx';
+import Progress from '../Progress/Progress.jsx';
 import menuConfig from '../../config/menuConfig.json';
 import './Home.css';
 
@@ -13,7 +13,7 @@ function Home({ email, onLogout, userRole = 'coach' }) {
     const componentMap = {
         'dashboard': Dashboard,
         'checkin': CheckIn,
-        'weight-log': WeightLog,
+        'progress': Progress,
         'clients': () => <div className="placeholder-component"><h2>Clientes Component</h2></div>,
         'exercises': () => <div className="placeholder-component"><h2>Ejercicios Component</h2></div>,
         'alimentos': () => <div className="placeholder-component"><h2>Alimentos Component</h2></div>,
@@ -21,7 +21,6 @@ function Home({ email, onLogout, userRole = 'coach' }) {
         'reportes': () => <div className="placeholder-component"><h2>Reportes Component</h2></div>,
         'my-plan': () => <div className="placeholder-component"><h2>Mi Plan Component</h2></div>,
         'nutrition': () => <div className="placeholder-component"><h2>Nutrición Component</h2></div>,
-        'progress': () => <div className="placeholder-component"><h2>Progreso Component</h2></div>,
     };
 
     const menuItems = useMemo(() => {

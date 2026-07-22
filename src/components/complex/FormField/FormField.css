@@ -36,3 +36,22 @@
 .form-field-input:focus {
     border-color: var(--color-primary);
 }
+
+@media (max-width: 768px) {
+    .form-field {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .form-field-input {
+        padding: 10px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-field {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+}

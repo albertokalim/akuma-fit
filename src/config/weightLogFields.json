@@ -2,10 +2,10 @@
     {
         "title": "Registro de peso",
         "fields": [
-            { "id": "weight", "group": "measurements", "component": "text", "type": "number", "step": "any", "label": "Peso (kg)", "placeholder": "Peso en kg", "required": true },
-            { "id": "chest", "group": "measurements", "component": "text", "type": "number", "step": "any", "label": "Pecho (cm)", "placeholder": "Perímetro de pecho", "required": false },
-            { "id": "waist", "group": "measurements", "component": "text", "type": "number", "step": "any", "label": "Cintura (cm)", "placeholder": "Perímetro de cintura", "required": false },
-            { "id": "hip", "group": "measurements", "component": "text", "type": "number", "step": "any", "label": "Cadera (cm)", "placeholder": "Perímetro de cadera", "required": false }
+            { "id": "weight", "group": "measurement", "component": "text", "type": "number", "step": "any", "label": "Peso (kg)", "placeholder": "Peso en kg", "required": true },
+            { "id": "chest", "group": "measurement", "component": "text", "type": "number", "step": "any", "label": "Pecho (cm)", "placeholder": "Perímetro de pecho", "required": false },
+            { "id": "waist", "group": "measurement", "component": "text", "type": "number", "step": "any", "label": "Cintura (cm)", "placeholder": "Perímetro de cintura", "required": false },
+            { "id": "hip", "group": "measurement", "component": "text", "type": "number", "step": "any", "label": "Cadera (cm)", "placeholder": "Perímetro de cadera", "required": false }
         ]
     }
 ]

@@ -3,8 +3,16 @@
         "title": "Check-In semanal",
         "fields": [
             { "id": "how_do_you_feel", "group": "checkIn", "component": "text", "label": "¿Cómo te has sentido?", "placeholder": "Cuéntanos cómo te has encontrado esta semana", "required": true },
-            { "id": "diet_adherence", "group": "checkIn", "component": "scale", "label": "¿Has seguido la dieta?", "leftLabel": "nada", "rightLabel": "totalmente", "min": 1, "max": 10, "required": true },
-            { "id": "training_adherence", "group": "checkIn", "component": "scale", "label": "¿Has seguido el entrenamiento?", "leftLabel": "nada", "rightLabel": "totalmente", "min": 1, "max": 10, "required": true },
+            { "id": "diet_adherence", "group": "checkIn", "component": "radio", "label": "¿Has seguido la dieta?", "required": true, "options": [
+                { "label": "Totalmente", "value": "Totalmente" },
+                { "label": "Parcialmente", "value": "Parcialmente" },
+                { "label": "Nada", "value": "Nada" }
+            ] },
+            { "id": "training_adherence", "group": "checkIn", "component": "radio", "label": "¿Has seguido el entrenamiento?", "required": true, "options": [
+                { "label": "Totalmente", "value": "Totalmente" },
+                { "label": "Parcialmente", "value": "Parcialmente" },
+                { "label": "Nada", "value": "Nada" }
+            ] },
             { "id": "hunger_level", "group": "checkIn", "component": "scale", "label": "¿Has pasado hambre?", "leftLabel": "nada", "rightLabel": "mucha", "min": 1, "max": 10, "required": true },
             { "id": "rest_quality", "group": "checkIn", "component": "scale", "label": "¿Qué tal has descansado?", "leftLabel": "muy mal", "rightLabel": "muy bien", "min": 1, "max": 10, "required": true },
             { "id": "comments", "group": "checkIn", "component": "text", "label": "Comenta lo que quieras", "placeholder": "Escribe aquí cualquier comentario adicional", "required": false }

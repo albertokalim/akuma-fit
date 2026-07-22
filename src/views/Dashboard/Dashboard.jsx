@@ -44,7 +44,7 @@ function Dashboard({ email, onLogout }) {
             {/* Chart and Events */}
             <section className="chart-events-section">
                 <div className="chart-container">
-                    <LineChart title="Evolución Mensual" data={[]} />
+                    <LineChart title="Evolución Mensual" data={[]} lines={[]} />
                 </div>
                 <div className="events-container">
                     <EventList title="Próximos eventos" items={upcomingEvents} />

@@ -13,7 +13,12 @@
     color: var(--color-text);
 }
 
-.chart-placeholder {
+.chart-container {
+    width: 100%;
+    height: 300px;
+}
+
+.chart-empty {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,4 +26,28 @@
     background-color: var(--color-surface-alt);
     border-radius: 4px;
     color: var(--color-text-muted);
+}
+
+@media (max-width: 768px) {
+    .line-chart {
+        padding: 16px;
+    }
+
+    .chart-title {
+        font-size: 16px;
+    }
+
+    .chart-container {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .line-chart {
+        padding: 12px;
+    }
+
+    .chart-container {
+        height: 200px;
+    }
 }

@@ -56,3 +56,36 @@
 .sidebar-label {
     flex: 1;
 }
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar-item {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+
+    .sidebar-item.active {
+        padding-left: 13px;
+    }
+
+    .sidebar-icon {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 70px;
+        z-index: 1000;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+}

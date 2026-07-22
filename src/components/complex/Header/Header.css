@@ -54,3 +54,36 @@
     background-color: var(--color-primary);
     color: var(--color-bg);
 }
+
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 20px;
+    }
+
+    .header-title {
+        font-size: 20px;
+    }
+
+    .header-right {
+        gap: 12px;
+    }
+
+    .user-name {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 16px;
+    }
+
+    .header-title {
+        font-size: 18px;
+    }
+
+    .logout-button {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+}

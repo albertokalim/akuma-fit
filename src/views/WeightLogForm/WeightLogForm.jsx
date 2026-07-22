@@ -8,23 +8,15 @@ import Button from "../../components/primitives/Button/Button.jsx";
 import {supabase} from "../../supabaseClient.js";
 import FORM_SECTIONS from "../../config/weightLogFields.json";
 import useFormSubmission from "../../hooks/useFormSubmission.js";
-import './WeightLog.css';
+import './WeightLogForm.css';
 
-// Campos de measurement que se guardan como número en Supabase (peso + perímetros corporales)
-const NUMERIC_measurement_FIELDS = ['weight', 'chest', 'waist', 'hip'];
+const NUMERIC_MEASUREMENT_FIELDS = ['weight', 'chest', 'waist', 'hip'];
 
-// El registro de campos del formulario (título de sección, id, grupo de estado, tipo de
-// control, si es required, opciones, etc.) vive en src/config/weightLogFields.json,
-// como única fuente de verdad para renderizado y validación.
-
-// Aplana todos los campos de todas las secciones para poder iterarlos fácilmente.
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 
-// Mapa id -> label, usado únicamente para componer el mensaje de error (no para validar:
-// la validación la hace cada componente por sí mismo y la reporta al padre).
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
-function WeightLog({ onComplete }) {
+function WeightLogForm({ onComplete, onCancel }) {
     const [measurement, setMeasurement] = useState({});
 
     const {
@@ -44,7 +36,6 @@ function WeightLog({ onComplete }) {
         },
     });
 
-    // Valores y setters de cada estado, indexados por el nombre de "group" usado en FORM_SECTIONS.
     const groupValues = { measurement };
     const groupSetters = { measurement: setMeasurement };
 
@@ -83,7 +74,7 @@ function WeightLog({ onComplete }) {
         const profileId = await getProfileId(authData.user);
 
         const measurementPayload = { ...measurement, profile_id: profileId };
-        NUMERIC_measurement_FIELDS.forEach((field) => {
+        NUMERIC_MEASUREMENT_FIELDS.forEach((field) => {
             measurementPayload[field] = measurementPayload[field] ? Number(measurementPayload[field]) : null;
         });
 
@@ -98,8 +89,6 @@ function WeightLog({ onComplete }) {
     const renderField = (field) => {
         const value = groupValues[field.group][field.id];
         const onChange = (event) => handleFieldChange(field.group, event);
-        // Solo mostramos el error visual si ya se intentó enviar y el propio campo
-        // ha reportado que no es válido.
         const hasError = submitAttempted && fieldValidity[field.id] === false;
 
         switch (field.component) {
@@ -170,9 +159,9 @@ function WeightLog({ onComplete }) {
     };
 
     return (
-        <div className="weight-log">
-            <h1 className="weight-log-title">Registro de peso</h1>
-            <p className="weight-log-description">Registra tu peso y, si quieres, tus medidas corporales para poder hacer un seguimiento de tu progreso. Solo el peso es obligatorio.</p>
+        <div className="weight-log-form">
+            <h1 className="weight-log-form-title">Registro de peso</h1>
+            <p className="weight-log-form-description">Registra tu peso y, si quieres, tus medidas corporales para poder hacer un seguimiento de tu progreso. Solo el peso es obligatorio.</p>
 
             {FORM_SECTIONS.map((section) => (
                 <FormSection key={section.title} title={section.title}>
@@ -180,19 +169,29 @@ function WeightLog({ onComplete }) {
                 </FormSection>
             ))}
 
-            <div className="weight-log-submit-row">
+            <div className="weight-log-form-submit-row">
                 {submitError && <div className="error-message">{submitError}</div>}
                 {submitSuccess && <div className="success-message">¡Registro guardado correctamente!</div>}
 
-                <Button
-                    text={submitting ? 'Guardando...' : 'Guardar registro'}
-                    onClick={onSubmitClick}
-                    disabled={submitting}
-                    className="weight-log-submit-button"
-                />
+                <div className="weight-log-form-buttons">
+                    {onCancel && (
+                        <Button
+                            text="Cancelar"
+                            onClick={onCancel}
+                            disabled={submitting}
+                            className="weight-log-form-cancel-button"
+                        />
+                    )}
+                    <Button
+                        text={submitting ? 'Guardando...' : 'Guardar registro'}
+                        onClick={onSubmitClick}
+                        disabled={submitting}
+                        className="weight-log-form-submit-button"
+                    />
+                </div>
             </div>
         </div>
     );
 }
 
-export default WeightLog;
+export default WeightLogForm;

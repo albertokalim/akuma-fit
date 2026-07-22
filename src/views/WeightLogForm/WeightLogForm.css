@@ -1,4 +1,4 @@
-.initial-assessment {
+.weight-log-form {
     max-width: 720px;
     margin: 40px auto;
     padding: 32px;
@@ -8,21 +8,21 @@
     font-family: var(--font-main);
 }
 
-.initial-assessment-title {
+.weight-log-form-title {
     font-size: 28px;
     font-weight: 700;
     color: var(--color-text);
     margin-bottom: 12px;
 }
 
-.initial-assessment-description {
+.weight-log-form-description {
     font-size: 14px;
     line-height: 1.6;
     color: var(--color-text-secondary);
     margin-bottom: 32px;
 }
 
-.initial-assessment-submit-row {
+.weight-log-form-submit-row {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,28 +32,55 @@
     border-top: 1px solid var(--color-border);
 }
 
-.initial-assessment-submit-button {
+.weight-log-form-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.weight-log-form-submit-button,
+.weight-log-form-cancel-button {
     padding: 12px 32px;
     border: none;
     border-radius: 6px;
-    background-color: var(--color-primary);
-    color: var(--color-bg);
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
 }
 
-.initial-assessment-submit-button:hover:not(:disabled) {
+.weight-log-form-submit-button {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.weight-log-form-submit-button:hover:not(:disabled) {
     background-color: var(--color-primary-hover);
 }
 
-.initial-assessment-submit-button:active:not(:disabled) {
+.weight-log-form-submit-button:active:not(:disabled) {
     transform: scale(0.98);
 }
 
-.initial-assessment-submit-button:disabled {
+.weight-log-form-submit-button:disabled {
     background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+.weight-log-form-cancel-button {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+}
+
+.weight-log-form-cancel-button:hover:not(:disabled) {
+    background-color: var(--color-border);
+}
+
+.weight-log-form-cancel-button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.weight-log-form-cancel-button:disabled {
     color: var(--color-text-muted);
     cursor: not-allowed;
 }
@@ -79,7 +106,7 @@
 }
 
 @media (max-width: 1024px) {
-    .initial-assessment {
+    .weight-log-form {
         max-width: 100%;
         margin: 20px;
         padding: 24px;
@@ -87,27 +114,37 @@
 }
 
 @media (max-width: 768px) {
-    .initial-assessment {
+    .weight-log-form {
         margin: 16px;
         padding: 20px;
     }
 
-    .initial-assessment-title {
+    .weight-log-form-title {
         font-size: 24px;
     }
 
-    .initial-assessment-description {
+    .weight-log-form-description {
         font-size: 13px;
+    }
+
+    .weight-log-form-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .weight-log-form-submit-button,
+    .weight-log-form-cancel-button {
+        width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .initial-assessment {
+    .weight-log-form {
         margin: 12px;
         padding: 16px;
     }
 
-    .initial-assessment-title {
+    .weight-log-form-title {
         font-size: 20px;
     }
 }

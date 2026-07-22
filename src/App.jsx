@@ -40,7 +40,7 @@ export default function App() {
         const { data: assessment, error: assessmentError } = await supabase
             .from('initial_assessment')
             .select('id')
-            .eq('client', profile.id)
+            .eq('profile_id', profile.id)
             .maybeSingle();
 
         return {

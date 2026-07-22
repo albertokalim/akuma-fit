@@ -6,26 +6,18 @@ import CheckboxGroupField from "../../components/complex/CheckboxGroupField/Chec
 import ScaleField from "../../components/complex/ScaleField/ScaleField.jsx";
 import Button from "../../components/primitives/Button/Button.jsx";
 import {supabase} from "../../supabaseClient.js";
-import FORM_SECTIONS from "../../config/weightLogFields.json";
+import FORM_SECTIONS from "../../config/checkInFields.json";
 import useFormSubmission from "../../hooks/useFormSubmission.js";
-import './WeightLog.css';
+import './CheckInForm.css';
 
-// Campos de measurement que se guardan como número en Supabase (peso + perímetros corporales)
-const NUMERIC_measurement_FIELDS = ['weight', 'chest', 'waist', 'hip'];
+const NUMERIC_CHECKIN_FIELDS = ['hunger_level', 'rest_quality'];
 
-// El registro de campos del formulario (título de sección, id, grupo de estado, tipo de
-// control, si es required, opciones, etc.) vive en src/config/weightLogFields.json,
-// como única fuente de verdad para renderizado y validación.
-
-// Aplana todos los campos de todas las secciones para poder iterarlos fácilmente.
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 
-// Mapa id -> label, usado únicamente para componer el mensaje de error (no para validar:
-// la validación la hace cada componente por sí mismo y la reporta al padre).
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
-function WeightLog({ onComplete }) {
-    const [measurement, setMeasurement] = useState({});
+function CheckInForm({ onComplete, onCancel }) {
+    const [checkIn, setCheckIn] = useState({});
 
     const {
         fieldValidity,
@@ -44,9 +36,8 @@ function WeightLog({ onComplete }) {
         },
     });
 
-    // Valores y setters de cada estado, indexados por el nombre de "group" usado en FORM_SECTIONS.
-    const groupValues = { measurement };
-    const groupSetters = { measurement: setMeasurement };
+    const groupValues = { checkIn };
+    const groupSetters = { checkIn: setCheckIn };
 
     const handleFieldChange = (group, event) => {
         const { id, name, value } = event.target;
@@ -77,19 +68,19 @@ function WeightLog({ onComplete }) {
         const { data: authData, error: authError } = await supabase.auth.getUser();
 
         if (authError || !authData?.user) {
-            throw new Error('Debes iniciar sesión para enviar el registro de peso.');
+            throw new Error('Debes iniciar sesión para enviar el check-in.');
         }
 
         const profileId = await getProfileId(authData.user);
 
-        const measurementPayload = { ...measurement, profile_id: profileId };
-        NUMERIC_measurement_FIELDS.forEach((field) => {
-            measurementPayload[field] = measurementPayload[field] ? Number(measurementPayload[field]) : null;
+        const checkInPayload = { ...checkIn, profile_id: profileId };
+        NUMERIC_CHECKIN_FIELDS.forEach((field) => {
+            checkInPayload[field] = checkInPayload[field] ? Number(checkInPayload[field]) : null;
         });
 
-        const { error: measurementError } = await supabase.from('measurement').insert(measurementPayload);
-        if (measurementError) {
-            throw new Error(`No se pudo guardar el registro de peso: ${measurementError.message}`);
+        const { error: checkInError } = await supabase.from('check_in').insert(checkInPayload);
+        if (checkInError) {
+            throw new Error(`No se pudo guardar el check-in: ${checkInError.message}`);
         }
     };
 
@@ -98,8 +89,6 @@ function WeightLog({ onComplete }) {
     const renderField = (field) => {
         const value = groupValues[field.group][field.id];
         const onChange = (event) => handleFieldChange(field.group, event);
-        // Solo mostramos el error visual si ya se intentó enviar y el propio campo
-        // ha reportado que no es válido.
         const hasError = submitAttempted && fieldValidity[field.id] === false;
 
         switch (field.component) {
@@ -170,9 +159,9 @@ function WeightLog({ onComplete }) {
     };
 
     return (
-        <div className="weight-log">
-            <h1 className="weight-log-title">Registro de peso</h1>
-            <p className="weight-log-description">Registra tu peso y, si quieres, tus medidas corporales para poder hacer un seguimiento de tu progreso. Solo el peso es obligatorio.</p>
+        <div className="check-in-form">
+            <h1 className="check-in-form-title">Check-In</h1>
+            <p className="check-in-form-description">Cuéntanos cómo te ha ido esta semana para poder ajustar tu plan de entrenamiento y nutrición.</p>
 
             {FORM_SECTIONS.map((section) => (
                 <FormSection key={section.title} title={section.title}>
@@ -180,19 +169,29 @@ function WeightLog({ onComplete }) {
                 </FormSection>
             ))}
 
-            <div className="weight-log-submit-row">
+            <div className="check-in-form-submit-row">
                 {submitError && <div className="error-message">{submitError}</div>}
-                {submitSuccess && <div className="success-message">¡Registro guardado correctamente!</div>}
+                {submitSuccess && <div className="success-message">¡Check-in enviado correctamente!</div>}
 
-                <Button
-                    text={submitting ? 'Guardando...' : 'Guardar registro'}
-                    onClick={onSubmitClick}
-                    disabled={submitting}
-                    className="weight-log-submit-button"
-                />
+                <div className="check-in-form-buttons">
+                    {onCancel && (
+                        <Button
+                            text="Cancelar"
+                            onClick={onCancel}
+                            disabled={submitting}
+                            className="check-in-form-cancel-button"
+                        />
+                    )}
+                    <Button
+                        text={submitting ? 'Enviando...' : 'Enviar Check-In'}
+                        onClick={onSubmitClick}
+                        disabled={submitting}
+                        className="check-in-form-submit-button"
+                    />
+                </div>
             </div>
         </div>
     );
 }
 
-export default WeightLog;
+export default CheckInForm;
