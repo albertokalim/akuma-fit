@@ -1,4 +1,4 @@
-.initial-assessment {
+.profile-form {
     max-width: 720px;
     margin: 40px auto;
     padding: 32px;
@@ -8,21 +8,35 @@
     font-family: var(--font-main);
 }
 
-.initial-assessment-title {
+.profile-form-title {
     font-size: 28px;
     font-weight: 700;
     color: var(--color-text);
     margin-bottom: 12px;
 }
 
-.initial-assessment-description {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-    margin-bottom: 32px;
+.profile-form-avatar-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 
-.initial-assessment-submit-row {
+.profile-form-password-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+.profile-form-password-btn:hover {
+    background-color: var(--color-surface-alt);
+}
+
+.profile-form-submit-row {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,27 +46,32 @@
     border-top: 1px solid var(--color-border);
 }
 
-.initial-assessment-submit-button {
+.profile-form-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.profile-form-submit-button {
     padding: 12px 32px;
     border: none;
     border-radius: 6px;
-    background-color: var(--color-primary);
-    color: var(--color-bg);
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
 }
 
-.initial-assessment-submit-button:hover:not(:disabled) {
+.profile-form-submit-button:hover:not(:disabled) {
     background-color: var(--color-primary-hover);
 }
 
-.initial-assessment-submit-button:active:not(:disabled) {
+.profile-form-submit-button:active:not(:disabled) {
     transform: scale(0.98);
 }
 
-.initial-assessment-submit-button:disabled {
+.profile-form-submit-button:disabled {
     background-color: var(--color-surface-alt);
     color: var(--color-text-muted);
     cursor: not-allowed;
@@ -78,35 +97,8 @@
     font-size: 14px;
 }
 
-.photo-capture-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.skip-photos-button {
-    padding: 12px 32px;
-    border: none;
-    border-radius: 6px;
-    background-color: var(--color-surface-alt);
-    color: var(--color-text);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-.skip-photos-button:hover {
-    background-color: var(--color-border);
-}
-
-.skip-photos-button:active {
-    transform: scale(0.98);
-}
-
 @media (max-width: 1024px) {
-    .initial-assessment {
+    .profile-form {
         max-width: 100%;
         margin: 20px;
         padding: 24px;
@@ -114,27 +106,32 @@
 }
 
 @media (max-width: 768px) {
-    .initial-assessment {
+    .profile-form {
         margin: 16px;
         padding: 20px;
     }
 
-    .initial-assessment-title {
+    .profile-form-title {
         font-size: 24px;
     }
 
-    .initial-assessment-description {
-        font-size: 13px;
+    .profile-form-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .profile-form-submit-button {
+        width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .initial-assessment {
+    .profile-form {
         margin: 12px;
         padding: 16px;
     }
 
-    .initial-assessment-title {
+    .profile-form-title {
         font-size: 20px;
     }
 }

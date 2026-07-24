@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import DataTable from '../../components/complex/DataTable/DataTable.jsx';
 import Button from '../../components/primitives/Button/Button.jsx';
+import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
 import { supabase } from '../../supabaseClient.js';
 import CheckInForm from '../CheckInForm/CheckInForm.jsx';
 import './CheckIn.css';
@@ -90,7 +91,7 @@ function CheckIn() {
             <h1 className="check-in-title">Mis Check-Ins</h1>
             <p className="check-in-description">Revisa tu historial de check-ins semanales para ver tu progreso.</p>
 
-            {loading && <div className="check-in-loading">Cargando check-ins...</div>}
+            {loading && <Spinner text="Cargando check-ins..." />}
             {error && <div className="error-message">{error}</div>}
 
             {!loading && !error && checkIns.length === 0 && (

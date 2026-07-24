@@ -1,0 +1,354 @@
+.body-photo-capture {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    background-color: var(--color-surface);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--color-border);
+    margin-bottom: 20px;
+}
+
+.body-photo-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.body-photo-description {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.photo-slot {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.photo-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text);
+    text-align: center;
+}
+
+.photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    aspect-ratio: 3/4;
+    background-color: var(--color-bg-alt);
+    border: 2px dashed var(--color-border);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.photo-icon {
+    color: var(--color-text-secondary);
+}
+
+.photo-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.camera-btn,
+.upload-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.camera-btn {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.camera-btn:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.upload-btn {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+.upload-btn:hover {
+    background-color: var(--color-border);
+}
+
+.photo-preview {
+    position: relative;
+    aspect-ratio: 3/4;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.remove-photo-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.remove-photo-btn:hover {
+    background-color: var(--color-error);
+}
+
+.remove-photo-btn .button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.camera-btn .button-icon,
+.upload-btn .button-icon {
+    display: flex;
+    align-items: center;
+}
+
+.camera-btn .button-text,
+.upload-btn .button-text {
+    margin-left: 6px;
+}
+
+.camera-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.camera-modal-content {
+    background-color: var(--color-bg-alt);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    overflow: hidden;
+}
+
+.camera-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.camera-header h4 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-text);
+}
+
+.close-camera-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-camera-btn:hover {
+    color: var(--color-text);
+}
+
+.camera-preview {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background-color: black;
+    position: relative;
+    overflow: hidden;
+}
+
+.camera-preview video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--color-border);
+}
+
+.cancel-camera-btn {
+    flex: 1;
+    padding: 12px;
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cancel-camera-btn:hover {
+    background-color: var(--color-border);
+}
+
+.capture-btn {
+    flex: 2;
+    padding: 12px;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.capture-btn:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.capture-btn .button-icon {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .camera-modal-content {
+        width: 95%;
+    }
+
+    .camera-actions {
+        flex-direction: column;
+    }
+
+    .cancel-camera-btn,
+    .capture-btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 1024px) {
+    .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .body-photo-capture {
+        padding: 16px;
+    }
+
+    .body-photo-title {
+        font-size: 18px;
+    }
+
+    .body-photo-description {
+        font-size: 13px;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .camera-btn,
+    .upload-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .body-photo-capture {
+        padding: 12px;
+    }
+
+    .body-photo-title {
+        font-size: 16px;
+    }
+
+    .photo-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .photo-placeholder {
+        aspect-ratio: 4/3;
+    }
+
+    .photo-preview {
+        aspect-ratio: 4/3;
+    }
+
+    .photo-actions {
+        flex-direction: row;
+    }
+
+    .camera-btn,
+    .upload-btn {
+        flex: 1;
+    }
+}

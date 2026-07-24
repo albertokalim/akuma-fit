@@ -6,7 +6,7 @@ function Button({ text, onClick, className, icon, disabled }) {
         disabled={disabled}
     >
         {icon && <span className="button-icon">{icon}</span>}
-        {text}
+        {text && <span className="button-text">{text}</span>}
     </button>;
 }
 

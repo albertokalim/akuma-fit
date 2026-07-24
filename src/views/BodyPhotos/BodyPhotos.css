@@ -1,0 +1,140 @@
+.body-photos {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 32px;
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-family: var(--font-main);
+}
+
+.body-photos-header {
+    margin-bottom: 32px;
+}
+
+.body-photos-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 12px 0;
+}
+
+.body-photos-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.body-photos-actions {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+.body-photos-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.back-button {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.back-button:hover {
+    background-color: var(--color-border);
+}
+
+.back-button:active {
+    transform: scale(0.98);
+}
+
+.save-photos-button {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.save-photos-button:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.save-photos-button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.save-photos-button:disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+.success-message {
+    width: 100%;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 6px;
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+    .body-photos {
+        max-width: 100%;
+        margin: 20px;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .body-photos {
+        margin: 20px 16px;
+        padding: 20px;
+    }
+
+    .body-photos-title {
+        font-size: 24px;
+    }
+
+    .body-photos-description {
+        font-size: 13px;
+    }
+
+    .body-photos-buttons {
+        flex-direction: column;
+    }
+
+    .back-button,
+    .save-photos-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .body-photos {
+        margin: 16px 12px;
+        padding: 16px;
+    }
+
+    .body-photos-title {
+        font-size: 20px;
+    }
+}

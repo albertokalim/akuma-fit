@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
 import Button from '../../components/primitives/Button/Button.jsx';
+import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
 import { supabase } from '../../supabaseClient.js';
 import WeightLogForm from '../WeightLogForm/WeightLogForm.jsx';
+import BodyPhotos from '../BodyPhotos/BodyPhotos.jsx';
 import './Progress.css';
 
 const MEASUREMENT_OPTIONS = [
@@ -18,6 +20,7 @@ function Progress() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false);
+    const [showBodyPhotos, setShowBodyPhotos] = useState(false);
 
     const loadMeasurements = async () => {
         try {
@@ -104,6 +107,10 @@ function Progress() {
             color: opt.color,
         }));
 
+    if (showBodyPhotos) {
+        return <BodyPhotos onBack={() => setShowBodyPhotos(false)} />;
+    }
+
     if (showForm) {
         return <WeightLogForm onComplete={handleFormComplete} onCancel={() => setShowForm(false)} />;
     }
@@ -113,7 +120,7 @@ function Progress() {
             <h1 className="progress-title">Progreso</h1>
             <p className="progress-description">Visualiza la evolución de tus medidas a lo largo del tiempo.</p>
 
-            {loading && <div className="progress-loading">Cargando mediciones...</div>}
+            {loading && <Spinner text="Cargando mediciones..." />}
             {error && <div className="error-message">{error}</div>}
 
             {!loading && !error && measurements.length === 0 && (
@@ -162,7 +169,12 @@ function Progress() {
             <Button
                 text="Registrar Peso"
                 onClick={() => setShowForm(true)}
-                className="progress-fab"
+                className="progress-fab progress-fab-weight"
+            />
+            <Button
+                text="Fotos Corporales"
+                onClick={() => setShowBodyPhotos(true)}
+                className="progress-fab progress-fab-photos"
             />
         </div>
     );

@@ -1,19 +1,20 @@
-import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import Button from '../../primitives/Button/Button.jsx';
-import Label from '../../primitives/Label/Label.jsx';
+import { FiMenu, FiX } from 'react-icons/fi';
 import './Header.css';
 
-function Header({ userName, userAvatar, onLogout }) {
+function Header({ onLogout, onMenuToggle, menuOpen }) {
     return (
         <header className="header">
             <div className="header-left">
-                <h1 className="header-title">AKUMA FIT</h1>
+                <button
+                    className="menu-toggle-btn"
+                    onClick={onMenuToggle}
+                    aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+                >
+                    {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+                </button>
             </div>
             <div className="header-right">
-                <div className="user-section">
-                    {userAvatar && <Avatar src={userAvatar} alt={userName} size="small" />}
-                    <Label text={userName} className="user-name" />
-                </div>
                 <Button text="Logout" onClick={onLogout} className="logout-button" />
             </div>
         </header>

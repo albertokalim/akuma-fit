@@ -6,6 +6,7 @@ import CheckboxGroupField from "../../components/complex/CheckboxGroupField/Chec
 import ScaleField from "../../components/complex/ScaleField/ScaleField.jsx";
 import BooleanCheckboxField from "../../components/complex/BooleanCheckboxField/BooleanCheckboxField.jsx";
 import Button from "../../components/primitives/Button/Button.jsx";
+import BodyPhotoCapture from "../../components/complex/BodyPhotoCapture/BodyPhotoCapture.jsx";
 import {supabase} from "../../supabaseClient.js";
 import FORM_SECTIONS from "../../config/initialAssessmentFields.json";
 import useFormSubmission from "../../hooks/useFormSubmission.js";
@@ -29,6 +30,7 @@ function InitialAssessment({ onComplete }) {
     const [initialAssessment, setInitialAssessment] = useState({});
     const [measurement, setMeasurement] = useState({});
     const [userInfo, setUserInfo] = useState({});
+    const [showPhotoCapture, setShowPhotoCapture] = useState(false);
     const formatResults = (results) => JSON.stringify(results, null, 2);
 
     const {
@@ -41,7 +43,7 @@ function InitialAssessment({ onComplete }) {
         handleSubmit,
     } = useFormSubmission({
         fieldLabelsById: FIELD_LABELS_BY_ID,
-        onSuccess: onComplete ? () => setTimeout(() => onComplete(), 1200) : undefined,
+        onSuccess: () => setShowPhotoCapture(true),
     });
 
     // Valores y setters de cada estado, indexados por el nombre de "group" usado en FORM_SECTIONS.
@@ -140,6 +142,12 @@ function InitialAssessment({ onComplete }) {
 
     const onSubmitClick = () => handleSubmit(onSubmit);
 
+    const handleSkipPhotos = () => {
+        if (onComplete) {
+            setTimeout(() => onComplete(), 0);
+        }
+    };
+
     const renderField = (field) => {
         const value = groupValues[field.group][field.id];
         const onChange = (event) => handleFieldChange(field.group, event);
@@ -226,6 +234,29 @@ function InitialAssessment({ onComplete }) {
                 );
         }
     };
+
+    if (showPhotoCapture) {
+        return (
+            <div className="initial-assessment">
+                <h1 className="initial-assessment-title">¡Valoración completada!</h1>
+                <p className="initial-assessment-description">
+                    Tu valoración inicial se ha guardado correctamente. ¿Te gustaría tomar fotos corporales ahora para tener un registro visual de tu punto de partida?
+                </p>
+                
+                <BodyPhotoCapture />
+                
+                <div className="initial-assessment-submit-row">
+                    <div className="photo-capture-actions">
+                        <Button
+                            text="Saltar por ahora"
+                            onClick={handleSkipPhotos}
+                            className="skip-photos-button"
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="initial-assessment">

@@ -20,14 +20,10 @@ function ScaleField({ label, id, min = 1, max = 10, value, onChange, leftLabel =
                 <Label text={label} htmlFor={id} />
                 {required && <span className="required-asterisk">*</span>}
             </div>
-            <div className="scale-numbers">
-                {options.map((option) => (
-                    <span key={option.value} className="scale-number">{option.label}</span>
-                ))}
-            </div>
             <div className="scale-options">
                 {options.map((option) => (
                     <div key={option.value} className="scale-option">
+                        <span className="scale-number">{option.label}</span>
                         <input
                             type="radio"
                             id={`${id}-${option.value}`}
