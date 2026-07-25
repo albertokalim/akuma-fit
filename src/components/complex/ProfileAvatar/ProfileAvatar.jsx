@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import { FiCamera } from 'react-icons/fi';
 import { supabase } from '../../../supabaseClient.js';
+import { resizeImage } from '../../../utils/image.js';
 import './ProfileAvatar.css';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -36,16 +37,60 @@ function ProfileAvatar({ userId, size = 'large' }) {
 
         setUploading(true);
 
-        const fileExt = file.name.split('.').pop();
-        const filePath = `${userId}/avatar.${fileExt}`;
+        let fileToUpload;
+        try {
+            fileToUpload = await resizeImage(file, 200);
+        } catch {
+            setError('Error al procesar la imagen');
+            setUploading(false);
+            e.target.value = '';
+            return;
+        }
 
-        const { error: uploadError } = await supabase.storage
-            .from('avatars')
-            .upload(filePath, file, { upsert: true });
+        const newAvatarUid = crypto.randomUUID();
+        const fileExt = fileToUpload.name.split('.').pop();
 
-        if (!uploadError) {
+        try {
+            const { data: existing } = await supabase
+                .from('avatar')
+                .select('avatar_uid')
+                .eq('user_uid', userId)
+                .maybeSingle();
+
+            if (existing?.avatar_uid) {
+                const { data: files } = await supabase.storage
+                    .from('avatars')
+                    .list(userId);
+
+                if (files) {
+                    const oldFile = files.find(f => f.name.startsWith(existing.avatar_uid));
+                    if (oldFile) {
+                        await supabase.storage
+                            .from('avatars')
+                            .remove([`${userId}/${oldFile.name}`]);
+                    }
+                }
+
+                await supabase
+                    .from('avatar')
+                    .delete()
+                    .eq('user_uid', userId);
+            }
+
+            const { error: insertError } = await supabase
+                .from('avatar')
+                .insert({ user_uid: userId, avatar_uid: newAvatarUid });
+
+            if (insertError) throw insertError;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(`${userId}/${newAvatarUid}.${fileExt}`, fileToUpload);
+
+            if (uploadError) throw uploadError;
+
             setRefreshKey(prev => prev + 1);
-        } else {
+        } catch {
             setError('Error al subir la imagen');
         }
 

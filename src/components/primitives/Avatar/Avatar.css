@@ -1,10 +1,6 @@
 .avatar {
     border-radius: 50%;
-}
-
-img.avatar {
     object-fit: cover;
-    display: block;
 }
 
 .avatar-small {
@@ -20,17 +16,4 @@ img.avatar {
 .avatar-large {
     width: 80px;
     height: 80px;
-}
-
-.avatar-placeholder {
-    background-color: var(--color-surface-alt);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-secondary, #666);
-}
-
-.avatar-placeholder svg {
-    display: block;
-}
 }

@@ -3,7 +3,7 @@ import { FiUser } from 'react-icons/fi';
 import { supabase } from '../../../supabaseClient';
 import './Avatar.css';
 
-function Avatar({ src, userId, alt, size = 'medium' }) {
+function Avatar({ src, userId, avatarUid: avatarUidProp, alt, size = 'medium' }) {
     const [avatarUrl, setAvatarUrl] = useState(src || null);
 
     useEffect(() => {
@@ -16,21 +16,40 @@ function Avatar({ src, userId, alt, size = 'medium' }) {
         if (!userId) return;
 
         const fetchAvatar = async () => {
+            let avatarUid = avatarUidProp;
+
+            if (!avatarUid) {
+                const { data } = await supabase
+                    .from('avatar')
+                    .select('avatar_uid')
+                    .eq('user_uid', userId)
+                    .maybeSingle();
+
+                avatarUid = data?.avatar_uid;
+            }
+
+            if (!avatarUid) return;
+
             const { data } = await supabase.storage
                 .from('avatars')
                 .list(userId);
 
-            if (data && data.length > 0) {
-                const file = data[0];
-                const { data: urlData } = supabase.storage
-                    .from('avatars')
-                    .getPublicUrl(`${userId}/${file.name}`);
-                setAvatarUrl(urlData.publicUrl);
+            if (data) {
+                const file = data.find(f => f.name.startsWith(avatarUid));
+                if (file) {
+                    const { data: urlData, error } = await supabase.storage
+                        .from('avatars')
+                        .createSignedUrl(`${userId}/${file.name}`, 3600);
+                    
+                    if (!error && urlData?.signedUrl) {
+                        setAvatarUrl(urlData.signedUrl);
+                    }
+                }
             }
         };
 
         fetchAvatar();
-    }, [src, userId]);
+    }, [src, userId, avatarUidProp]);
 
     if (avatarUrl) {
         return (
