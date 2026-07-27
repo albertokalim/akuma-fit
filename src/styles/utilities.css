@@ -1,0 +1,290 @@
+/* Tarjeta de formulario reutilizable */
+.form-card {
+    max-width: 720px;
+    margin: var(--space-4xl) auto;
+    padding: var(--space-3xl);
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    font-family: var(--font-main);
+}
+
+.form-card-title {
+    font-size: var(--font-4xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+}
+
+.form-card-description {
+    font-size: var(--font-md);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 1024px) {
+    .form-card {
+        max-width: 100%;
+        margin: var(--space-xl);
+        padding: var(--space-2xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .form-card {
+        margin: var(--space-lg);
+        padding: var(--space-xl);
+    }
+
+    .form-card-title {
+        font-size: var(--font-3xl);
+    }
+
+    .form-card-description {
+        font-size: var(--font-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .form-card {
+        margin: var(--space-md);
+        padding: var(--space-lg);
+    }
+
+    .form-card-title {
+        font-size: var(--font-2xl);
+    }
+}
+
+/* Fila de submit centrada */
+.form-submit-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+}
+
+.form-buttons {
+    display: flex;
+    gap: var(--space-md);
+}
+
+@media (max-width: 768px) {
+    .form-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .form-buttons button,
+    .form-buttons .btn-primary,
+    .form-buttons .btn-secondary {
+        width: 100%;
+    }
+}
+
+/* Mensajes de estado */
+.error-message {
+    width: 100%;
+    text-align: center;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
+    font-size: var(--font-md);
+}
+
+.success-message {
+    width: 100%;
+    text-align: center;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+    font-size: var(--font-md);
+}
+
+/* Auth container */
+.auth-page {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl);
+}
+
+.auth-container {
+    max-width: 400px;
+    width: 100%;
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-alt);
+    font-family: var(--font-main);
+    color: var(--color-text);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.divider {
+    text-align: center;
+    margin: var(--space-xl) 0;
+    border-bottom: 1px solid var(--color-border);
+    line-height: 0.1em;
+}
+
+.google-container {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.buttons-container {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+}
+
+.register-link,
+.login-link {
+    text-align: center;
+    margin-top: var(--space-xl);
+    font-size: var(--font-md);
+    color: var(--color-text-secondary);
+}
+
+@media (max-width: 768px) {
+    .auth-page {
+        padding: var(--space-lg);
+    }
+
+    .auth-container {
+        max-width: 100%;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+    }
+
+    .google-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-page {
+        padding: var(--space-md);
+    }
+}
+
+/* Register - success state */
+.success-content {
+    text-align: center;
+}
+
+.success-text {
+    color: var(--color-text-secondary);
+    font-size: var(--font-lg);
+}
+
+/* Input de texto reutilizable */
+.text-input {
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    outline: none;
+    font-family: var(--font-main);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+
+.text-input:focus {
+    border-color: var(--color-primary);
+}
+
+.input-error {
+    border: 2px solid var(--color-error) !important;
+}
+
+.has-error {
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 0 1px var(--color-error);
+}
+
+/* Link reutilizable */
+.link {
+    color: var(--color-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: var(--font-md);
+    transition: color 0.2s;
+}
+
+.link:hover {
+    color: var(--color-primary-hover);
+}
+
+/* Google button */
+.google-button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-main);
+    font-size: var(--font-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.google-button:hover {
+    background-color: var(--color-surface-alt);
+    border-color: var(--color-primary-border);
+}
+
+/* Login button */
+.login-button {
+    padding: var(--space-md) var(--space-2xl);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-family: var(--font-main);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.login-button:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.login-button:active {
+    transform: scale(0.98);
+}
+
+/* Required asterisk */
+.required-asterisk {
+    color: var(--color-error);
+    font-weight: bold;
+    font-size: var(--font-lg);
+}

@@ -1,0 +1,186 @@
+/* Boton primario por defecto (estilo global) */
+button {
+    font-family: var(--font-main);
+    padding: var(--space-md) var(--space-xl);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+button:disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+/* Boton primario explicito */
+.btn-primary {
+    padding: var(--space-md) var(--space-xl);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+/* Boton secundario */
+.btn-secondary {
+    padding: var(--space-md) var(--space-xl);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-border);
+}
+
+.btn-secondary:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.btn-secondary:disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+/* Boton outline / ghost */
+.btn-outline {
+    padding: var(--space-sm) var(--space-lg);
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-md);
+    background-color: transparent;
+    color: var(--color-primary);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-outline:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+/* Boton grande */
+.btn-lg {
+    padding: var(--space-lg) var(--space-3xl);
+    font-size: var(--font-lg);
+}
+
+/* Boton ancho completo */
+.btn-block {
+    width: 100%;
+}
+
+/* Boton icono (sin padding extra) */
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: var(--color-surface);
+}
+
+/* FAB (Floating Action Button) */
+.btn-fab {
+    position: fixed;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    z-index: 100;
+}
+
+.btn-fab:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.btn-fab:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+    .btn-fab {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-fab {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Responsive - movil */
+@media (max-width: 768px) {
+    .btn-mobile-stack {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-mobile-stack > button,
+    .btn-mobile-stack > .btn-primary,
+    .btn-mobile-stack > .btn-secondary {
+        width: 100%;
+    }
+}

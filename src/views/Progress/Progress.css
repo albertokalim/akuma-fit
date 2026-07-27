@@ -1,70 +1,115 @@
 .progress {
     max-width: 1000px;
-    margin: 40px auto;
-    padding: 32px;
+    margin: var(--space-4xl) auto;
+    padding: var(--space-3xl);
     background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     font-family: var(--font-main);
 }
 
 .progress-title {
-    font-size: 28px;
+    font-size: var(--font-4xl);
     font-weight: 700;
     color: var(--color-text);
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .progress-description {
-    font-size: 14px;
+    font-size: var(--font-md);
     line-height: 1.6;
     color: var(--color-text-secondary);
-    margin-bottom: 32px;
+    margin-bottom: var(--space-3xl);
 }
 
 .progress-loading {
     text-align: center;
-    padding: 40px;
+    padding: var(--space-4xl);
     color: var(--color-text-muted);
-    font-size: 16px;
+    font-size: var(--font-lg);
 }
 
 .progress-empty {
     text-align: center;
-    padding: 40px;
+    padding: var(--space-4xl);
     color: var(--color-text-secondary);
-    font-size: 16px;
+    font-size: var(--font-lg);
     line-height: 1.6;
 }
 
 .progress-selector {
-    margin-bottom: 24px;
-    padding: 20px;
+    margin-bottom: var(--space-2xl);
+    padding: var(--space-xl);
     background-color: var(--color-surface);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
 }
 
 .progress-selector-label {
     display: block;
-    font-size: 14px;
+    font-size: var(--font-md);
     font-weight: 600;
     color: var(--color-text);
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .progress-options {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: var(--space-lg);
+}
+
+.progress-date-filters {
+    display: flex;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+}
+
+.progress-date-filter {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex: 1;
+    min-width: 140px;
+}
+
+.progress-date-filter label {
+    font-size: var(--font-md);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.progress-date-filter input[type="date"] {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    font-size: var(--font-md);
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    min-width: 0;
+}
+
+.progress-date-filter input[type="date"]:hover {
+    border-color: var(--color-primary);
+}
+
+.progress-date-filter input[type="date"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
 }
 
 .progress-option {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--font-md);
     color: var(--color-text-secondary);
     user-select: none;
 }
@@ -84,36 +129,29 @@
 
 .progress-no-selection {
     text-align: center;
-    padding: 40px;
+    padding: var(--space-4xl);
     color: var(--color-text-muted);
-    font-size: 14px;
+    font-size: var(--font-md);
     background-color: var(--color-surface);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
-}
-
-.error-message {
-    width: 100%;
-    text-align: center;
-    padding: 10px 16px;
-    border-radius: 6px;
-    background-color: var(--color-error-bg);
-    color: var(--color-error);
-    font-size: 14px;
 }
 
 .progress-fab {
     position: fixed;
-    right: 32px;
-    padding: 16px 24px;
+    right: var(--space-3xl);
+    width: 56px;
+    height: 56px;
+    padding: 0;
     border: none;
-    border-radius: 50px;
+    border-radius: 50%;
     background-color: var(--color-primary);
     color: var(--color-bg);
-    font-size: 16px;
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
     transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
     z-index: 100;
 }
@@ -123,76 +161,90 @@
 }
 
 .progress-fab-photos {
-    bottom: 32px;
+    bottom: var(--space-3xl);
 }
 
 .progress-fab:hover {
     background-color: var(--color-primary-hover);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-lg);
     transform: translateY(-2px);
 }
 
 .progress-fab:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 1024px) {
-    .progress {
-        max-width: 100%;
-        margin: 20px;
-        padding: 24px;
-    }
+    box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 768px) {
     .progress {
-        margin: 16px;
-        padding: 20px;
+        max-width: 100%;
+        margin: var(--space-lg);
+        padding: var(--space-xl);
+        border-radius: var(--radius-lg);
     }
 
     .progress-title {
-        font-size: 24px;
+        font-size: var(--font-3xl);
+        margin-bottom: var(--space-sm);
     }
 
     .progress-description {
-        font-size: 13px;
+        font-size: var(--font-sm);
+        margin-bottom: var(--space-xl);
+    }
+
+    .progress-selector {
+        margin-bottom: var(--space-lg);
+        padding: var(--space-lg);
+    }
+
+    .progress-selector-label {
+        font-size: var(--font-sm);
+        margin-bottom: var(--space-md);
+    }
+
+    .progress-date-filters {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+
+    .progress-date-filter {
+        width: 100%;
+    }
+
+    .progress-date-filter input[type="date"] {
+        padding: var(--space-md) var(--space-md);
+        font-size: var(--font-md);
     }
 
     .progress-options {
-        flex-direction: column;
-        gap: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .progress-option {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: var(--font-sm);
+        background-color: var(--color-surface-alt);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border);
+    }
+
+    .progress-option input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+    }
+
+    .progress-option-color {
+        width: 10px;
+        height: 10px;
     }
 
     .progress-fab {
-        right: 20px;
-        padding: 14px 20px;
-        font-size: 14px;
-    }
-
-    .progress-fab-weight {
-        bottom: 90px;
-    }
-
-    .progress-fab-photos {
-        bottom: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .progress {
-        margin: 12px;
-        padding: 16px;
-    }
-
-    .progress-title {
-        font-size: 20px;
-    }
-
-    .progress-fab {
-        right: 16px;
-        padding: 12px 18px;
-        font-size: 13px;
+        right: var(--space-lg);
+        width: 48px;
+        height: 48px;
     }
 
     .progress-fab-weight {
@@ -200,6 +252,59 @@
     }
 
     .progress-fab-photos {
-        bottom: 16px;
+        bottom: var(--space-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .progress {
+        margin: var(--space-md);
+        padding: var(--space-lg);
+    }
+
+    .progress-title {
+        font-size: var(--font-2xl);
+    }
+
+    .progress-description {
+        font-size: var(--font-sm);
+        margin-bottom: var(--space-lg);
+    }
+
+    .progress-selector {
+        padding: var(--space-md);
+        margin-bottom: var(--space-md);
+    }
+
+    .progress-selector-label {
+        font-size: var(--font-sm);
+        margin-bottom: var(--space-sm);
+    }
+
+    .progress-date-filter label {
+        font-size: var(--font-sm);
+    }
+
+    .progress-date-filter input[type="date"] {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--font-sm);
+    }
+
+    .progress-option {
+        font-size: var(--font-sm);
+    }
+
+    .progress-fab {
+        right: var(--space-md);
+        width: 44px;
+        height: 44px;
+    }
+
+    .progress-fab-weight {
+        bottom: 70px;
+    }
+
+    .progress-fab-photos {
+        bottom: var(--space-md);
     }
 }

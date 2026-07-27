@@ -1,14 +1,27 @@
+import { useCallback } from 'react';
 import Label from '../../primitives/Label/Label.jsx';
 import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import ICON_MAP from '../../../config/iconMap.jsx';
-import { FiUser } from 'react-icons/fi';
+import { FiUser, FiX } from 'react-icons/fi';
 import './Sidebar.css';
 
 function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, userId, onProfileClick }) {
+    const handleItemClick = useCallback((itemId) => {
+        onSelect(itemId);
+        if (onClose) onClose();
+    }, [onSelect, onClose]);
+
+    const handleBackdropClick = useCallback(() => {
+        if (onClose) onClose();
+    }, [onClose]);
+
     return (
         <>
-            {isOpen && <div className="sidebar-backdrop" onClick={onClose} />}
+            {isOpen && <div className="sidebar-backdrop" onClick={handleBackdropClick} />}
             <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+                <button className="sidebar-close-btn" onClick={onClose} aria-label="Cerrar menú">
+                    <FiX size={24} />
+                </button>
                 <nav className="sidebar-nav">
                     <ul className="sidebar-items">
                         {items.map((item) => {
@@ -19,10 +32,7 @@ function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, userI
                                 <li key={item.id}>
                                     <button
                                         className={isActive ? 'sidebar-item active' : 'sidebar-item'}
-                                        onClick={() => {
-                                            onSelect(item.id);
-                                            if (onClose) onClose();
-                                        }}
+                                        onClick={() => handleItemClick(item.id)}
                                     >
                                         {Icon && <span className="sidebar-icon"><Icon /></span>}
                                         <Label text={item.label} className="sidebar-label" />

@@ -6,7 +6,9 @@ import Home from "./views/Home/Home.jsx";
 import InitialAssessment from "./views/InitialAssessment/InitialAssessment.jsx";
 import TestComponent from "./TestComponent.jsx";
 import Spinner from "./components/primitives/Spinner/Spinner.jsx";
-import { supabase } from './supabaseClient';
+import { authService } from './services/authService.js';
+import { profileService } from './services/profileService.js';
+import { assessmentService } from './services/assessmentService.js';
 
 const ENABLE_TEST_MODE = false;
 
@@ -21,38 +23,27 @@ export default function App() {
         return <TestComponent />;
     }
 
-    // Comprueba si el usuario ya tiene un profile y una valoración inicial guardada
     const getProfileAndAssessmentStatus = async () => {
-        const { data: authData, error: authError } = await supabase.auth.getUser();
+        try {
+            const profile = await profileService.getWithRole();
 
-        if (authError || !authData?.user) {
+            if (!profile) {
+                return { completed: false, role: 'client' };
+            }
+
+            const completed = await assessmentService.exists(profile.id);
+
+            return {
+                completed,
+                role: profile.role || 'client',
+            };
+        } catch {
             return { completed: false, role: 'client' };
         }
-
-        const { data: profile, error: profileError } = await supabase
-            .from('profile')
-            .select('id, role')
-            .eq('user', authData.user.id)
-            .maybeSingle();
-
-        if (profileError || !profile) {
-            return { completed: false, role: 'client' };
-        }
-
-        const { data: assessment, error: assessmentError } = await supabase
-            .from('initial_assessment')
-            .select('id')
-            .eq('profile_id', profile.id)
-            .maybeSingle();
-
-        return {
-            completed: !assessmentError && !!assessment,
-            role: profile.role || 'client',
-        };
     };
 
     const handleLoginSuccess = async (email) => {
-        const { data: { user: authUser } } = await supabase.auth.getUser();
+        const authUser = await authService.getUser();
         setUser(email);
         setUserId(authUser.id);
         setCheckingAssessment(true);
@@ -70,7 +61,7 @@ export default function App() {
 
     const handleLogout = async (e) => {
         e?.preventDefault();
-        await supabase.auth.signOut();
+        await authService.signOut();
         setUser(null);
         setUserId(null);
         setCurrentPage('login');

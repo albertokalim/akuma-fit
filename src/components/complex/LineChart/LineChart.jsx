@@ -17,8 +17,8 @@ function LineChart({ title, data, lines = [], xKey = 'date' }) {
         <div className="line-chart">
             <h3 className="chart-title">{title}</h3>
             <div className="chart-container">
-                <ResponsiveContainer width="100%" height={300}>
-                    <RechartsLineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <RechartsLineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
                         <XAxis 
                             dataKey={xKey} 

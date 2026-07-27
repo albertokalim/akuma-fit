@@ -1,10 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
 import Button from '../../components/primitives/Button/Button.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
-import { supabase } from '../../supabaseClient.js';
 import WeightLogForm from '../WeightLogForm/WeightLogForm.jsx';
 import BodyPhotos from '../BodyPhotos/BodyPhotos.jsx';
+import { useResource } from '../../hooks/useResource.js';
+import { useAutoLoad } from '../../hooks/useAutoLoad.js';
+import { measurementService } from '../../services/measurementService.js';
+import { buildChartData, buildActiveLines } from '../../utils/chartData.js';
+import { FiActivity, FiCamera } from 'react-icons/fi';
 import './Progress.css';
 
 const MEASUREMENT_OPTIONS = [
@@ -14,63 +18,46 @@ const MEASUREMENT_OPTIONS = [
     { key: 'hip', label: 'Cadera (cm)', color: '#60a5fa' },
 ];
 
+const getCurrentWeekDates = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    
+    const monday = new Date(now);
+    const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    monday.setDate(now.getDate() - daysToMonday);
+    
+    const sunday = new Date(now);
+    const daysToSunday = dayOfWeek === 0 ? 0 : 7 - dayOfWeek;
+    sunday.setDate(now.getDate() + daysToSunday);
+    
+    const formatDateForInput = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+    
+    return {
+        start: formatDateForInput(monday),
+        end: formatDateForInput(sunday)
+    };
+};
+
+const initialDates = getCurrentWeekDates();
+
 function Progress() {
-    const [measurements, setMeasurements] = useState([]);
+    const { items: measurements, loading, error, load } = useResource(measurementService);
+    useAutoLoad(load);
+    
     const [selectedMeasures, setSelectedMeasures] = useState(['weight']);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [startDate, setStartDate] = useState(initialDates.start);
+    const [endDate, setEndDate] = useState(initialDates.end);
     const [showForm, setShowForm] = useState(false);
     const [showBodyPhotos, setShowBodyPhotos] = useState(false);
 
-    const loadMeasurements = async () => {
-        try {
-            const { data: authData, error: authError } = await supabase.auth.getUser();
-
-            if (authError || !authData?.user) {
-                throw new Error('Debes iniciar sesión para ver tu progreso.');
-            }
-
-            const { data: profile, error: profileError } = await supabase
-                .from('profile')
-                .select('id')
-                .eq('user', authData.user.id)
-                .maybeSingle();
-
-            if (profileError) {
-                throw new Error(`No se pudo comprobar el perfil: ${profileError.message}`);
-            }
-
-            if (!profile) {
-                setMeasurements([]);
-                setLoading(false);
-                return;
-            }
-
-            const { data: measurementsData, error: fetchError } = await supabase
-                .from('measurement')
-                .select('*')
-                .eq('profile_id', profile.id)
-                .order('created_at', { ascending: true });
-
-            if (fetchError) {
-                throw new Error(`No se pudieron cargar las mediciones: ${fetchError.message}`);
-            }
-
-            setMeasurements(measurementsData || []);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        loadMeasurements();
-    }, []);
-
     const handleFormComplete = () => {
         setShowForm(false);
-        loadMeasurements();
+        load();
     };
 
     const toggleMeasure = (key) => {
@@ -81,31 +68,8 @@ function Progress() {
         );
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: '2-digit',
-        });
-    };
-
-    const chartData = measurements.map((m) => {
-        const point = { date: formatDate(m.created_at) };
-        MEASUREMENT_OPTIONS.forEach((opt) => {
-            if (m[opt.key] !== null && m[opt.key] !== undefined) {
-                point[opt.key] = Number(m[opt.key]);
-            }
-        });
-        return point;
-    });
-
-    const activeLines = MEASUREMENT_OPTIONS
-        .filter((opt) => selectedMeasures.includes(opt.key))
-        .map((opt) => ({
-            dataKey: opt.key,
-            name: opt.label,
-            color: opt.color,
-        }));
+    const chartData = buildChartData(measurements, MEASUREMENT_OPTIONS, startDate, endDate);
+    const activeLines = buildActiveLines(MEASUREMENT_OPTIONS, selectedMeasures);
 
     if (showBodyPhotos) {
         return <BodyPhotos onBack={() => setShowBodyPhotos(false)} />;
@@ -132,6 +96,30 @@ function Progress() {
 
             {!loading && !error && measurements.length > 0 && (
                 <>
+                    <div className="progress-selector">
+                        <span className="progress-selector-label">Filtrar por fechas:</span>
+                        <div className="progress-date-filters">
+                            <div className="progress-date-filter">
+                                <label htmlFor="startDate">Desde:</label>
+                                <input
+                                    type="date"
+                                    id="startDate"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                />
+                            </div>
+                            <div className="progress-date-filter">
+                                <label htmlFor="endDate">Hasta:</label>
+                                <input
+                                    type="date"
+                                    id="endDate"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="progress-selector">
                         <span className="progress-selector-label">Selecciona las medidas a mostrar:</span>
                         <div className="progress-options">
@@ -167,12 +155,12 @@ function Progress() {
             )}
 
             <Button
-                text="Registrar Peso"
+                icon={<FiActivity size={20} />}
                 onClick={() => setShowForm(true)}
                 className="progress-fab progress-fab-weight"
             />
             <Button
-                text="Fotos Corporales"
+                icon={<FiCamera size={20} />}
                 onClick={() => setShowBodyPhotos(true)}
                 className="progress-fab progress-fab-photos"
             />

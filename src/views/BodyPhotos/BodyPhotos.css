@@ -1,51 +1,51 @@
 .body-photos {
     max-width: 1200px;
-    margin: 40px auto;
-    padding: 32px;
+    margin: var(--space-4xl) auto;
+    padding: var(--space-3xl);
     background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     font-family: var(--font-main);
 }
 
 .body-photos-header {
-    margin-bottom: 32px;
+    margin-bottom: var(--space-3xl);
 }
 
 .body-photos-title {
-    font-size: 28px;
+    font-size: var(--font-4xl);
     font-weight: 700;
     color: var(--color-text);
-    margin: 0 0 12px 0;
+    margin: 0 0 var(--space-md) 0;
 }
 
 .body-photos-description {
-    font-size: 14px;
+    font-size: var(--font-md);
     line-height: 1.6;
     color: var(--color-text-secondary);
     margin: 0;
 }
 
 .body-photos-actions {
-    margin-top: 24px;
-    padding-top: 24px;
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
     border-top: 1px solid var(--color-border);
 }
 
 .body-photos-buttons {
     display: flex;
-    gap: 12px;
+    gap: var(--space-md);
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .back-button {
-    padding: 12px 32px;
+    padding: var(--space-lg) var(--space-3xl);
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background-color: var(--color-surface-alt);
     color: var(--color-text);
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
@@ -60,12 +60,12 @@
 }
 
 .save-photos-button {
-    padding: 12px 32px;
+    padding: var(--space-lg) var(--space-3xl);
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background-color: var(--color-primary);
     color: var(--color-bg);
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
@@ -85,37 +85,26 @@
     cursor: not-allowed;
 }
 
-.success-message {
-    width: 100%;
-    text-align: center;
-    padding: 10px 16px;
-    border-radius: 6px;
-    background-color: var(--color-success-bg);
-    color: var(--color-success);
-    font-size: 14px;
-    margin-bottom: 16px;
-}
-
 @media (max-width: 1024px) {
     .body-photos {
         max-width: 100%;
-        margin: 20px;
-        padding: 24px;
+        margin: var(--space-xl);
+        padding: var(--space-2xl);
     }
 }
 
 @media (max-width: 768px) {
     .body-photos {
-        margin: 20px 16px;
-        padding: 20px;
+        margin: var(--space-xl) var(--space-lg);
+        padding: var(--space-xl);
     }
 
     .body-photos-title {
-        font-size: 24px;
+        font-size: var(--font-3xl);
     }
 
     .body-photos-description {
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
 
     .body-photos-buttons {
@@ -130,11 +119,11 @@
 
 @media (max-width: 480px) {
     .body-photos {
-        margin: 16px 12px;
-        padding: 16px;
+        margin: var(--space-lg) var(--space-md);
+        padding: var(--space-lg);
     }
 
     .body-photos-title {
-        font-size: 20px;
+        font-size: var(--font-2xl);
     }
 }

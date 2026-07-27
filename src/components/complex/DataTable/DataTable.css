@@ -1,8 +1,8 @@
 .data-table-container {
     width: 100%;
     overflow-x: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
 }
@@ -10,7 +10,7 @@
 .data-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: var(--font-md);
 }
 
 .data-table thead {
@@ -18,7 +18,7 @@
 }
 
 .data-table th {
-    padding: 12px 16px;
+    padding: var(--space-md) var(--space-lg);
     text-align: left;
     font-weight: 600;
     color: var(--color-text);
@@ -27,7 +27,7 @@
 }
 
 .data-table td {
-    padding: 12px 16px;
+    padding: var(--space-md) var(--space-lg);
     color: var(--color-text-secondary);
     border-bottom: 1px solid var(--color-border);
 }
@@ -41,29 +41,29 @@
 }
 
 .data-table-empty {
-    padding: 40px;
+    padding: var(--space-4xl);
     text-align: center;
     color: var(--color-text-muted);
-    font-size: 16px;
+    font-size: var(--font-lg);
     background-color: var(--color-surface);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
     border: 1px solid var(--color-border);
 }
 
 @media (max-width: 768px) {
     .data-table th,
     .data-table td {
-        padding: 10px 12px;
-        font-size: 13px;
+        padding: var(--space-md) var(--space-md);
+        font-size: var(--font-sm);
     }
 }
 
 @media (max-width: 480px) {
     .data-table th,
     .data-table td {
-        padding: 8px 10px;
-        font-size: 12px;
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--font-sm);
     }
 
     .data-table th {

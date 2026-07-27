@@ -1,75 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DataTable from '../../components/complex/DataTable/DataTable.jsx';
+import LineChart from '../../components/complex/LineChart/LineChart.jsx';
+import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import Button from '../../components/primitives/Button/Button.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
-import { supabase } from '../../supabaseClient.js';
 import CheckInForm from '../CheckInForm/CheckInForm.jsx';
+import { useResource } from '../../hooks/useResource.js';
+import { useAutoLoad } from '../../hooks/useAutoLoad.js';
+import { checkInService } from '../../services/checkInService.js';
+import {
+    calculateStreak,
+    calculateAverageAdherence,
+    calculateAverage,
+    buildChartData as buildCheckInChartData,
+    generateInsights,
+} from '../../utils/checkInStats.js';
+import { formatDate } from '../../utils/data.js';
+import { FiCheckCircle, FiTrendingUp, FiTarget, FiActivity, FiPlus } from 'react-icons/fi';
 import './CheckIn.css';
 
 function CheckIn() {
     const [showForm, setShowForm] = useState(false);
-    const [checkIns, setCheckIns] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-
-    const loadCheckIns = async () => {
-        try {
-            const { data: authData, error: authError } = await supabase.auth.getUser();
-
-            if (authError || !authData?.user) {
-                throw new Error('Debes iniciar sesión para ver tus check-ins.');
-            }
-
-            const { data: profile, error: profileError } = await supabase
-                .from('profile')
-                .select('id')
-                .eq('user', authData.user.id)
-                .maybeSingle();
-
-            if (profileError) {
-                throw new Error(`No se pudo comprobar el perfil: ${profileError.message}`);
-            }
-
-            if (!profile) {
-                setCheckIns([]);
-                setLoading(false);
-                return;
-            }
-
-            const { data: checkInsData, error: fetchError } = await supabase
-                .from('check_in')
-                .select('*')
-                .eq('profile_id', profile.id)
-                .order('created_at', { ascending: false });
-
-            if (fetchError) {
-                throw new Error(`No se pudieron cargar los check-ins: ${fetchError.message}`);
-            }
-
-            setCheckIns(checkInsData || []);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        loadCheckIns();
-    }, []);
+    const { items: checkIns, loading, error, load } = useResource(checkInService);
+    useAutoLoad(load);
 
     const handleFormComplete = () => {
         setShowForm(false);
-        loadCheckIns();
-    };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        });
+        load();
     };
 
     const checkInColumns = [
@@ -85,6 +42,27 @@ function CheckIn() {
     if (showForm) {
         return <CheckInForm onComplete={handleFormComplete} onCancel={() => setShowForm(false)} />;
     }
+
+    const totalCheckIns = checkIns.length;
+    const streak = calculateStreak(checkIns);
+    const avgDiet = calculateAverageAdherence(checkIns, 'diet_adherence');
+    const avgTraining = calculateAverageAdherence(checkIns, 'training_adherence');
+    const avgRest = calculateAverage(checkIns, 'rest_quality');
+    const avgHunger = calculateAverage(checkIns, 'hunger_level');
+
+    const chartData = buildCheckInChartData(checkIns);
+
+    const adherenceLines = [
+        { dataKey: 'diet', name: 'Dieta (%)', color: '#a78bfa' },
+        { dataKey: 'training', name: 'Entrenamiento (%)', color: '#4ade80' },
+    ];
+
+    const wellbeingLines = [
+        { dataKey: 'rest', name: 'Descanso', color: '#60a5fa' },
+        { dataKey: 'hunger', name: 'Hambre', color: '#f87171' },
+    ];
+
+    const insights = generateInsights(checkIns);
 
     return (
         <div className="check-in">
@@ -102,14 +80,88 @@ function CheckIn() {
             )}
 
             {!loading && !error && checkIns.length > 0 && (
-                <DataTable
-                    columns={checkInColumns}
-                    data={checkIns}
-                />
+                <>
+                    <section className="check-in-stats">
+                        <div className="check-in-stats-grid">
+                            <StatCard
+                                value={totalCheckIns}
+                                label="Check-ins totales"
+                                icon={<FiCheckCircle />}
+                            />
+                            <StatCard
+                                value={streak}
+                                label="Racha actual (semanas)"
+                                icon={<FiTrendingUp />}
+                            />
+                            <StatCard
+                                value={`${avgDiet}%`}
+                                label="Adherencia dieta"
+                                icon={<FiTarget />}
+                            />
+                            <StatCard
+                                value={`${avgTraining}%`}
+                                label="Adherencia entrenamiento"
+                                icon={<FiActivity />}
+                            />
+                        </div>
+                    </section>
+
+                    <section className="check-in-charts">
+                        <div className="check-in-charts-grid">
+                            <LineChart
+                                title="Adherencia"
+                                data={chartData}
+                                lines={adherenceLines}
+                            />
+                            <LineChart
+                                title="Bienestar"
+                                data={chartData}
+                                lines={wellbeingLines}
+                            />
+                        </div>
+                    </section>
+
+                    {insights.length > 0 && (
+                        <section className="check-in-insights">
+                            <h2 className="check-in-insights-title">Resumen</h2>
+                            <div className="check-in-insights-list">
+                                {insights.map((insight, index) => (
+                                    <div
+                                        key={index}
+                                        className={`check-in-insight check-in-insight-${insight.type}`}
+                                    >
+                                        <span className="check-in-insight-icon">
+                                            {insight.type === 'positive' && '+'}
+                                            {insight.type === 'warning' && '!'}
+                                            {insight.type === 'neutral' && 'i'}
+                                        </span>
+                                        <span className="check-in-insight-text">{insight.text}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    <section className="check-in-history">
+                        <h2 className="check-in-history-title">Historial</h2>
+                        <DataTable columns={checkInColumns} data={checkIns} />
+                    </section>
+
+                    <div className="check-in-summary-bar">
+                        <div className="check-in-summary-item">
+                            <span className="check-in-summary-label">Descanso medio:</span>
+                            <span className="check-in-summary-value">{avgRest}/10</span>
+                        </div>
+                        <div className="check-in-summary-item">
+                            <span className="check-in-summary-label">Hambre media:</span>
+                            <span className="check-in-summary-value">{avgHunger}/10</span>
+                        </div>
+                    </div>
+                </>
             )}
 
             <Button
-                text="+ Check In"
+                icon={<FiPlus />}
                 onClick={() => setShowForm(true)}
                 className="check-in-fab"
             />

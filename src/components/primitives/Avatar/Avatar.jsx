@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiUser } from 'react-icons/fi';
-import { supabase } from '../../../supabaseClient';
+import { avatarService } from '../../../services/avatarService.js';
 import './Avatar.css';
 
 function Avatar({ src, userId, avatarUid: avatarUidProp, alt, size = 'medium' }) {
@@ -16,35 +16,25 @@ function Avatar({ src, userId, avatarUid: avatarUidProp, alt, size = 'medium' })
         if (!userId) return;
 
         const fetchAvatar = async () => {
-            let avatarUid = avatarUidProp;
+            try {
+                let avatarUid = avatarUidProp;
 
-            if (!avatarUid) {
-                const { data } = await supabase
-                    .from('avatar')
-                    .select('avatar_uid')
-                    .eq('user_uid', userId)
-                    .maybeSingle();
+                if (!avatarUid) {
+                    avatarUid = await avatarService.getAvatarUid(userId);
+                }
 
-                avatarUid = data?.avatar_uid;
-            }
+                if (!avatarUid) return;
 
-            if (!avatarUid) return;
-
-            const { data } = await supabase.storage
-                .from('avatars')
-                .list(userId);
-
-            if (data) {
-                const file = data.find(f => f.name.startsWith(avatarUid));
+                const files = await avatarService.listFiles(userId);
+                const file = files.find(f => f.name.startsWith(avatarUid));
                 if (file) {
-                    const { data: urlData, error } = await supabase.storage
-                        .from('avatars')
-                        .createSignedUrl(`${userId}/${file.name}`, 3600);
-                    
-                    if (!error && urlData?.signedUrl) {
-                        setAvatarUrl(urlData.signedUrl);
+                    const signedUrl = await avatarService.getSignedUrl(userId, file.name);
+                    if (signedUrl) {
+                        setAvatarUrl(signedUrl);
                     }
                 }
+            } catch {
+                // Silently fail - avatar is optional
             }
         };
 

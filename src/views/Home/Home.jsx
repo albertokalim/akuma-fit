@@ -4,33 +4,39 @@ import Sidebar from '../../components/complex/Sidebar/Sidebar.jsx';
 import Dashboard from '../Dashboard/Dashboard.jsx';
 import CheckIn from '../CheckIn/CheckIn.jsx';
 import Progress from '../Progress/Progress.jsx';
+import ProfileForm from '../ProfileForm/ProfileForm.jsx';
 import menuConfig from '../../config/menuConfig.json';
 import './Home.css';
-import ProfileForm from "../ProfileForm/ProfileForm.jsx";
+
+const PlaceholderComponent = ({ title }) => (
+    <div className="placeholder-component">
+        <h2>{title}</h2>
+    </div>
+);
+
+const COMPONENT_MAP = {
+    'dashboard': Dashboard,
+    'checkin': CheckIn,
+    'progress': Progress,
+    'clients': () => <PlaceholderComponent title="Clientes Component" />,
+    'exercises': () => <PlaceholderComponent title="Ejercicios Component" />,
+    'alimentos': () => <PlaceholderComponent title="Alimentos Component" />,
+    'plans': () => <PlaceholderComponent title="Planes Component" />,
+    'reportes': () => <PlaceholderComponent title="Reportes Component" />,
+    'my-plan': () => <PlaceholderComponent title="Mi Plan Component" />,
+    'nutrition': () => <PlaceholderComponent title="Nutrición Component" />,
+};
 
 function Home({ email, userId, onLogout, userRole = 'coach' }) {
     const [activeMenuId, setActiveMenuId] = useState('dashboard');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showProfileForm, setShowProfileForm] = useState(false);
 
-    const componentMap = {
-        'dashboard': Dashboard,
-        'checkin': CheckIn,
-        'progress': Progress,
-        'clients': () => <div className="placeholder-component"><h2>Clientes Component</h2></div>,
-        'exercises': () => <div className="placeholder-component"><h2>Ejercicios Component</h2></div>,
-        'alimentos': () => <div className="placeholder-component"><h2>Alimentos Component</h2></div>,
-        'plans': () => <div className="placeholder-component"><h2>Planes Component</h2></div>,
-        'reportes': () => <div className="placeholder-component"><h2>Reportes Component</h2></div>,
-        'my-plan': () => <div className="placeholder-component"><h2>Mi Plan Component</h2></div>,
-        'nutrition': () => <div className="placeholder-component"><h2>Nutrición Component</h2></div>,
-    };
-
     const menuItems = useMemo(() => {
         const configItems = menuConfig[userRole] || menuConfig['coach'];
         return configItems.map(item => ({
             ...item,
-            component: componentMap[item.id] || (() => <div className="placeholder-component"><h2>Componente no encontrado</h2></div>)
+            component: COMPONENT_MAP[item.id] || (() => <PlaceholderComponent title="Componente no encontrado" />)
         }));
     }, [userRole]);
 

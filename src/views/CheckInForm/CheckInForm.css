@@ -1,48 +1,48 @@
 .check-in-form {
     max-width: 720px;
-    margin: 40px auto;
-    padding: 32px;
+    margin: var(--space-4xl) auto;
+    padding: var(--space-3xl);
     background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     font-family: var(--font-main);
 }
 
 .check-in-form-title {
-    font-size: 28px;
+    font-size: var(--font-4xl);
     font-weight: 700;
     color: var(--color-text);
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .check-in-form-description {
-    font-size: 14px;
+    font-size: var(--font-md);
     line-height: 1.6;
     color: var(--color-text-secondary);
-    margin-bottom: 32px;
+    margin-bottom: var(--space-3xl);
 }
 
 .check-in-form-submit-row {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    margin-top: 20px;
-    padding-top: 20px;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
     border-top: 1px solid var(--color-border);
 }
 
 .check-in-form-buttons {
     display: flex;
-    gap: 12px;
+    gap: var(--space-md);
 }
 
 .check-in-form-submit-button,
 .check-in-form-cancel-button {
-    padding: 12px 32px;
+    padding: var(--space-lg) var(--space-3xl);
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-lg);
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
@@ -85,46 +85,26 @@
     cursor: not-allowed;
 }
 
-.error-message {
-    width: 100%;
-    text-align: center;
-    padding: 10px 16px;
-    border-radius: 6px;
-    background-color: var(--color-error-bg);
-    color: var(--color-error);
-    font-size: 14px;
-}
-
-.success-message {
-    width: 100%;
-    text-align: center;
-    padding: 10px 16px;
-    border-radius: 6px;
-    background-color: var(--color-success-bg);
-    color: var(--color-success);
-    font-size: 14px;
-}
-
 @media (max-width: 1024px) {
     .check-in-form {
         max-width: 100%;
-        margin: 20px;
-        padding: 24px;
+        margin: var(--space-xl);
+        padding: var(--space-2xl);
     }
 }
 
 @media (max-width: 768px) {
     .check-in-form {
-        margin: 16px;
-        padding: 20px;
+        margin: var(--space-lg);
+        padding: var(--space-xl);
     }
 
     .check-in-form-title {
-        font-size: 24px;
+        font-size: var(--font-3xl);
     }
 
     .check-in-form-description {
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
 
     .check-in-form-buttons {
@@ -140,11 +120,11 @@
 
 @media (max-width: 480px) {
     .check-in-form {
-        margin: 12px;
-        padding: 16px;
+        margin: var(--space-md);
+        padding: var(--space-lg);
     }
 
     .check-in-form-title {
-        font-size: 20px;
+        font-size: var(--font-2xl);
     }
 }
