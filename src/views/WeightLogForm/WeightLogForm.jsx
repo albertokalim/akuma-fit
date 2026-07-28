@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import DynamicForm from '../../components/complex/DynamicForm/DynamicForm.jsx';
-import Button from '../../components/primitives/Button/Button.jsx';
 import FORM_SECTIONS from '../../config/weightLogFields.json';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import { measurementService } from '../../services/measurementService.js';
@@ -61,19 +60,21 @@ function WeightLogForm({ onComplete, onCancel }) {
 
                 <div className="weight-log-form-buttons">
                     {onCancel && (
-                        <Button
-                            text="Cancelar"
+                        <button
                             onClick={onCancel}
                             disabled={submitting}
                             className="weight-log-form-cancel-button"
-                        />
+                        >
+                            <span className="button-text">Cancelar</span>
+                        </button>
                     )}
-                    <Button
-                        text={submitting ? 'Guardando...' : 'Guardar registro'}
+                    <button
                         onClick={onSubmitClick}
                         disabled={submitting}
                         className="weight-log-form-submit-button"
-                    />
+                    >
+                        <span className="button-text">{submitting ? 'Guardando...' : 'Guardar registro'}</span>
+                    </button>
                 </div>
             </div>
         </div>

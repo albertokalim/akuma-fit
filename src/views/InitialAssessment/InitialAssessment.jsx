@@ -1,6 +1,5 @@
 ﻿import { useState } from 'react';
 import DynamicForm from '../../components/complex/DynamicForm/DynamicForm.jsx';
-import Button from '../../components/primitives/Button/Button.jsx';
 import BodyPhotoCapture from '../../components/complex/BodyPhotoCapture/BodyPhotoCapture.jsx';
 import FORM_SECTIONS from '../../config/initialAssessmentFields.json';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
@@ -81,11 +80,9 @@ function InitialAssessment({ onComplete }) {
                 
                 <div className="initial-assessment-submit-row">
                     <div className="photo-capture-actions">
-                        <Button
-                            text="Saltar por ahora"
-                            onClick={handleSkipPhotos}
-                            className="skip-photos-button"
-                        />
+                        <button onClick={handleSkipPhotos} className="skip-photos-button">
+                            <span className="button-text">Saltar por ahora</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -110,12 +107,13 @@ function InitialAssessment({ onComplete }) {
                 {submitError && <div className="error-message">{submitError}</div>}
                 {submitSuccess && <div className="success-message">¡Valoración inicial enviada correctamente!</div>}
 
-                <Button
-                    text={submitting ? 'Enviando...' : 'Enviar'}
+                <button
                     onClick={onSubmitClick}
                     disabled={submitting}
                     className="initial-assessment-submit-button"
-                />
+                >
+                    <span className="button-text">{submitting ? 'Enviando...' : 'Enviar'}</span>
+                </button>
             </div>
         </div>
     );

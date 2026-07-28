@@ -1,4 +1,3 @@
-import Label from '../../primitives/Label/Label.jsx';
 import './StatCard.css';
 
 function StatCard({ value, label, icon }) {
@@ -7,7 +6,7 @@ function StatCard({ value, label, icon }) {
             {icon && <div className="stat-icon">{icon}</div>}
             <div className="stat-content">
                 <div className="stat-value">{value}</div>
-                <Label text={label} className="stat-label" />
+                <label className="stat-label">{label}</label>
             </div>
         </div>
     );

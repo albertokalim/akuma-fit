@@ -39,9 +39,34 @@
 }
 
 .check-in-fab {
+    position: fixed;
     bottom: var(--space-3xl);
     right: var(--space-3xl);
-    font-size: var(--font-3xl);
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    z-index: 100;
+}
+
+.check-in-fab:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.check-in-fab:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
 }
 
 .check-in-stats {
@@ -239,11 +264,10 @@
     }
 
     .check-in-fab {
-        bottom: var(--space-xl);
-        right: var(--space-xl);
+        right: var(--space-lg);
+        bottom: var(--space-lg);
         width: 48px;
         height: 48px;
-        font-size: var(--font-2xl);
     }
 }
 
@@ -269,10 +293,9 @@
     }
 
     .check-in-fab {
-        bottom: var(--space-lg);
-        right: var(--space-lg);
+        right: var(--space-md);
+        bottom: var(--space-md);
         width: 44px;
         height: 44px;
-        font-size: var(--font-lg);
     }
 }

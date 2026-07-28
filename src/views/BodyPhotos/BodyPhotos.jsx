@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import BodyPhotoCapture from '../../components/complex/BodyPhotoCapture/BodyPhotoCapture.jsx';
-import Button from '../../components/primitives/Button/Button.jsx';
 import './BodyPhotos.css';
 
 function BodyPhotos({ onBack }) {
@@ -39,18 +38,17 @@ function BodyPhotos({ onBack }) {
                 
                 <div className="body-photos-buttons">
                     {onBack && (
-                        <Button
-                            text="Volver"
-                            onClick={onBack}
-                            className="back-button"
-                        />
+                        <button onClick={onBack} className="back-button">
+                            <span className="button-text">Volver</span>
+                        </button>
                     )}
-                    <Button
-                        text="Guardar Fotos"
+                    <button
                         onClick={handleSave}
                         disabled={Object.keys(photos).length === 0}
                         className="save-photos-button"
-                    />
+                    >
+                        <span className="button-text">Guardar Fotos</span>
+                    </button>
                 </div>
             </div>
         </div>

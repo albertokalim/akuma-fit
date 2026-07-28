@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { FiUser, FiChevronLeft, FiChevronRight, FiRotateCw, FiCamera, FiUpload, FiX } from 'react-icons/fi';
-import Button from '../../primitives/Button/Button.jsx';
-import Label from '../../primitives/Label/Label.jsx';
 import './BodyPhotoCapture.css';
 
 const PHOTO_POSITIONS = [
@@ -120,33 +118,27 @@ function BodyPhotoCapture({ onPhotosChange }) {
             <div className="photo-grid">
                 {PHOTO_POSITIONS.map((position) => (
                     <div key={position.id} className="photo-slot">
-                        <Label text={position.label} className="photo-label" />
+                        <label className="photo-label">{position.label}</label>
                         
                         {photos[position.id] ? (
                             <div className="photo-preview">
                                 <img src={photos[position.id]} alt={position.label} />
-                                <Button
-                                    onClick={() => handleRemovePhoto(position.id)}
-                                    className="remove-photo-btn"
-                                    icon={<FiX size={20} />}
-                                />
+                                <button onClick={() => handleRemovePhoto(position.id)} className="remove-photo-btn">
+                                    <span className="button-icon"><FiX size={20} /></span>
+                                </button>
                             </div>
                         ) : (
                             <div className="photo-placeholder">
                                 <position.icon className="photo-icon" size={48} />
                                 <div className="photo-actions">
-                                    <Button
-                                        onClick={() => handleTakePhoto(position.id)}
-                                        className="camera-btn"
-                                        text="Cámara"
-                                        icon={<FiCamera size={18} />}
-                                    />
-                                    <Button
-                                        onClick={() => handleUploadFromFile(position.id)}
-                                        className="upload-btn"
-                                        text="Archivo"
-                                        icon={<FiUpload size={18} />}
-                                    />
+                                    <button onClick={() => handleTakePhoto(position.id)} className="camera-btn">
+                                        <span className="button-icon"><FiCamera size={18} /></span>
+                                        <span className="button-text">Cámara</span>
+                                    </button>
+                                    <button onClick={() => handleUploadFromFile(position.id)} className="upload-btn">
+                                        <span className="button-icon"><FiUpload size={18} /></span>
+                                        <span className="button-text">Archivo</span>
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -167,27 +159,21 @@ function BodyPhotoCapture({ onPhotosChange }) {
                     <div className="camera-modal-content">
                         <div className="camera-header">
                             <h4>Capturar Foto</h4>
-                            <Button
-                                onClick={closeCamera}
-                                className="close-camera-btn"
-                                icon={<FiX size={24} />}
-                            />
+                            <button onClick={closeCamera} className="close-camera-btn">
+                                <span className="button-icon"><FiX size={24} /></span>
+                            </button>
                         </div>
                         <div className="camera-preview">
                             <video ref={videoRef} autoPlay playsInline />
                         </div>
                         <div className="camera-actions">
-                            <Button
-                                onClick={closeCamera}
-                                className="cancel-camera-btn"
-                                text="Cancelar"
-                            />
-                            <Button
-                                onClick={capturePhoto}
-                                className="capture-btn"
-                                text="Capturar"
-                                icon={<FiCamera size={18} />}
-                            />
+                            <button onClick={closeCamera} className="cancel-camera-btn">
+                                <span className="button-text">Cancelar</span>
+                            </button>
+                            <button onClick={capturePhoto} className="capture-btn">
+                                <span className="button-icon"><FiCamera size={18} /></span>
+                                <span className="button-text">Capturar</span>
+                            </button>
                         </div>
                     </div>
                 </div>

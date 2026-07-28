@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import DynamicForm from '../../components/complex/DynamicForm/DynamicForm.jsx';
-import Button from '../../components/primitives/Button/Button.jsx';
 import FORM_SECTIONS from '../../config/checkInFields.json';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import { checkInService } from '../../services/checkInService.js';
@@ -61,19 +60,21 @@ function CheckInForm({ onComplete, onCancel }) {
 
                 <div className="check-in-form-buttons">
                     {onCancel && (
-                        <Button
-                            text="Cancelar"
+                        <button
                             onClick={onCancel}
                             disabled={submitting}
                             className="check-in-form-cancel-button"
-                        />
+                        >
+                            <span className="button-text">Cancelar</span>
+                        </button>
                     )}
-                    <Button
-                        text={submitting ? 'Enviando...' : 'Enviar Check-In'}
+                    <button
                         onClick={onSubmitClick}
                         disabled={submitting}
                         className="check-in-form-submit-button"
-                    />
+                    >
+                        <span className="button-text">{submitting ? 'Enviando...' : 'Enviar Check-In'}</span>
+                    </button>
                 </div>
             </div>
         </div>

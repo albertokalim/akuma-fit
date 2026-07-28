@@ -1,4 +1,3 @@
-import Label from '../../primitives/Label/Label.jsx';
 import { useEffect } from 'react';
 import './RadioGroupField.css';
 
@@ -12,7 +11,7 @@ function RadioGroupField({ label, id, options, value, onChange, required = false
     return (
         <div className={`radio-group-field${hasError ? ' has-error' : ''}`}>
             <div className="radio-group-label">
-                <Label text={label} htmlFor={id} />
+                <label htmlFor={id}>{label}</label>
                 {required && <span className="required-asterisk">*</span>}
             </div>
             <div className="radio-options">

@@ -1,4 +1,3 @@
-import Button from '../../primitives/Button/Button.jsx';
 import { FiMenu } from 'react-icons/fi';
 import './Header.css';
 
@@ -15,7 +14,9 @@ function Header({ onLogout, onMenuToggle, menuOpen }) {
                 </button>
             </div>
             <div className="header-right">
-                <Button text="Logout" onClick={onLogout} className="logout-button" />
+                <button onClick={onLogout} className="logout-button">
+                    <span className="button-text">Logout</span>
+                </button>
             </div>
         </header>
     );

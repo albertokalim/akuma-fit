@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FormField from '../../components/complex/FormField/FormField.jsx';
 import FormSection from '../../components/complex/FormSection/FormSection.jsx';
-import Button from '../../components/primitives/Button/Button.jsx';
 import ProfileAvatar from '../../components/complex/ProfileAvatar/ProfileAvatar.jsx';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import FORM_SECTIONS from '../../config/profileFields.json';
@@ -93,12 +92,10 @@ function ProfileForm({ userId, initialData = {}, onSave }) {
             ))}
 
             <FormSection title="Seguridad">
-                <Button
-                    text="Cambiar contraseña"
-                    onClick={handleChangePassword}
-                    className="profile-form-password-btn"
-                    icon={<FiLock />}
-                />
+                <button onClick={handleChangePassword} className="profile-form-password-btn">
+                    <span className="button-icon"><FiLock /></span>
+                    <span className="button-text">Cambiar contraseña</span>
+                </button>
             </FormSection>
 
             <div className="profile-form-submit-row">
@@ -106,12 +103,13 @@ function ProfileForm({ userId, initialData = {}, onSave }) {
                 {submitSuccess && <div className="success-message">Perfil actualizado correctamente.</div>}
 
                 <div className="profile-form-buttons">
-                    <Button
-                        text={submitting ? 'Guardando...' : 'Guardar cambios'}
+                    <button
                         onClick={handleSave}
                         disabled={submitting}
                         className="profile-form-submit-button"
-                    />
+                    >
+                        <span className="button-text">{submitting ? 'Guardando...' : 'Guardar cambios'}</span>
+                    </button>
                 </div>
             </div>
         </div>

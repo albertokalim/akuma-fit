@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
-import Button from '../../components/primitives/Button/Button.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
 import WeightLogForm from '../WeightLogForm/WeightLogForm.jsx';
 import BodyPhotos from '../BodyPhotos/BodyPhotos.jsx';
@@ -154,16 +153,12 @@ function Progress() {
                 </>
             )}
 
-            <Button
-                icon={<FiActivity size={20} />}
-                onClick={() => setShowForm(true)}
-                className="progress-fab progress-fab-weight"
-            />
-            <Button
-                icon={<FiCamera size={20} />}
-                onClick={() => setShowBodyPhotos(true)}
-                className="progress-fab progress-fab-photos"
-            />
+            <button onClick={() => setShowForm(true)} className="progress-fab progress-fab-weight">
+                <span className="button-icon"><FiActivity size={20} /></span>
+            </button>
+            <button onClick={() => setShowBodyPhotos(true)} className="progress-fab progress-fab-photos">
+                <span className="button-icon"><FiCamera size={20} /></span>
+            </button>
         </div>
     );
 }

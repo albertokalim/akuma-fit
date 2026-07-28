@@ -1,4 +1,3 @@
-import Label from '../../primitives/Label/Label.jsx';
 import { useEffect } from 'react';
 import './BooleanCheckboxField.css';
 
@@ -24,7 +23,7 @@ function BooleanCheckboxField({ label, id, value, onChange, required = false, ha
                     onChange={handleChange}
                 />
                 <div className="boolean-checkbox-label-row">
-                    <Label text={label} htmlFor={id} />
+                    <label htmlFor={id}>{label}</label>
                     {required && <span className="required-asterisk">*</span>}
                 </div>
             </div>

@@ -1,8 +1,4 @@
 import { useState } from 'react';
-import Button from '../../components/primitives/Button/Button.jsx';
-import Label from '../../components/primitives/Label/Label.jsx';
-import TextInput from '../../components/primitives/TextInput/TextInput.jsx';
-import Link from '../../components/primitives/Link/Link.jsx';
 import { authService } from "../../services/authService.js";
 import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
 import './Login.css';
@@ -84,38 +80,41 @@ function Login({ onNavigateToRegister, onLoginSuccess }) {
                     {errors.message && <div className="error-message">{errors.message}</div>}
 
                     <div className="input-group">
-                        <Label text="Correo Electrónico" htmlFor="email-input" />
-                        <TextInput
+                        <label htmlFor="email-input">Correo Electrónico</label>
+                        <input
                             id="email-input"
                             type="email"
                             placeholder="ejemplo@correo.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            hasError={errors.email}
-                            className="text-input"
+                            className={errors.email ? 'text-input input-error' : 'text-input'}
                         />
                     </div>
                     <div className="input-group">
-                        <Label text="Contraseña" htmlFor="password-input" />
-                        <TextInput
+                        <label htmlFor="password-input">Contraseña</label>
+                        <input
                             id="password-input"
                             type="password"
                             placeholder="Tu contraseña"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            hasError={errors.password}
-                            className="text-input"
+                            className={errors.password ? 'text-input input-error' : 'text-input'}
                         />
                     </div>
 
                     <div className="buttons-container">
-                        <Button text="Entrar" onClick={handleLogin} className="login-button" />
-                        <Button text="Iniciar sesión con Google" onClick={handleGoogleLogin} className="google-button" icon={<FcGoogle size={20} />} />
+                        <button onClick={handleLogin} className="login-button">
+                            <span className="button-text">Entrar</span>
+                        </button>
+                        <button onClick={handleGoogleLogin} className="google-button">
+                            <span className="button-icon"><FcGoogle size={20} /></span>
+                            <span className="button-text">Iniciar sesión con Google</span>
+                        </button>
                     </div>
                 </form>
 
                 <div className="register-link">
-                    <p>¿No tienes cuenta? <Link text="Regístrate aquí" onClick={onNavigateToRegister} className="link" /></p>
+                    <p>¿No tienes cuenta? <a href="#" onClick={onNavigateToRegister} className="link">Regístrate aquí</a></p>
                 </div>
             </div>
         </div>

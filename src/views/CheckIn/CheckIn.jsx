@@ -2,7 +2,6 @@ import { useState } from 'react';
 import DataTable from '../../components/complex/DataTable/DataTable.jsx';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
-import Button from '../../components/primitives/Button/Button.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
 import CheckInForm from '../CheckInForm/CheckInForm.jsx';
 import { useResource } from '../../hooks/useResource.js';
@@ -160,11 +159,9 @@ function CheckIn() {
                 </>
             )}
 
-            <Button
-                icon={<FiPlus />}
-                onClick={() => setShowForm(true)}
-                className="check-in-fab"
-            />
+            <button onClick={() => setShowForm(true)} className="check-in-fab">
+                <span className="button-icon"><FiPlus size={24} /></span>
+            </button>
         </div>
     );
 }

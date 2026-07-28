@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import Label from '../../primitives/Label/Label.jsx';
 import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import ICON_MAP from '../../../config/iconMap.jsx';
 import { FiUser, FiX } from 'react-icons/fi';
@@ -35,7 +34,7 @@ function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, userI
                                         onClick={() => handleItemClick(item.id)}
                                     >
                                         {Icon && <span className="sidebar-icon"><Icon /></span>}
-                                        <Label text={item.label} className="sidebar-label" />
+                                        <label className="sidebar-label">{item.label}</label>
                                     </button>
                                 </li>
                             );

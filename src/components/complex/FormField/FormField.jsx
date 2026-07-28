@@ -1,5 +1,3 @@
-import Label from '../../primitives/Label/Label.jsx';
-import TextInput from '../../primitives/TextInput/TextInput.jsx';
 import { useEffect } from 'react';
 import './FormField.css';
 
@@ -16,18 +14,17 @@ function FormField({ label, id, type = 'text', step, placeholder, value, onChang
     return (
         <div className="form-field">
             <div className="form-field-label">
-                <Label text={label} htmlFor={id} />
+                <label htmlFor={id}>{label}</label>
                 {required && <span className="required-asterisk">*</span>}
             </div>
-            <TextInput
+            <input
                 id={id}
                 type={type}
                 step={step}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
-                hasError={hasError}
-                className="form-field-input"
+                className={hasError ? 'form-field-input input-error' : 'form-field-input'}
             />
         </div>
     );

@@ -1,4 +1,3 @@
-import Label from '../../primitives/Label/Label.jsx';
 import { useEffect } from 'react';
 import './CheckboxGroupField.css';
 
@@ -13,7 +12,7 @@ function CheckboxGroupField({ label, id, options, value, onChange, required = fa
     return (
         <div className={`checkbox-group-field${hasError ? ' has-error' : ''}`}>
             <div className="checkbox-group-label">
-                <Label text={label} htmlFor={id} />
+                <label htmlFor={id}>{label}</label>
                 {required && <span className="required-asterisk">*</span>}
             </div>
             <div className="checkbox-options">

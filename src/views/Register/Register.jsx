@@ -1,9 +1,5 @@
 import { useState } from 'react';
 import { authService } from '../../services/authService.js';
-import Button from '../../components/primitives/Button/Button.jsx';
-import Label from '../../components/primitives/Label/Label.jsx';
-import TextInput from '../../components/primitives/TextInput/TextInput.jsx';
-import Link from '../../components/primitives/Link/Link.jsx';
 import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
 import './Register.css';
 
@@ -102,7 +98,7 @@ function Register({ onNavigateToLogin }) {
                             Confirme su correo electrónico para poder iniciar sesión. Hemos enviado un enlace de verificación a su bandeja de entrada.
                         </p>
                         <div className="login-link">
-                            <p><Link text="Ir a iniciar sesión" onClick={onNavigateToLogin} className="link" /></p>
+                            <p><a href="#" onClick={onNavigateToLogin} className="link">Ir a iniciar sesión</a></p>
                         </div>
                     </div>
                 </div>
@@ -118,45 +114,44 @@ function Register({ onNavigateToLogin }) {
                         {errors.message && <div className="error-message">{errors.message}</div>}
 
                         <div className="input-group">
-                            <Label text="Correo Electrónico" htmlFor="register-email" />
-                            <TextInput
+                            <label htmlFor="register-email">Correo Electrónico</label>
+                            <input
                                 id="register-email"
                                 type="email"
                                 placeholder="ejemplo@correo.com"
                                 onChange={(e) => setEmail(e.target.value)}
-                                hasError={errors.email}
-                                className="text-input"
+                                className={errors.email ? 'text-input input-error' : 'text-input'}
                             />
                         </div>
 
                         <div className="input-group">
-                            <Label text="Contraseña" htmlFor="register-password" />
-                            <TextInput
+                            <label htmlFor="register-password">Contraseña</label>
+                            <input
                                 id="register-password"
                                 type="password"
                                 placeholder="Crea una contraseña segura"
                                 onChange={(e) => setPassword(e.target.value)}
-                                hasError={errors.password}
-                                className="text-input"
+                                className={errors.password ? 'text-input input-error' : 'text-input'}
                             />
                         </div>
 
                         <div className="input-group">
-                            <Label text="Repetir Contraseña" htmlFor="register-confirm-password" />
-                            <TextInput
+                            <label htmlFor="register-confirm-password">Repetir Contraseña</label>
+                            <input
                                 id="register-confirm-password"
                                 type="password"
                                 placeholder="Repite tu contraseña"
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                hasError={errors.confirmPassword}
-                                className="text-input"
+                                className={errors.confirmPassword ? 'text-input input-error' : 'text-input'}
                             />
                         </div>
 
-                        <Button text="Registrarse" onClick={handleRegister} />
+                        <button onClick={handleRegister}>
+                            <span className="button-text">Registrarse</span>
+                        </button>
                     </form>
                     <div className="login-link">
-                        <p>¿Ya tienes cuenta? <Link text="Inicia sesión aquí" onClick={onNavigateToLogin} className="link" /></p>
+                        <p>¿Ya tienes cuenta? <a href="#" onClick={onNavigateToLogin} className="link">Inicia sesión aquí</a></p>
                     </div>
                 </div>
             </div>
