@@ -7,7 +7,7 @@ import './ProfileAvatar.css';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-function ProfileAvatar({ userId, size = 'large' }) {
+function ProfileAvatar({ profileId, size = 'large' }) {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
@@ -19,7 +19,7 @@ function ProfileAvatar({ userId, size = 'large' }) {
 
     const handleFileChange = async (e) => {
         const file = e.target.files?.[0];
-        if (!file || !userId) return;
+        if (!file || !profileId) return;
 
         setError(null);
 
@@ -51,19 +51,19 @@ function ProfileAvatar({ userId, size = 'large' }) {
         const fileExt = fileToUpload.name.split('.').pop();
 
         try {
-            const existingUid = await avatarService.getAvatarUid(userId);
+            const existingUid = await avatarService.getAvatarUid(profileId);
 
             if (existingUid) {
-                const files = await avatarService.listFiles(userId);
+                const files = await avatarService.listFiles(profileId);
                 const oldFile = files.find(f => f.name.startsWith(existingUid));
                 if (oldFile) {
-                    await avatarService.removeFile(userId, oldFile.name);
+                    await avatarService.removeFile(profileId, oldFile.name);
                 }
-                await avatarService.deleteAvatarRecord(userId);
+                await avatarService.deleteAvatarRecord(profileId);
             }
 
-            await avatarService.setAvatarUid(userId, newAvatarUid);
-            await avatarService.upload(userId, `${newAvatarUid}.${fileExt}`, fileToUpload);
+            await avatarService.setAvatarUid(profileId, newAvatarUid);
+            await avatarService.upload(profileId, `${newAvatarUid}.${fileExt}`, fileToUpload);
 
             setRefreshKey(prev => prev + 1);
         } catch {
@@ -78,7 +78,7 @@ function ProfileAvatar({ userId, size = 'large' }) {
         <div className="profile-avatar-wrapper" onClick={handleAvatarClick}>
             <Avatar
                 key={refreshKey}
-                userId={userId}
+                profileId={profileId}
                 alt="Perfil"
                 size={size}
             />

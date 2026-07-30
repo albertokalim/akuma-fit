@@ -5,6 +5,8 @@ import Dashboard from '../Dashboard/Dashboard.jsx';
 import CheckIn from '../CheckIn/CheckIn.jsx';
 import Progress from '../Progress/Progress.jsx';
 import ProfileForm from '../ProfileForm/ProfileForm.jsx';
+import CoachCheckIns from '../CoachCheckIns/CoachCheckIns.jsx';
+import Reports from '../Reports/Reports.jsx';
 import menuConfig from '../../config/menuConfig.json';
 import './Home.css';
 
@@ -18,16 +20,17 @@ const COMPONENT_MAP = {
     'dashboard': Dashboard,
     'checkin': CheckIn,
     'progress': Progress,
+    'client-checkins': CoachCheckIns,
     'clients': () => <PlaceholderComponent title="Clientes Component" />,
     'exercises': () => <PlaceholderComponent title="Ejercicios Component" />,
     'alimentos': () => <PlaceholderComponent title="Alimentos Component" />,
     'plans': () => <PlaceholderComponent title="Planes Component" />,
-    'reportes': () => <PlaceholderComponent title="Reportes Component" />,
+    'reportes': Reports,
     'my-plan': () => <PlaceholderComponent title="Mi Plan Component" />,
     'nutrition': () => <PlaceholderComponent title="Nutrición Component" />,
 };
 
-function Home({ email, userId, onLogout, userRole = 'coach' }) {
+function Home({ email, profileId, onLogout, userRole = 'coach' }) {
     const [activeMenuId, setActiveMenuId] = useState('dashboard');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showProfileForm, setShowProfileForm] = useState(false);
@@ -79,7 +82,7 @@ function Home({ email, userId, onLogout, userRole = 'coach' }) {
             />
             <div className="home-content">
                 <Sidebar
-                    userId={userId}
+                    profileId={profileId}
                     items={menuItems}
                     activeItem={activeMenuId}
                     onSelect={handleMenuSelect}
@@ -91,7 +94,7 @@ function Home({ email, userId, onLogout, userRole = 'coach' }) {
                 <main className="home-main">
                     {showProfileForm ? (
                         <ProfileForm
-                            userId={userId}
+                            profileId={profileId}
                             initialData={{ email }}
                             onSave={handleProfileSave}
                         />

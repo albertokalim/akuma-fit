@@ -2,7 +2,7 @@ import { supabase } from '../supabaseClient.js';
 import { getCurrentProfile } from '../utils/auth.js';
 import { normalizeNumericFields } from '../utils/data.js';
 
-const NUMERIC_FIELDS = ['hunger_level', 'rest_quality'];
+const NUMERIC_FIELDS = ['hunger_level', 'rest_quality', 'gym_performance', 'energy_level'];
 
 export const checkInService = {
     async getAll() {

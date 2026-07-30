@@ -4,7 +4,7 @@ import ICON_MAP from '../../../config/iconMap.jsx';
 import { FiUser, FiX } from 'react-icons/fi';
 import './Sidebar.css';
 
-function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, userId, onProfileClick }) {
+function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, profileId, onProfileClick }) {
     const handleItemClick = useCallback((itemId) => {
         onSelect(itemId);
         if (onClose) onClose();
@@ -44,7 +44,7 @@ function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, userI
 
                 {userName && (
                     <div className="sidebar-user-section" onClick={onProfileClick}>
-                        <Avatar userId={userId} alt={userName} size="small" />
+                        <Avatar profileId={profileId} alt={userName} size="small" />
                         <div className="sidebar-user-info">
                             <span className="sidebar-user-name">{userName}</span>
                             <span className="sidebar-user-hint">Editar perfil</span>

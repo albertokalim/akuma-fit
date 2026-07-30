@@ -15,7 +15,7 @@ const ENABLE_TEST_MODE = false;
 export default function App() {
     const [currentPage, setCurrentPage] = useState('login');
     const [user, setUser] = useState(null);
-    const [userId, setUserId] = useState(null);
+    const [profileId, setProfileId] = useState(null);
     const [userRole, setUserRole] = useState('client');
     const [checkingAssessment, setCheckingAssessment] = useState(false);
 
@@ -26,33 +26,48 @@ export default function App() {
     const getProfileAndAssessmentStatus = async () => {
         try {
             const profile = await profileService.getWithRole();
+            console.log('📋 Profile retrieved:', profile);
 
             if (!profile) {
-                return { completed: false, role: 'client' };
+                console.log('⚠️ No profile found');
+                return { completed: false, role: 'client', profileId: null };
             }
 
-            const completed = await assessmentService.exists(profile.id);
-
-            return {
-                completed,
-                role: profile.role || 'client',
-            };
-        } catch {
-            return { completed: false, role: 'client' };
+            try {
+                const completed = await assessmentService.exists(profile.id);
+                console.log('✅ Assessment exists:', completed, 'for profileId:', profile.id);
+                return {
+                    completed,
+                    role: profile.role || 'client',
+                    profileId: profile.id,
+                };
+            } catch (err) {
+                console.error('❌ Error checking assessment:', err);
+                return {
+                    completed: false,
+                    role: profile.role || 'client',
+                    profileId: profile.id,
+                };
+            }
+        } catch (err) {
+            console.error('❌ Error getting profile:', err);
+            return { completed: false, role: 'client', profileId: null };
         }
     };
 
     const handleLoginSuccess = async (email) => {
-        const authUser = await authService.getUser();
         setUser(email);
-        setUserId(authUser.id);
         setCheckingAssessment(true);
 
-        const { completed, role } = await getProfileAndAssessmentStatus();
+        const { completed, role, profileId: id } = await getProfileAndAssessmentStatus();
 
+        const nextPage = (completed || role === 'coach') ? 'home' : 'assessment';
+        console.log('🔀 Navigation decision:', { completed, role, profileId: id, nextPage });
+
+        setProfileId(id);
         setUserRole(role);
         setCheckingAssessment(false);
-        setCurrentPage(completed ? 'home' : 'assessment');
+        setCurrentPage(nextPage);
     };
 
     const handleAssessmentComplete = () => {
@@ -63,7 +78,7 @@ export default function App() {
         e?.preventDefault();
         await authService.signOut();
         setUser(null);
-        setUserId(null);
+        setProfileId(null);
         setCurrentPage('login');
     };
 
@@ -86,7 +101,7 @@ export default function App() {
             {user && currentPage === 'assessment' ? (
                 <InitialAssessment onComplete={handleAssessmentComplete} />
             ) : user && currentPage === 'home' ? (
-                <Home email={user} userId={userId} onLogout={handleLogout} userRole={userRole} />
+                <Home email={user} profileId={profileId} onLogout={handleLogout} userRole={userRole} />
             ) : currentPage === 'login' ? (
                 <Login onNavigateToRegister={goToRegister} onLoginSuccess={handleLoginSuccess} />
             ) : (

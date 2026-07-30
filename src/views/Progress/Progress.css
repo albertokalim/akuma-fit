@@ -22,6 +22,16 @@
     margin-bottom: var(--space-3xl);
 }
 
+.progress-summary {
+    margin-bottom: var(--space-3xl);
+}
+
+.progress-summary .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--space-lg);
+}
+
 .progress-loading {
     text-align: center;
     padding: var(--space-4xl);
@@ -193,6 +203,15 @@
         margin-bottom: var(--space-xl);
     }
 
+    .progress-summary {
+        margin-bottom: var(--space-xl);
+    }
+
+    .progress-summary .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+
     .progress-selector {
         margin-bottom: var(--space-lg);
         padding: var(--space-lg);
@@ -269,6 +288,10 @@
     .progress-description {
         font-size: var(--font-sm);
         margin-bottom: var(--space-lg);
+    }
+
+    .progress-summary .stats-grid {
+        grid-template-columns: 1fr;
     }
 
     .progress-selector {

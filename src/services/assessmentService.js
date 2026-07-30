@@ -5,11 +5,14 @@ const NUMERIC_FIELDS = ['height', 'motivation_level', 'current_stress_level', 'e
 
 export const assessmentService = {
     async exists(profileId) {
+        console.log('🔍 Checking assessment for profileId:', profileId);
         const { data, error } = await supabase
             .from('initial_assessment')
             .select('id')
             .eq('profile_id', profileId)
             .maybeSingle();
+
+        console.log('📊 Assessment query result:', { data, error });
 
         if (error) throw new Error(error.message);
         return !!data;

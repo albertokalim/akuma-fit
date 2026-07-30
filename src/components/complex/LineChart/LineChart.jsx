@@ -1,7 +1,19 @@
+import { useState } from 'react';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './LineChart.css';
 
-function LineChart({ title, data, lines = [], xKey = 'date' }) {
+function LineChart({ title, data, lines = [], xKey = 'date', showControls = false }) {
+    const [activeLines, setActiveLines] = useState(
+        Object.fromEntries(lines.map(line => [line.dataKey, true]))
+    );
+
+    const toggleLine = (lineKey) => {
+        setActiveLines(prev => ({
+            ...prev,
+            [lineKey]: !prev[lineKey]
+        }));
+    };
+
     if (!data || data.length === 0) {
         return (
             <div className="line-chart">
@@ -13,9 +25,25 @@ function LineChart({ title, data, lines = [], xKey = 'date' }) {
         );
     }
 
+    const visibleLines = showControls ? lines.filter(line => activeLines[line.dataKey]) : lines;
+
     return (
         <div className="line-chart">
             <h3 className="chart-title">{title}</h3>
+            {showControls && lines.length > 1 && (
+                <div className="chart-controls">
+                    {lines.map(line => (
+                        <label key={line.dataKey} className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={activeLines[line.dataKey]}
+                                onChange={() => toggleLine(line.dataKey)}
+                            />
+                            <span style={{ color: line.color }}>{line.name}</span>
+                        </label>
+                    ))}
+                </div>
+            )}
             <div className="chart-container">
                 <ResponsiveContainer width="100%" height="100%">
                     <RechartsLineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
@@ -40,7 +68,7 @@ function LineChart({ title, data, lines = [], xKey = 'date' }) {
                         <Legend 
                             wrapperStyle={{ color: 'var(--color-text)' }}
                         />
-                        {lines.map((line) => (
+                        {visibleLines.map((line) => (
                             <Line
                                 key={line.dataKey}
                                 type="monotone"

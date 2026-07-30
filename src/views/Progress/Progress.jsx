@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
+import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
 import WeightLogForm from '../WeightLogForm/WeightLogForm.jsx';
 import BodyPhotos from '../BodyPhotos/BodyPhotos.jsx';
 import { useResource } from '../../hooks/useResource.js';
 import { useAutoLoad } from '../../hooks/useAutoLoad.js';
 import { measurementService } from '../../services/measurementService.js';
-import { buildChartData, buildActiveLines } from '../../utils/chartData.js';
-import { FiActivity, FiCamera } from 'react-icons/fi';
+import { buildChartData, buildActiveLines, calculateDelta, calculateVelocity, getCurrentValue } from '../../utils/chartData.js';
+import { FiActivity, FiCamera, FiTrendingDown, FiTrendingUp } from 'react-icons/fi';
 import './Progress.css';
 
 const MEASUREMENT_OPTIONS = [
@@ -70,6 +71,24 @@ function Progress() {
     const chartData = buildChartData(measurements, MEASUREMENT_OPTIONS, startDate, endDate);
     const activeLines = buildActiveLines(MEASUREMENT_OPTIONS, selectedMeasures);
 
+    const currentWeight = getCurrentValue(measurements, 'weight');
+    const currentWaist = getCurrentValue(measurements, 'waist');
+    const weightDelta = calculateDelta(measurements, 'weight');
+    const waistDelta = calculateDelta(measurements, 'waist');
+    const weightVelocity = calculateVelocity(measurements, 'weight');
+    const waistVelocity = calculateVelocity(measurements, 'waist');
+
+    const getDeltaIcon = (delta) => {
+        if (delta === null) return null;
+        return delta > 0 ? <FiTrendingUp /> : delta < 0 ? <FiTrendingDown /> : null;
+    };
+
+    const formatVelocity = (velocity, unit) => {
+        if (velocity === null) return '-';
+        const sign = velocity > 0 ? '+' : '';
+        return `${sign}${velocity} ${unit}/sem`;
+    };
+
     if (showBodyPhotos) {
         return <BodyPhotos onBack={() => setShowBodyPhotos(false)} />;
     }
@@ -95,6 +114,32 @@ function Progress() {
 
             {!loading && !error && measurements.length > 0 && (
                 <>
+                    <section className="progress-summary">
+                        <div className="stats-grid">
+                            {currentWeight !== null && (
+                                <StatCard
+                                    value={`${currentWeight} kg`}
+                                    label="Peso actual"
+                                    icon={<FiActivity />}
+                                />
+                            )}
+                            {weightDelta !== null && (
+                                <StatCard
+                                    value={`${weightDelta > 0 ? '+' : ''}${weightDelta} kg`}
+                                    label="Delta peso"
+                                    icon={getDeltaIcon(weightDelta)}
+                                />
+                            )}
+                            {weightVelocity !== null && (
+                                <StatCard
+                                    value={formatVelocity(weightVelocity, 'kg')}
+                                    label="Velocidad peso"
+                                    icon={getDeltaIcon(weightVelocity)}
+                                />
+                            )}
+                        </div>
+                    </section>
+
                     <div className="progress-selector">
                         <span className="progress-selector-label">Filtrar por fechas:</span>
                         <div className="progress-date-filters">

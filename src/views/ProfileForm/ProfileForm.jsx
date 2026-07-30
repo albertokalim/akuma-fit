@@ -11,7 +11,7 @@ const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
-function ProfileForm({ userId, initialData = {}, onSave }) {
+function ProfileForm({ profileId, initialData = {}, onSave }) {
     const [profile, setProfile] = useState(() => {
         const initial = {};
         ALL_FIELDS.forEach((field) => {
@@ -82,7 +82,7 @@ function ProfileForm({ userId, initialData = {}, onSave }) {
             <h1 className="profile-form-title">Mi perfil</h1>
 
             <div className="profile-form-avatar-section">
-                <ProfileAvatar userId={userId} size="large" />
+                <ProfileAvatar profileId={profileId} size="large" />
             </div>
 
             {FORM_SECTIONS.map((section) => (

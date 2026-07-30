@@ -2,6 +2,7 @@
   "coach": [
     { "id": "dashboard", "label": "Dashboard", "icon": "dashboard" },
     { "id": "clients", "label": "Clientes", "icon": "clients" },
+    { "id": "client-checkins", "label": "Check-Ins Clientes", "icon": "checkin" },
     { "id": "exercises", "label": "Ejercicios", "icon": "exercises" },
     { "id": "alimentos", "label": "Alimentos", "icon": "nutrition" },
     { "id": "plans", "label": "Planes", "icon": "plans" },

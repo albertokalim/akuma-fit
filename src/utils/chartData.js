@@ -1,5 +1,42 @@
 import { formatDate, filterByDateRange } from './data.js';
 
+export const calculateDelta = (measurements, field) => {
+    if (!measurements || measurements.length < 2) return null;
+    
+    const first = measurements.find(m => m[field] !== null && m[field] !== undefined);
+    const last = [...measurements].reverse().find(m => m[field] !== null && m[field] !== undefined);
+    
+    if (!first || !last || first.id === last.id) return null;
+    
+    const delta = Number(last[field]) - Number(first[field]);
+    return Math.round(delta * 10) / 10;
+};
+
+export const calculateVelocity = (measurements, field) => {
+    if (!measurements || measurements.length < 2) return null;
+    
+    const sorted = [...measurements].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    
+    const first = sorted.find(m => m[field] !== null && m[field] !== undefined);
+    const last = [...sorted].reverse().find(m => m[field] !== null && m[field] !== undefined);
+    
+    if (!first || !last || first.id === last.id) return null;
+    
+    const delta = Number(last[field]) - Number(first[field]);
+    const daysDiff = (new Date(last.created_at) - new Date(first.created_at)) / (1000 * 60 * 60 * 24);
+    
+    if (daysDiff === 0) return null;
+    
+    const velocityPerWeek = (delta / daysDiff) * 7;
+    return Math.round(velocityPerWeek * 100) / 100;
+};
+
+export const getCurrentValue = (measurements, field) => {
+    if (!measurements || measurements.length === 0) return null;
+    const last = [...measurements].reverse().find(m => m[field] !== null && m[field] !== undefined);
+    return last ? last[field] : null;
+};
+
 /**
  * Construye datos para gráficos a partir de mediciones
  * 

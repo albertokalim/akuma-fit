@@ -8,7 +8,7 @@ export const profileService = {
         const { data: profile, error } = await supabase
             .from('profile')
             .select('*')
-            .eq('user', user.id)
+            .eq('user_id', user.id)
             .maybeSingle();
 
         if (error) throw new Error(error.message);
@@ -21,7 +21,7 @@ export const profileService = {
         const { data: profile, error } = await supabase
             .from('profile')
             .select('id')
-            .eq('user', user.id)
+            .eq('user_id', user.id)
             .maybeSingle();
 
         if (error) throw new Error(error.message);
@@ -36,7 +36,7 @@ export const profileService = {
         const { data: profile, error } = await supabase
             .from('profile')
             .select('id, role')
-            .eq('user', user.id)
+            .eq('user_id', user.id)
             .maybeSingle();
 
         if (error) throw new Error(error.message);
@@ -49,7 +49,7 @@ export const profileService = {
         const { data: existing, error: fetchError } = await supabase
             .from('profile')
             .select('id')
-            .eq('user', user.id)
+            .eq('user_id', user.id)
             .maybeSingle();
 
         if (fetchError) throw new Error(fetchError.message);
@@ -58,7 +58,7 @@ export const profileService = {
         const { data: newProfile, error: insertError } = await supabase
             .from('profile')
             .insert({
-                user: user.id,
+                user_id: user.id,
                 ...userData,
                 role: 'client',
             })

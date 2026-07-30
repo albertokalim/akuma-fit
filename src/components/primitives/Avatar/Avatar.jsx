@@ -1,36 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FiUser } from 'react-icons/fi';
 import { avatarService } from '../../../services/avatarService.js';
 import './Avatar.css';
 
-function Avatar({ src, userId, avatarUid: avatarUidProp, alt, size = 'medium' }) {
-    const [avatarUrl, setAvatarUrl] = useState(src || null);
+function Avatar({ src, profileId, avatarUid: avatarUidProp, alt, size = 'medium' }) {
+    const [fetchedUrl, setFetchedUrl] = useState(null);
 
     useEffect(() => {
-        if (src) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setAvatarUrl(src);
-            return;
-        }
-
-        if (!userId) return;
+        if (src || !profileId) return;
 
         const fetchAvatar = async () => {
             try {
                 let avatarUid = avatarUidProp;
 
                 if (!avatarUid) {
-                    avatarUid = await avatarService.getAvatarUid(userId);
+                    avatarUid = await avatarService.getAvatarUid(profileId);
                 }
 
                 if (!avatarUid) return;
 
-                const files = await avatarService.listFiles(userId);
+                const files = await avatarService.listFiles(profileId);
                 const file = files.find(f => f.name.startsWith(avatarUid));
                 if (file) {
-                    const signedUrl = await avatarService.getSignedUrl(userId, file.name);
+                    const signedUrl = await avatarService.getSignedUrl(profileId, file.name);
                     if (signedUrl) {
-                        setAvatarUrl(signedUrl);
+                        setFetchedUrl(signedUrl);
                     }
                 }
             } catch {
@@ -39,7 +33,9 @@ function Avatar({ src, userId, avatarUid: avatarUidProp, alt, size = 'medium' })
         };
 
         fetchAvatar();
-    }, [src, userId, avatarUidProp]);
+    }, [src, profileId, avatarUidProp]);
+
+    const avatarUrl = useMemo(() => src || fetchedUrl, [src, fetchedUrl]);
 
     if (avatarUrl) {
         return (
