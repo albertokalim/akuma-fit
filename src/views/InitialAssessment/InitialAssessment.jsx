@@ -8,7 +8,7 @@ import { useAuth } from '../../context/useAuth.js';
 import { profileService } from '../../services/profileService.js';
 import { measurementService } from '../../services/measurementService.js';
 import { assessmentService } from '../../services/assessmentService.js';
-import './InitialAssessment.css';
+
 
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));

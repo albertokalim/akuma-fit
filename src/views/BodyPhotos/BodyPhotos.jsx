@@ -3,7 +3,7 @@ import BodyPhotoCapture from '../../components/complex/BodyPhotoCapture/BodyPhot
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
 import { photoService } from '../../services/photoService.js';
 import { getCurrentProfile } from '../../utils/auth.js';
-import './BodyPhotos.css';
+
 
 function dataURLtoFile(dataurl, filename) {
     const arr = dataurl.split(',');

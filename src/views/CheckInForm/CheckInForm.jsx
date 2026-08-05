@@ -3,7 +3,7 @@ import DynamicForm from '../../components/complex/DynamicForm/DynamicForm.jsx';
 import FORM_SECTIONS from '../../config/checkInFields.json';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import { checkInService } from '../../services/checkInService.js';
-import './CheckInForm.css';
+
 
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));

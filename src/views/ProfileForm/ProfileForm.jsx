@@ -5,7 +5,7 @@ import ProfileAvatar from '../../components/complex/ProfileAvatar/ProfileAvatar.
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import FORM_SECTIONS from '../../config/profileFields.json';
 import { FiLock } from 'react-icons/fi';
-import './ProfileForm.css';
+
 
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 

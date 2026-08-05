@@ -3,7 +3,7 @@ import DynamicForm from '../../components/complex/DynamicForm/DynamicForm.jsx';
 import FORM_SECTIONS from '../../config/weightLogFields.json';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import { measurementService } from '../../services/measurementService.js';
-import './WeightLogForm.css';
+
 
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));

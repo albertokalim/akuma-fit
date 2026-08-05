@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './CheckboxGroupField.css';
+
 
 function CheckboxGroupField({ label, id, options, value, onChange, required = false, multiple = true, hasError = false, onValidityChange }) {
     useEffect(() => {

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { FiUser, FiChevronLeft, FiChevronRight, FiRotateCw, FiCamera, FiUpload, FiX } from 'react-icons/fi';
-import './BodyPhotoCapture.css';
+
 
 const PHOTO_POSITIONS = [
     { id: 'front', label: 'Frontal', icon: FiUser },

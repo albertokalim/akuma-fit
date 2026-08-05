@@ -15,7 +15,7 @@ import {
 } from '../../utils/checkInStats.js';
 import { formatDate } from '../../utils/data.js';
 import { FiCheckCircle, FiTrendingUp, FiTarget, FiActivity, FiPlus } from 'react-icons/fi';
-import './CheckIn.css';
+
 
 function CheckIn() {
     const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useSignedPhotoUrls } from '../../../hooks/useSignedPhotoUrls.js';
 import { formatDate } from '../../../utils/data.js';
-import './PhotoCompare.css';
+
 
 const POSITION_LABELS = {
     front: 'Frontal',

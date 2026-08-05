@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import ICON_MAP from '../../../config/iconMap.jsx';
 import { FiUser, FiX } from 'react-icons/fi';
-import './Sidebar.css';
+
 
 /**
  * El estado "activo" ya no lo decide un prop (`activeItem`) sino la propia

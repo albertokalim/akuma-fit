@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './BooleanCheckboxField.css';
+
 
 function BooleanCheckboxField({ label, id, value, onChange, required = false, hasError = false, onValidityChange }) {
     useEffect(() => {

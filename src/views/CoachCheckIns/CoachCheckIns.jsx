@@ -8,7 +8,7 @@ import { coachCheckInService } from '../../services/coachCheckInService.js';
 import { generateCoachAlerts, buildChartData, ADHERENCE_MAP, getAdherenceClass } from '../../utils/checkInStats.js';
 import { formatDate } from '../../utils/data.js';
 import { FiAlertTriangle, FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import './CoachCheckIns.css';
+
 
 const COACH_CHART_FIELDS = [
     { key: 'energy', source: 'energy_level' },

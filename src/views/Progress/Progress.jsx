@@ -9,7 +9,7 @@ import { measurementService } from '../../services/measurementService.js';
 import { MEASUREMENT_OPTIONS } from '../../config/measurementOptions.js';
 import { buildChartData, buildActiveLines, calculateDelta, calculateVelocity, getCurrentValue } from '../../utils/chartData.js';
 import { FiActivity, FiCamera, FiTrendingDown, FiTrendingUp } from 'react-icons/fi';
-import './Progress.css';
+
 
 const getCurrentWeekDates = () => {
     const now = new Date();

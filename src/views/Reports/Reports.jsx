@@ -12,7 +12,7 @@ import { MEASUREMENT_OPTIONS } from '../../config/measurementOptions.js';
 import { buildChartData, buildActiveLines, calculateDelta } from '../../utils/chartData.js';
 import { formatDate } from '../../utils/data.js';
 import { FiActivity, FiCamera, FiTrendingDown, FiTrendingUp } from 'react-icons/fi';
-import './Reports.css';
+
 
 function Reports() {
     const [selectedClientId, setSelectedClientId] = useState(null);

@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useSignedPhotoUrls } from '../../../hooks/useSignedPhotoUrls.js';
 import { formatDate } from '../../../utils/data.js';
-import './PhotoGallery.css';
+
 
 const POSITION_LABELS = {
     front: 'Frontal',

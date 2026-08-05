@@ -6,6 +6,7 @@ import NewWeightLog from '../views/Progress/NewWeightLog.jsx';
 import ProgressBodyPhotos from '../views/Progress/ProgressBodyPhotos.jsx';
 import CoachCheckIns from '../views/CoachCheckIns/CoachCheckIns.jsx';
 import Reports from '../views/Reports/Reports.jsx';
+import CreateRutine from '../views/CreateRutine/CreateRutine.jsx';
 import PlaceholderComponent from '../components/primitives/PlaceholderComponent/PlaceholderComponent.jsx';
 
 /**
@@ -46,7 +47,7 @@ export const SECTION_ROUTES = {
         { path: 'alimentos', element: <PlaceholderComponent title="Alimentos Component" /> },
     ],
     plans: [
-        { path: 'plans', element: <PlaceholderComponent title="Planes Component" /> },
+        { path: 'plans', element: <CreateRutine /> },
     ],
     'my-plan': [
         { path: 'my-plan', element: <PlaceholderComponent title="Mi Plan Component" /> },

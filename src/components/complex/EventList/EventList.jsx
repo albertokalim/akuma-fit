@@ -1,4 +1,4 @@
-import './EventList.css';
+
 
 function EventList({ title, items }) {
     return (

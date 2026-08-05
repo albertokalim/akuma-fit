@@ -4,7 +4,7 @@ import Header from '../../components/complex/Header/Header.jsx';
 import Sidebar from '../../components/complex/Sidebar/Sidebar.jsx';
 import { useAuth } from '../../context/useAuth.js';
 import menuConfig from '../../config/menuConfig.json';
-import './Home.css';
+
 
 /**
  * Layout de la app autenticada: cabecera + sidebar + <Outlet /> con la

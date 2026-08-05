@@ -1,3 +1,4 @@
+/* Sidebar */
 .sidebar {
     width: 250px;
     background-color: var(--color-bg-alt);
@@ -134,6 +135,77 @@
     color: var(--color-text-muted);
 }
 
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-lg) var(--space-3xl);
+    background-color: var(--color-bg-alt);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.menu-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s;
+}
+
+.menu-toggle-btn:hover {
+    background-color: var(--color-surface);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.user-name {
+    font-size: var(--font-md);
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.logout-button {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-sm);
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-md);
+    background-color: transparent;
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.logout-button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .sidebar {
         position: fixed;
@@ -190,6 +262,18 @@
     .sidebar-user-section {
         padding: var(--space-lg) var(--space-xl);
     }
+
+    .header {
+        padding: var(--space-md) var(--space-xl);
+    }
+
+    .header-right {
+        gap: var(--space-md);
+    }
+
+    .user-name {
+        display: none;
+    }
 }
 
 @media (max-width: 480px) {
@@ -205,6 +289,15 @@
     .sidebar-close-btn {
         top: var(--space-2xl);
         right: var(--space-2xl);
+    }
+
+    .header {
+        padding: var(--space-md) var(--space-lg);
+    }
+
+    .logout-button {
+        padding: var(--space-xs) var(--space-md);
+        font-size: var(--font-xs);
     }
 }
 

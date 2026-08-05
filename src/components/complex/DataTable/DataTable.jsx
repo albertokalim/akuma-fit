@@ -1,4 +1,4 @@
-import './DataTable.css';
+
 
 function DataTable({ columns, data, emptyMessage = 'No hay datos disponibles' }) {
     if (!data || data.length === 0) {

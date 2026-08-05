@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth.js';
 import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
-import './Login.css';
+
 import {FcGoogle} from "react-icons/fc";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

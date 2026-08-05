@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import './LineChart.css';
+
 
 function LineChart({ title, data, lines = [], xKey = 'date', showControls = false }) {
     const [activeLines, setActiveLines] = useState(

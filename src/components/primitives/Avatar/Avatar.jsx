@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { FiUser } from 'react-icons/fi';
 import { avatarService } from '../../../services/avatarService.js';
-import './Avatar.css';
+
 
 function Avatar({ src, profileId, avatarUid: avatarUidProp, alt, size = 'medium' }) {
     const [fetchedUrl, setFetchedUrl] = useState(null);

@@ -1,4 +1,4 @@
-import './Spinner.css';
+
 
 function Spinner({ size = 'medium', text = 'Cargando...' }) {
     return (

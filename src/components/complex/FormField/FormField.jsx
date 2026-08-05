@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './FormField.css';
+
 
 function FormField({ label, id, type = 'text', step, placeholder, value, onChange, required = false, hasError = false, onValidityChange }) {
     // El propio campo sabe qué significa "estar vacío" para su tipo de valor (string)

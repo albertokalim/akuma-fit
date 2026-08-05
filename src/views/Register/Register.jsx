@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authService } from '../../services/authService.js';
 import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
-import './Register.css';
+
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

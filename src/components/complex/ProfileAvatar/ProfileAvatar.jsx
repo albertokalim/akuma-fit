@@ -3,7 +3,7 @@ import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import { FiCamera } from 'react-icons/fi';
 import { avatarService } from '../../../services/avatarService.js';
 import { resizeImage, mimeToExtension } from '../../../utils/image.js';
-import './ProfileAvatar.css';
+
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
