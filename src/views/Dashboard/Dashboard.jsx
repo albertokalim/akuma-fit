@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import EventList from '../../components/complex/EventList/EventList.jsx';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
@@ -6,7 +5,10 @@ import { FiUsers, FiClipboard, FiCheckCircle } from 'react-icons/fi';
 import { GiWeightLiftingUp } from 'react-icons/gi';
 import './Dashboard.css';
 
-function Dashboard({ email, onLogout }) {
+// NOTA: estos datos son de ejemplo (no vienen de Supabase todavía), a
+// diferencia del resto de vistas que sí consultan datos reales. Pendiente
+// de conectar a un servicio real de estadísticas/eventos del coach.
+function Dashboard() {
     const stats = [
         { value: '24', label: 'Clientes activos', icon: <FiUsers /> },
         { value: '31', label: 'Planes activos', icon: <FiClipboard /> },

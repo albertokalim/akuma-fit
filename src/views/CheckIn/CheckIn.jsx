@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DataTable from '../../components/complex/DataTable/DataTable.jsx';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
-import CheckInForm from '../CheckInForm/CheckInForm.jsx';
 import { useResource } from '../../hooks/useResource.js';
 import { useAutoLoad } from '../../hooks/useAutoLoad.js';
 import { checkInService } from '../../services/checkInService.js';
@@ -19,14 +18,9 @@ import { FiCheckCircle, FiTrendingUp, FiTarget, FiActivity, FiPlus } from 'react
 import './CheckIn.css';
 
 function CheckIn() {
-    const [showForm, setShowForm] = useState(false);
+    const navigate = useNavigate();
     const { items: checkIns, loading, error, load } = useResource(checkInService);
     useAutoLoad(load);
-
-    const handleFormComplete = () => {
-        setShowForm(false);
-        load();
-    };
 
     const checkInColumns = [
         { key: 'created_at', label: 'Fecha', render: (val) => formatDate(val) },
@@ -37,10 +31,6 @@ function CheckIn() {
         { key: 'rest_quality', label: 'Descanso' },
         { key: 'comments', label: 'Comentarios' },
     ];
-
-    if (showForm) {
-        return <CheckInForm onComplete={handleFormComplete} onCancel={() => setShowForm(false)} />;
-    }
 
     const totalCheckIns = checkIns.length;
     const streak = calculateStreak(checkIns);
@@ -159,7 +149,7 @@ function CheckIn() {
                 </>
             )}
 
-            <button onClick={() => setShowForm(true)} className="check-in-fab">
+            <button onClick={() => navigate('/app/checkin/new')} className="check-in-fab">
                 <span className="button-icon"><FiPlus size={24} /></span>
             </button>
         </div>

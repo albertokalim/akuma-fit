@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import { FiCamera } from 'react-icons/fi';
 import { avatarService } from '../../../services/avatarService.js';
-import { resizeImage } from '../../../utils/image.js';
+import { resizeImage, mimeToExtension } from '../../../utils/image.js';
 import './ProfileAvatar.css';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -48,7 +48,7 @@ function ProfileAvatar({ profileId, size = 'large' }) {
         }
 
         const newAvatarUid = crypto.randomUUID();
-        const fileExt = fileToUpload.name.split('.').pop();
+        const fileExt = mimeToExtension(fileToUpload.type);
 
         try {
             const existingUid = await avatarService.getAvatarUid(profileId);

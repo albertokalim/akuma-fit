@@ -1,3 +1,8 @@
+export const mimeToExtension = (mime) => {
+    const map = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+    return map[mime] || 'png';
+};
+
 export const resizeImage = (file, maxSize = 200) => {
     return new Promise((resolve, reject) => {
         const img = new Image();
@@ -27,7 +32,7 @@ export const resizeImage = (file, maxSize = 200) => {
             canvas.toBlob(
                 (blob) => {
                     if (blob) {
-                        resolve(new File([blob], file.name, { type: file.type }));
+                        resolve(new File([blob], file.name, { type: blob.type }));
                     } else {
                         reject(new Error('Error al redimensionar la imagen'));
                     }

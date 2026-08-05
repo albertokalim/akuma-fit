@@ -1,22 +1,15 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
-import WeightLogForm from '../WeightLogForm/WeightLogForm.jsx';
-import BodyPhotos from '../BodyPhotos/BodyPhotos.jsx';
 import { useResource } from '../../hooks/useResource.js';
 import { useAutoLoad } from '../../hooks/useAutoLoad.js';
 import { measurementService } from '../../services/measurementService.js';
+import { MEASUREMENT_OPTIONS } from '../../config/measurementOptions.js';
 import { buildChartData, buildActiveLines, calculateDelta, calculateVelocity, getCurrentValue } from '../../utils/chartData.js';
 import { FiActivity, FiCamera, FiTrendingDown, FiTrendingUp } from 'react-icons/fi';
 import './Progress.css';
-
-const MEASUREMENT_OPTIONS = [
-    { key: 'weight', label: 'Peso (kg)', color: '#a78bfa' },
-    { key: 'chest', label: 'Pecho (cm)', color: '#4ade80' },
-    { key: 'waist', label: 'Cintura (cm)', color: '#f87171' },
-    { key: 'hip', label: 'Cadera (cm)', color: '#60a5fa' },
-];
 
 const getCurrentWeekDates = () => {
     const now = new Date();
@@ -46,19 +39,13 @@ const getCurrentWeekDates = () => {
 const initialDates = getCurrentWeekDates();
 
 function Progress() {
+    const navigate = useNavigate();
     const { items: measurements, loading, error, load } = useResource(measurementService);
     useAutoLoad(load);
     
     const [selectedMeasures, setSelectedMeasures] = useState(['weight']);
     const [startDate, setStartDate] = useState(initialDates.start);
     const [endDate, setEndDate] = useState(initialDates.end);
-    const [showForm, setShowForm] = useState(false);
-    const [showBodyPhotos, setShowBodyPhotos] = useState(false);
-
-    const handleFormComplete = () => {
-        setShowForm(false);
-        load();
-    };
 
     const toggleMeasure = (key) => {
         setSelectedMeasures((prev) =>
@@ -72,11 +59,8 @@ function Progress() {
     const activeLines = buildActiveLines(MEASUREMENT_OPTIONS, selectedMeasures);
 
     const currentWeight = getCurrentValue(measurements, 'weight');
-    const currentWaist = getCurrentValue(measurements, 'waist');
     const weightDelta = calculateDelta(measurements, 'weight');
-    const waistDelta = calculateDelta(measurements, 'waist');
     const weightVelocity = calculateVelocity(measurements, 'weight');
-    const waistVelocity = calculateVelocity(measurements, 'waist');
 
     const getDeltaIcon = (delta) => {
         if (delta === null) return null;
@@ -88,14 +72,6 @@ function Progress() {
         const sign = velocity > 0 ? '+' : '';
         return `${sign}${velocity} ${unit}/sem`;
     };
-
-    if (showBodyPhotos) {
-        return <BodyPhotos onBack={() => setShowBodyPhotos(false)} />;
-    }
-
-    if (showForm) {
-        return <WeightLogForm onComplete={handleFormComplete} onCancel={() => setShowForm(false)} />;
-    }
 
     return (
         <div className="progress">
@@ -198,10 +174,10 @@ function Progress() {
                 </>
             )}
 
-            <button onClick={() => setShowForm(true)} className="progress-fab progress-fab-weight">
+            <button onClick={() => navigate('/app/progress/weight')} className="progress-fab progress-fab-weight">
                 <span className="button-icon"><FiActivity size={20} /></span>
             </button>
-            <button onClick={() => setShowBodyPhotos(true)} className="progress-fab progress-fab-photos">
+            <button onClick={() => navigate('/app/progress/photos')} className="progress-fab progress-fab-photos">
                 <span className="button-icon"><FiCamera size={20} /></span>
             </button>
         </div>

@@ -1,14 +1,20 @@
 import { useCallback } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import ICON_MAP from '../../../config/iconMap.jsx';
 import { FiUser, FiX } from 'react-icons/fi';
 import './Sidebar.css';
 
-function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, profileId, onProfileClick }) {
-    const handleItemClick = useCallback((itemId) => {
-        onSelect(itemId);
+/**
+ * El estado "activo" ya no lo decide un prop (`activeItem`) sino la propia
+ * URL a través de <NavLink>, que añade la clase automáticamente. Esto evita
+ * que el sidebar y el contenido mostrado puedan desincronizarse (como pasaba
+ * antes con el booleano paralelo `showProfileForm`).
+ */
+function Sidebar({ items, isOpen, onClose, userName, profileId }) {
+    const handleItemClick = useCallback(() => {
         if (onClose) onClose();
-    }, [onSelect, onClose]);
+    }, [onClose]);
 
     const handleBackdropClick = useCallback(() => {
         if (onClose) onClose();
@@ -25,17 +31,17 @@ function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, profi
                     <ul className="sidebar-items">
                         {items.map((item) => {
                             const Icon = ICON_MAP[item.icon];
-                            const isActive = activeItem === item.id;
 
                             return (
                                 <li key={item.id}>
-                                    <button
-                                        className={isActive ? 'sidebar-item active' : 'sidebar-item'}
-                                        onClick={() => handleItemClick(item.id)}
+                                    <NavLink
+                                        to={`/app/${item.id}`}
+                                        className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}
+                                        onClick={handleItemClick}
                                     >
                                         {Icon && <span className="sidebar-icon"><Icon /></span>}
                                         <label className="sidebar-label">{item.label}</label>
-                                    </button>
+                                    </NavLink>
                                 </li>
                             );
                         })}
@@ -43,14 +49,14 @@ function Sidebar({ items, activeItem, onSelect, isOpen, onClose, userName, profi
                 </nav>
 
                 {userName && (
-                    <div className="sidebar-user-section" onClick={onProfileClick}>
+                    <Link to="/app/profile" className="sidebar-user-section" onClick={handleItemClick}>
                         <Avatar profileId={profileId} alt={userName} size="small" />
                         <div className="sidebar-user-info">
                             <span className="sidebar-user-name">{userName}</span>
                             <span className="sidebar-user-hint">Editar perfil</span>
                         </div>
                         <FiUser className="sidebar-user-icon" size={20} />
-                    </div>
+                    </Link>
                 )}
             </aside>
         </>

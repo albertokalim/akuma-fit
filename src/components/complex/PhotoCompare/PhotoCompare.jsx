@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { photoService } from '../../../services/photoService.js';
+import { useState, useMemo } from 'react';
+import { useSignedPhotoUrls } from '../../../hooks/useSignedPhotoUrls.js';
 import { formatDate } from '../../../utils/data.js';
 import './PhotoCompare.css';
 
@@ -28,6 +28,10 @@ function PhotoCompare({ photos }) {
     const [selectedPosition, setSelectedPosition] = useState('front');
     const [beforeDate, setBeforeDate] = useState(sortedDates[0] || '');
     const [afterDate, setAfterDate] = useState(sortedDates[sortedDates.length - 1] || '');
+
+    const storagePaths = useMemo(() => 
+        photos.map(p => p.storage_path).filter(Boolean), [photos]);
+    const { urls } = useSignedPhotoUrls(storagePaths);
 
     const beforePhoto = groupedPhotos[beforeDate]?.[selectedPosition];
     const afterPhoto = groupedPhotos[afterDate]?.[selectedPosition];
@@ -92,7 +96,7 @@ function PhotoCompare({ photos }) {
                     {beforePhoto ? (
                         <div className="compare-image-container">
                             <img 
-                                src={photoService.getPublicUrl(beforePhoto.storage_path)} 
+                                src={urls[beforePhoto.storage_path]} 
                                 alt={`${POSITION_LABELS[selectedPosition]} - Antes`}
                             />
                         </div>
@@ -111,7 +115,7 @@ function PhotoCompare({ photos }) {
                     {afterPhoto ? (
                         <div className="compare-image-container">
                             <img 
-                                src={photoService.getPublicUrl(afterPhoto.storage_path)} 
+                                src={urls[afterPhoto.storage_path]} 
                                 alt={`${POSITION_LABELS[selectedPosition]} - Después`}
                             />
                         </div>

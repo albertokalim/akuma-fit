@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { photoService } from '../../../services/photoService.js';
+import { useState, useMemo } from 'react';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useSignedPhotoUrls } from '../../../hooks/useSignedPhotoUrls.js';
 import { formatDate } from '../../../utils/data.js';
 import './PhotoGallery.css';
 
@@ -15,6 +15,9 @@ function PhotoGallery({ photos }) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState(null);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+
+    const storagePaths = useMemo(() => photos.map(p => p.storage_path), [photos]);
+    const { urls } = useSignedPhotoUrls(storagePaths);
 
     const groupedPhotos = photos.reduce((acc, photo) => {
         if (!acc[photo.taken_at]) {
@@ -76,7 +79,7 @@ function PhotoGallery({ photos }) {
                                 onClick={() => openLightbox(date)}
                             >
                                 <img 
-                                    src={photoService.getPublicUrl(thumbnail.storage_path)} 
+                                    src={urls[thumbnail.storage_path]} 
                                     alt={POSITION_LABELS[thumbnail.position]}
                                 />
                                 <div className="photo-date-overlay">
@@ -92,10 +95,6 @@ function PhotoGallery({ photos }) {
             {lightboxOpen && currentDate && (
                 <div className="photo-lightbox" onClick={closeLightbox}>
                     <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="lightbox-close" onClick={closeLightbox}>
-                            <FiX size={24} />
-                        </button>
-
                         <div className="lightbox-header">
                             <h3>{formatDate(currentDate)}</h3>
                             <span className="lightbox-position">
@@ -113,7 +112,7 @@ function PhotoGallery({ photos }) {
                             </button>
 
                             <img 
-                                src={photoService.getPublicUrl(groupedPhotos[currentDate][currentPhotoIndex].storage_path)} 
+                                src={urls[groupedPhotos[currentDate][currentPhotoIndex].storage_path]} 
                                 alt={POSITION_LABELS[groupedPhotos[currentDate][currentPhotoIndex].position]}
                                 className="lightbox-image"
                             />
@@ -135,7 +134,7 @@ function PhotoGallery({ photos }) {
                                     onClick={() => setCurrentPhotoIndex(index)}
                                 >
                                     <img 
-                                        src={photoService.getPublicUrl(photo.storage_path)} 
+                                        src={urls[photo.storage_path]} 
                                         alt={POSITION_LABELS[photo.position]}
                                     />
                                 </div>

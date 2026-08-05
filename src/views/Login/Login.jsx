@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { authService } from "../../services/authService.js";
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/useAuth.js';
 import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
 import './Login.css';
 import {FcGoogle} from "react-icons/fc";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function Login({ onNavigateToRegister, onLoginSuccess }) {
+function Login() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -50,9 +53,9 @@ function Login({ onNavigateToRegister, onLoginSuccess }) {
         setLoading(true);
 
         try {
-            await authService.signIn(email, password);
+            await login(email, password);
             setLoading(false);
-            onLoginSuccess(email);
+            navigate('/', { replace: true });
         } catch (error) {
             setLoading(false);
             const normalizedMessage = error.message.toLowerCase();
@@ -114,7 +117,7 @@ function Login({ onNavigateToRegister, onLoginSuccess }) {
                 </form>
 
                 <div className="register-link">
-                    <p>¿No tienes cuenta? <a href="#" onClick={onNavigateToRegister} className="link">Regístrate aquí</a></p>
+                    <p>¿No tienes cuenta? <Link to="/register" className="link">Regístrate aquí</Link></p>
                 </div>
             </div>
         </div>

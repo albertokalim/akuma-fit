@@ -76,11 +76,12 @@ export const photoService = {
         if (deleteError) throw new Error(deleteError.message);
     },
 
-    getPublicUrl(storagePath) {
-        const { data } = supabase.storage
+    async getSignedUrl(storagePath) {
+        const { data, error } = await supabase.storage
             .from(BUCKET_NAME)
-            .getPublicUrl(storagePath);
+            .createSignedUrl(storagePath, 3600);
 
-        return data.publicUrl;
+        if (error) throw new Error(error.message);
+        return data.signedUrl;
     }
 };

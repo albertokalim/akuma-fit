@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { authService } from '../../services/authService.js';
 import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
 import './Register.css';
@@ -7,7 +8,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-function Register({ onNavigateToLogin }) {
+function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -98,7 +99,7 @@ function Register({ onNavigateToLogin }) {
                             Confirme su correo electrónico para poder iniciar sesión. Hemos enviado un enlace de verificación a su bandeja de entrada.
                         </p>
                         <div className="login-link">
-                            <p><a href="#" onClick={onNavigateToLogin} className="link">Ir a iniciar sesión</a></p>
+                            <p><Link to="/login" className="link">Ir a iniciar sesión</Link></p>
                         </div>
                     </div>
                 </div>
@@ -151,7 +152,7 @@ function Register({ onNavigateToLogin }) {
                         </button>
                     </form>
                     <div className="login-link">
-                        <p>¿Ya tienes cuenta? <a href="#" onClick={onNavigateToLogin} className="link">Inicia sesión aquí</a></p>
+                        <p>¿Ya tienes cuenta? <Link to="/login" className="link">Inicia sesión aquí</Link></p>
                     </div>
                 </div>
             </div>

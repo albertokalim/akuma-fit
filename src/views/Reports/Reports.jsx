@@ -1,86 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
 import DataTable from '../../components/complex/DataTable/DataTable.jsx';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import PhotoGallery from '../../components/complex/PhotoGallery/PhotoGallery.jsx';
 import PhotoCompare from '../../components/complex/PhotoCompare/PhotoCompare.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
+import ClientSelector from '../../components/complex/ClientSelector/ClientSelector.jsx';
+import { useAsyncData } from '../../hooks/useAsyncData.js';
 import { coachReportService } from '../../services/coachReportService.js';
-import { buildChartData, buildActiveLines } from '../../utils/chartData.js';
+import { MEASUREMENT_OPTIONS } from '../../config/measurementOptions.js';
+import { buildChartData, buildActiveLines, calculateDelta } from '../../utils/chartData.js';
 import { formatDate } from '../../utils/data.js';
 import { FiActivity, FiCamera, FiTrendingDown, FiTrendingUp } from 'react-icons/fi';
 import './Reports.css';
 
-const MEASUREMENT_OPTIONS = [
-    { key: 'weight', label: 'Peso (kg)', color: '#a78bfa' },
-    { key: 'chest', label: 'Pecho (cm)', color: '#4ade80' },
-    { key: 'waist', label: 'Cintura (cm)', color: '#f87171' },
-    { key: 'hip', label: 'Cadera (cm)', color: '#60a5fa' },
-];
-
-const calculateDelta = (measurements, field) => {
-    if (!measurements || measurements.length < 2) return null;
-    
-    const first = measurements.find(m => m[field] !== null && m[field] !== undefined);
-    const last = [...measurements].reverse().find(m => m[field] !== null && m[field] !== undefined);
-    
-    if (!first || !last || first.id === last.id) return null;
-    
-    const delta = Number(last[field]) - Number(first[field]);
-    return Math.round(delta * 10) / 10;
-};
-
 function Reports() {
-    const [clients, setClients] = useState([]);
     const [selectedClientId, setSelectedClientId] = useState(null);
-    const [measurements, setMeasurements] = useState([]);
-    const [photos, setPhotos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [loadingData, setLoadingData] = useState(false);
-    const [error, setError] = useState(null);
     const [selectedMeasures, setSelectedMeasures] = useState(['weight']);
     const [activeTab, setActiveTab] = useState('measurements');
 
-    useEffect(() => {
-        const loadClients = async () => {
-            try {
-                setLoading(true);
-                const clientsData = await coachReportService.getClients();
-                setClients(clientsData);
-                if (clientsData.length > 0) {
-                    setSelectedClientId(clientsData[0].id);
-                }
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const { data: clients, loading, error: clientsError } = useAsyncData(
+        () => coachReportService.getClients().then((data) => {
+            if (data.length > 0) setSelectedClientId((prev) => prev ?? data[0].id);
+            return data;
+        }),
+        []
+    );
 
-        loadClients();
-    }, []);
+    const { data: reportData, loading: loadingData, error: dataError } = useAsyncData(
+        selectedClientId
+            ? () => Promise.all([
+                coachReportService.getMeasurements(selectedClientId),
+                coachReportService.getPhotos(selectedClientId),
+            ]).then(([measurements, photos]) => ({ measurements, photos }))
+            : null,
+        [selectedClientId],
+        { measurements: [], photos: [] }
+    );
 
-    useEffect(() => {
-        if (!selectedClientId) return;
-
-        const loadData = async () => {
-            try {
-                setLoadingData(true);
-                const [measurementsData, photosData] = await Promise.all([
-                    coachReportService.getMeasurements(selectedClientId),
-                    coachReportService.getPhotos(selectedClientId)
-                ]);
-                setMeasurements(measurementsData);
-                setPhotos(photosData);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoadingData(false);
-            }
-        };
-
-        loadData();
-    }, [selectedClientId]);
+    const { measurements, photos } = reportData;
+    const error = clientsError || dataError;
 
     const toggleMeasure = (key) => {
         setSelectedMeasures((prev) =>
@@ -142,20 +101,12 @@ function Reports() {
         <div className="reports">
             <h1 className="reports-title">Reportes</h1>
 
-            <div className="reports-client-selector">
-                <label htmlFor="client-select">Selecciona un cliente:</label>
-                <select
-                    id="client-select"
-                    value={selectedClientId || ''}
-                    onChange={(e) => setSelectedClientId(e.target.value)}
-                >
-                    {clients.map(client => (
-                        <option key={client.id} value={client.id}>
-                            {client.name ? `${client.name} ${client.surname || ''}` : client.user_id}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <ClientSelector
+                clients={clients}
+                selectedClientId={selectedClientId}
+                onChange={setSelectedClientId}
+                className="reports-client-selector"
+            />
 
             {loadingData ? (
                 <Spinner text="Cargando datos..." />

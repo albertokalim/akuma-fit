@@ -1,8 +1,10 @@
 ﻿import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DynamicForm from '../../components/complex/DynamicForm/DynamicForm.jsx';
 import BodyPhotoCapture from '../../components/complex/BodyPhotoCapture/BodyPhotoCapture.jsx';
 import FORM_SECTIONS from '../../config/initialAssessmentFields.json';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
+import { useAuth } from '../../context/useAuth.js';
 import { profileService } from '../../services/profileService.js';
 import { measurementService } from '../../services/measurementService.js';
 import { assessmentService } from '../../services/assessmentService.js';
@@ -11,7 +13,9 @@ import './InitialAssessment.css';
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
-function InitialAssessment({ onComplete }) {
+function InitialAssessment() {
+    const { completeAssessment } = useAuth();
+    const navigate = useNavigate();
     const [initialAssessment, setInitialAssessment] = useState({});
     const [measurement, setMeasurement] = useState({});
     const [userInfo, setUserInfo] = useState({});
@@ -63,9 +67,8 @@ function InitialAssessment({ onComplete }) {
     const onSubmitClick = () => handleSubmit(onSubmit);
 
     const handleSkipPhotos = () => {
-        if (onComplete) {
-            setTimeout(() => onComplete(), 0);
-        }
+        completeAssessment();
+        navigate('/app', { replace: true });
     };
 
     if (showPhotoCapture) {
