@@ -58,7 +58,7 @@ function WeightLogForm({ onComplete, onCancel }) {
                 {submitError && <div className="error-message">{submitError}</div>}
                 {submitSuccess && <div className="success-message">¡Registro guardado correctamente!</div>}
 
-                <div className="weight-log-form-buttons">
+                <div className="form-buttons">
                     {onCancel && (
                         <button
                             onClick={onCancel}

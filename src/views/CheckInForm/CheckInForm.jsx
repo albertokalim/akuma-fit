@@ -58,7 +58,7 @@ function CheckInForm({ onComplete, onCancel }) {
                 {submitError && <div className="error-message">{submitError}</div>}
                 {submitSuccess && <div className="success-message">¡Check-in enviado correctamente!</div>}
 
-                <div className="check-in-form-buttons">
+                <div className="form-buttons">
                     {onCancel && (
                         <button
                             onClick={onCancel}

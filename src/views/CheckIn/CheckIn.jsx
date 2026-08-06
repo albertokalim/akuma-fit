@@ -14,6 +14,7 @@ import {
     generateInsights,
 } from '../../utils/checkInStats.js';
 import { formatDate } from '../../utils/data.js';
+import { CHART_COLORS } from '../../config/chartColors.js';
 import { FiCheckCircle, FiTrendingUp, FiTarget, FiActivity, FiPlus } from 'react-icons/fi';
 
 
@@ -42,27 +43,28 @@ function CheckIn() {
     const chartData = buildCheckInChartData(checkIns);
 
     const adherenceLines = [
-        { dataKey: 'diet', name: 'Dieta (%)', color: '#a78bfa' },
-        { dataKey: 'training', name: 'Entrenamiento (%)', color: '#4ade80' },
+        { dataKey: 'diet', name: 'Dieta (%)', color: CHART_COLORS.primary },
+        { dataKey: 'training', name: 'Entrenamiento (%)', color: CHART_COLORS.success },
     ];
 
     const wellbeingLines = [
-        { dataKey: 'rest', name: 'Descanso', color: '#60a5fa' },
-        { dataKey: 'hunger', name: 'Hambre', color: '#f87171' },
+        { dataKey: 'rest', name: 'Descanso', color: CHART_COLORS.info },
+        { dataKey: 'hunger', name: 'Hambre', color: CHART_COLORS.error },
     ];
 
     const insights = generateInsights(checkIns);
 
     return (
-        <div className="check-in">
-            <h1 className="check-in-title">Mis Check-Ins</h1>
-            <p className="check-in-description">Revisa tu historial de check-ins semanales para ver tu progreso.</p>
+        <div className="dashboard-main">
+            <div className="dashboard-title">
+                <h1>Mis Check-Ins</h1>
+            </div>
 
             {loading && <Spinner text="Cargando check-ins..." />}
             {error && <div className="error-message">{error}</div>}
 
             {!loading && !error && checkIns.length === 0 && (
-                <div className="check-in-empty">
+                <div className="empty-state">
                     <p>Aún no has realizado ningún check-in.</p>
                     <p>¡Haz tu primer check-in para empezar a trackear tu progreso!</p>
                 </div>
@@ -70,8 +72,8 @@ function CheckIn() {
 
             {!loading && !error && checkIns.length > 0 && (
                 <>
-                    <section className="check-in-stats">
-                        <div className="check-in-stats-grid">
+                    <section className="stats-section">
+                        <div className="stats-grid">
                             <StatCard
                                 value={totalCheckIns}
                                 label="Check-ins totales"
@@ -95,8 +97,8 @@ function CheckIn() {
                         </div>
                     </section>
 
-                    <section className="check-in-charts">
-                        <div className="check-in-charts-grid">
+                    <section className="events-section">
+                        <div className="charts-grid">
                             <LineChart
                                 title="Adherencia"
                                 data={chartData}
@@ -111,45 +113,34 @@ function CheckIn() {
                     </section>
 
                     {insights.length > 0 && (
-                        <section className="check-in-insights">
-                            <h2 className="check-in-insights-title">Resumen</h2>
+                        <section className="events-section">
+                            <h2 className="section-title">Resumen</h2>
                             <div className="check-in-insights-list">
                                 {insights.map((insight, index) => (
                                     <div
                                         key={index}
-                                        className={`check-in-insight check-in-insight-${insight.type}`}
+                                        className={`alert-item ${insight.type === 'positive' ? 'alert-success' : insight.type === 'warning' ? 'alert-warning' : 'alert-info'}`}
                                     >
-                                        <span className="check-in-insight-icon">
-                                            {insight.type === 'positive' && '+'}
+                                        <span className="alert-icon">
+                                            {insight.type === 'positive' && '✓'}
                                             {insight.type === 'warning' && '!'}
                                             {insight.type === 'neutral' && 'i'}
                                         </span>
-                                        <span className="check-in-insight-text">{insight.text}</span>
+                                        <span>{insight.text}</span>
                                     </div>
                                 ))}
                             </div>
                         </section>
                     )}
 
-                    <section className="check-in-history">
-                        <h2 className="check-in-history-title">Historial</h2>
+                    <section className="events-section">
+                        <h2 className="section-title">Historial</h2>
                         <DataTable columns={checkInColumns} data={checkIns} />
                     </section>
-
-                    <div className="check-in-summary-bar">
-                        <div className="check-in-summary-item">
-                            <span className="check-in-summary-label">Descanso medio:</span>
-                            <span className="check-in-summary-value">{avgRest}/10</span>
-                        </div>
-                        <div className="check-in-summary-item">
-                            <span className="check-in-summary-label">Hambre media:</span>
-                            <span className="check-in-summary-value">{avgHunger}/10</span>
-                        </div>
-                    </div>
                 </>
             )}
 
-            <button onClick={() => navigate('/app/checkin/new')} className="check-in-fab">
+            <button onClick={() => navigate('/app/checkin/new')} className="btn-fab">
                 <span className="button-icon"><FiPlus size={24} /></span>
             </button>
         </div>

@@ -5,6 +5,7 @@ import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import PhotoGallery from '../../components/complex/PhotoGallery/PhotoGallery.jsx';
 import PhotoCompare from '../../components/complex/PhotoCompare/PhotoCompare.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
+import ColorSwatch from '../../components/primitives/ColorSwatch/ColorSwatch.jsx';
 import ClientSelector from '../../components/complex/ClientSelector/ClientSelector.jsx';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
 import { coachReportService } from '../../services/coachReportService.js';
@@ -174,10 +175,7 @@ function Reports() {
                                                         checked={selectedMeasures.includes(opt.key)}
                                                         onChange={() => toggleMeasure(opt.key)}
                                                     />
-                                                    <span
-                                                        className="option-color"
-                                                        style={{ backgroundColor: opt.color }}
-                                                    />
+                                                    <ColorSwatch color={opt.color} />
                                                     <span>{opt.label}</span>
                                                 </label>
                                             ))}

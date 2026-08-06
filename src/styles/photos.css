@@ -72,7 +72,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.95);
-    z-index: 1000;
+    z-index: var(--z-modal);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,12 +105,12 @@
     justify-content: center;
     cursor: pointer;
     color: var(--color-text);
-    z-index: 10;
+    z-index: var(--z-dropdown);
     transition: background-color 0.2s;
 }
 
 .lightbox-close:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--overlay-scrim);
 }
 
 .lightbox-header {
@@ -169,7 +169,7 @@
 }
 
 .lightbox-nav:hover:not(:disabled) {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--overlay-scrim);
 }
 
 .lightbox-nav:disabled {
@@ -454,7 +454,7 @@
     padding: 0;
     border: none;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--overlay-scrim);
     color: white;
     cursor: pointer;
     display: flex;
@@ -496,7 +496,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: var(--z-modal);
 }
 
 .camera-modal-content {
@@ -650,7 +650,7 @@
     right: 0;
     text-align: center;
     font-size: 12px;
-    color: var(--color-error, #e53e3e);
+    color: var(--color-error);
     white-space: nowrap;
 }
 

@@ -7,6 +7,7 @@ import { useAsyncData } from '../../hooks/useAsyncData.js';
 import { coachCheckInService } from '../../services/coachCheckInService.js';
 import { generateCoachAlerts, buildChartData, ADHERENCE_MAP, getAdherenceClass } from '../../utils/checkInStats.js';
 import { formatDate } from '../../utils/data.js';
+import { CHART_COLORS } from '../../config/chartColors.js';
 import { FiAlertTriangle, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 
@@ -47,18 +48,18 @@ function CoachCheckIns() {
     const chartData = buildChartData(checkIns, COACH_CHART_FIELDS);
 
     const adherenceLines = [
-        { dataKey: 'diet', name: 'Dieta (%)', color: '#a78bfa' },
-        { dataKey: 'training', name: 'Entrenamiento (%)', color: '#4ade80' },
+        { dataKey: 'diet', name: 'Dieta (%)', color: CHART_COLORS.primary },
+        { dataKey: 'training', name: 'Entrenamiento (%)', color: CHART_COLORS.success },
     ];
 
     const wellbeingLines = [
-        { dataKey: 'rest', name: 'Descanso', color: '#60a5fa' },
-        { dataKey: 'energy', name: 'Energía', color: '#fbbf24' },
-        { dataKey: 'hunger', name: 'Hambre', color: '#f87171' },
+        { dataKey: 'rest', name: 'Descanso', color: CHART_COLORS.info },
+        { dataKey: 'energy', name: 'Energía', color: CHART_COLORS.warning },
+        { dataKey: 'hunger', name: 'Hambre', color: CHART_COLORS.error },
     ];
 
     const performanceLines = [
-        { dataKey: 'gymPerformance', name: 'Rendimiento gym (1-5)', color: '#a78bfa' },
+        { dataKey: 'gymPerformance', name: 'Rendimiento gym (1-5)', color: CHART_COLORS.primary },
     ];
 
     if (loading) {

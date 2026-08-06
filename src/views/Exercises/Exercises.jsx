@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiSearch, FiX, FiTag } from 'react-icons/fi';
+import Button from '../../components/primitives/Button/Button.jsx';
 import { exerciseService } from '../../services/exerciseService.js';
+import { tagService } from '../../services/tagService.js';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
+import { useDebouncedValue } from '../../hooks/useDebouncedValue.js';
 
 const EXERCISE_CATEGORIES = [
     'Todas',
@@ -17,27 +20,20 @@ const EXERCISE_CATEGORIES = [
 function Exercises() {
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');
+    const debouncedSearchText = useDebouncedValue(searchText);
     const [selectedCategory, setSelectedCategory] = useState('Todas');
     const [selectedTags, setSelectedTags] = useState([]);
-    const [allTags, setAllTags] = useState([]);
 
-    const loadExercises = async () => {
-        const [exercises, allExercises] = await Promise.all([
-            exerciseService.search({
-                text: searchText || undefined,
-                category: selectedCategory !== 'Todas' ? selectedCategory : undefined,
-                tags: selectedTags.length > 0 ? selectedTags : undefined,
-            }),
-            exerciseService.getAll(),
-        ]);
-        const tagSet = new Map();
-        allExercises.forEach(ex => ex.tags?.forEach(tag => tagSet.set(tag.id, tag)));
-        const tags = Array.from(tagSet.values()).sort((a, b) => a.name.localeCompare(b.name));
-        setAllTags(tags);
-        return exercises;
-    };
+    const loadExercises = async () => exerciseService.search({
+        text: debouncedSearchText || undefined,
+        category: selectedCategory !== 'Todas' ? selectedCategory : undefined,
+        tags: selectedTags.length > 0 ? selectedTags : undefined,
+    });
 
-    const { data: exercises, loading, error } = useAsyncData(loadExercises, [searchText, selectedCategory, selectedTags]);
+    const { data: exercises, loading, error } = useAsyncData(loadExercises, [debouncedSearchText, selectedCategory, selectedTags]);
+
+    const loadTags = async () => tagService.getAll();
+    const { data: allTags } = useAsyncData(loadTags, []);
 
     const toggleTag = (tagId) => {
         setSelectedTags(prev =>
@@ -96,9 +92,9 @@ function Exercises() {
                     </div>
 
                     {hasActiveFilters && (
-                        <button onClick={clearFilters} className="btn-outline btn-sm">
+                        <Button variant="outline" size="sm" onClick={clearFilters}>
                             Limpiar filtros
-                        </button>
+                        </Button>
                     )}
                 </div>
 
@@ -159,12 +155,13 @@ function Exercises() {
                                     </div>
                                 )}
                                 <div className="exercise-card-actions">
-                                    <button
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
                                         onClick={() => navigate(`/app/exercises/${exercise.id}/edit`)}
-                                        className="btn-outline btn-sm"
                                     >
                                         Editar
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         ))}

@@ -16,18 +16,8 @@ export const useSignedPhotoUrls = (storagePaths) => {
 
             setLoading(true);
             try {
-                const urlMap = {};
-                await Promise.all(
-                    storagePaths.map(async (path) => {
-                        if (path) {
-                            try {
-                                urlMap[path] = await photoService.getSignedUrl(path);
-                            } catch {
-                                urlMap[path] = null;
-                            }
-                        }
-                    })
-                );
+                // Una sola petición por lote en vez de N peticiones paralelas.
+                const urlMap = await photoService.getSignedUrls(storagePaths.filter(Boolean));
                 if (active) setUrls(urlMap);
             } finally {
                 if (active) setLoading(false);

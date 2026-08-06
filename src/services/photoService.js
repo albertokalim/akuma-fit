@@ -83,5 +83,21 @@ export const photoService = {
 
         if (error) throw new Error(error.message);
         return data.signedUrl;
+    },
+
+    async getSignedUrls(storagePaths) {
+        if (!storagePaths || storagePaths.length === 0) return {};
+
+        // Una única llamada por lote en vez de N llamadas HTTP individuales.
+        const { data, error } = await supabase.storage
+            .from(BUCKET_NAME)
+            .createSignedUrls(storagePaths, 3600);
+
+        if (error) throw new Error(error.message);
+
+        return (data || []).reduce((acc, item) => {
+            acc[item.path] = item.error ? null : item.signedUrl;
+            return acc;
+        }, {});
     }
 };

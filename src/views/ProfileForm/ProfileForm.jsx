@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FormField from '../../components/complex/FormField/FormField.jsx';
 import FormSection from '../../components/complex/FormSection/FormSection.jsx';
-import ProfileAvatar from '../../components/complex/ProfileAvatar/ProfileAvatar.jsx';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import FORM_SECTIONS from '../../config/profileFields.json';
 import { FiLock } from 'react-icons/fi';
@@ -11,7 +10,7 @@ const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
-function ProfileForm({ profileId, initialData = {}, onSave }) {
+function ProfileForm({ initialData = {}, onSave, onCancel }) {
     const [profile, setProfile] = useState(() => {
         const initial = {};
         ALL_FIELDS.forEach((field) => {
@@ -79,11 +78,7 @@ function ProfileForm({ profileId, initialData = {}, onSave }) {
 
     return (
         <div className="profile-form">
-            <h1 className="profile-form-title">Mi perfil</h1>
-
-            <div className="profile-form-avatar-section">
-                <ProfileAvatar profileId={profileId} size="large" />
-            </div>
+            <h1 className="profile-form-title">Editar perfil</h1>
 
             {FORM_SECTIONS.map((section) => (
                 <FormSection key={section.title} title={section.title}>
@@ -102,7 +97,16 @@ function ProfileForm({ profileId, initialData = {}, onSave }) {
                 {submitError && <div className="error-message">{submitError}</div>}
                 {submitSuccess && <div className="success-message">Perfil actualizado correctamente.</div>}
 
-                <div className="profile-form-buttons">
+                <div className="form-buttons">
+                    {onCancel && (
+                        <button
+                            onClick={onCancel}
+                            disabled={submitting}
+                            className="btn-secondary"
+                        >
+                            Cancelar
+                        </button>
+                    )}
                     <button
                         onClick={handleSave}
                         disabled={submitting}

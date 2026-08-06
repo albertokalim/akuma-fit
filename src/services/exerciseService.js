@@ -136,9 +136,8 @@ export const exerciseService = {
 
 export const exerciseVideoService = {
     async upload(exerciseId, file) {
-        const profile = await getCurrentProfile();
         const fileExt = file.name.split('.').pop();
-        const fileName = `${profile.id}/${exerciseId}.${fileExt}`;
+        const fileName = `${exerciseId}.${fileExt}`;
 
         const { error: uploadError } = await supabase.storage
             .from(BUCKET_NAME)
@@ -153,37 +152,26 @@ export const exerciseVideoService = {
     },
 
     async getSignedUrl(exerciseId) {
-        const profile = await getCurrentProfile();
-        const folderPath = `${profile.id}/`;
+        const extensions = ['mp4', 'webm', 'mov', 'avi'];
         
-        const { data: files, error: listError } = await supabase.storage
-            .from(BUCKET_NAME)
-            .list(folderPath, {
-                search: `${exerciseId}.`,
-            });
+        for (const ext of extensions) {
+            const fileName = `${exerciseId}.${ext}`;
+            const { data, error } = await supabase.storage
+                .from(BUCKET_NAME)
+                .createSignedUrl(fileName, 3600);
 
-        if (listError) throw new Error(listError.message);
-
-        if (!files || files.length === 0) {
-            return null;
+            if (!error && data?.signedUrl) {
+                return data.signedUrl;
+            }
         }
 
-        const fileName = `${folderPath}${files[0].name}`;
-        const { data, error } = await supabase.storage
-            .from(BUCKET_NAME)
-            .createSignedUrl(fileName, 3600);
-
-        if (error) throw new Error(error.message);
-        return data.signedUrl;
+        return null;
     },
 
     async delete(exerciseId) {
-        const profile = await getCurrentProfile();
-        const folderPath = `${profile.id}/`;
-        
         const { data: files, error: listError } = await supabase.storage
             .from(BUCKET_NAME)
-            .list(folderPath, {
+            .list('', {
                 search: `${exerciseId}.`,
             });
 
@@ -193,7 +181,7 @@ export const exerciseVideoService = {
             return;
         }
 
-        const fileName = `${folderPath}${files[0].name}`;
+        const fileName = files[0].name;
         const { error: deleteError } = await supabase.storage
             .from(BUCKET_NAME)
             .remove([fileName]);

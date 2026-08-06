@@ -2,26 +2,28 @@ import { supabase } from '../supabaseClient.js';
 
 export const dashboardService = {
     async getStats() {
-        const { data: clients, error: clientsError } = await supabase
-            .from('profile')
-            .select('id')
-            .eq('role', 'client');
-
-        if (clientsError) throw new Error(clientsError.message);
-
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        const { data: recentCheckIns, error: checkInsError } = await supabase
-            .from('check_in')
-            .select('id')
-            .gte('created_at', oneWeekAgo.toISOString());
+        // Usamos count: 'exact', head: true para pedirle a Postgres solo el
+        // número de filas, sin transferir los datos por la red.
+        const [{ count: activeClients, error: clientsError }, { count: weeklyCheckIns, error: checkInsError }] = await Promise.all([
+            supabase
+                .from('profile')
+                .select('id', { count: 'exact', head: true })
+                .eq('role', 'client'),
+            supabase
+                .from('check_in')
+                .select('id', { count: 'exact', head: true })
+                .gte('created_at', oneWeekAgo.toISOString()),
+        ]);
 
+        if (clientsError) throw new Error(clientsError.message);
         if (checkInsError) throw new Error(checkInsError.message);
 
         return {
-            activeClients: clients.length,
-            weeklyCheckIns: recentCheckIns.length
+            activeClients: activeClients || 0,
+            weeklyCheckIns: weeklyCheckIns || 0,
         };
     },
 

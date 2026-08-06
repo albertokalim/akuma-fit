@@ -1,11 +1,14 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiTrash2, FiChevronDown, FiChevronUp, FiSearch, FiX, FiTag } from 'react-icons/fi';
+import Button from '../../components/primitives/Button/Button.jsx';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
 import { routineService } from '../../services/routineService.js';
 import { exerciseService } from '../../services/exerciseService.js';
+import { tagService } from '../../services/tagService.js';
 import { getCurrentProfile } from '../../utils/auth.js';
+import { useDebouncedValue } from '../../hooks/useDebouncedValue.js';
 
 const EXERCISE_CATEGORIES = [
     'Todas',
@@ -37,34 +40,26 @@ function CreateRoutine() {
 
     const [showExercisePicker, setShowExercisePicker] = useState(false);
     const [searchText, setSearchText] = useState('');
+    const debouncedSearchText = useDebouncedValue(searchText);
     const [selectedCategory, setSelectedCategory] = useState('Todas');
     const [selectedTags, setSelectedTags] = useState([]);
-    const [allTags, setAllTags] = useState([]);
     const [pickerTrigger, setPickerTrigger] = useState(0);
 
     const loadClients = async () => routineService.getClients();
     const { data: clients } = useAsyncData(loadClients, []);
 
-    const loadExercises = async () => {
-        const [exercises, tags] = await Promise.all([
-            exerciseService.search({
-                text: searchText || undefined,
-                category: selectedCategory !== 'Todas' ? selectedCategory : undefined,
-                tags: selectedTags.length > 0 ? selectedTags : undefined,
-            }),
-            exerciseService.getAll().then(exs => {
-                const tagSet = new Map();
-                exs.forEach(ex => ex.tags?.forEach(tag => tagSet.set(tag.id, tag)));
-                return Array.from(tagSet.values()).sort((a, b) => a.name.localeCompare(b.name));
-            }),
-        ]);
-        setAllTags(tags);
-        return exercises;
-    };
+    const loadTags = async () => tagService.getAll();
+    const { data: allTags } = useAsyncData(showExercisePicker ? loadTags : null, [showExercisePicker]);
+
+    const loadExercises = async () => exerciseService.search({
+        text: debouncedSearchText || undefined,
+        category: selectedCategory !== 'Todas' ? selectedCategory : undefined,
+        tags: selectedTags.length > 0 ? selectedTags : undefined,
+    });
 
     const { data: availableExercises, loading: loadingExercises } = useAsyncData(
         showExercisePicker ? loadExercises : null,
-        [showExercisePicker, searchText, selectedCategory, selectedTags, pickerTrigger]
+        [showExercisePicker, debouncedSearchText, selectedCategory, selectedTags, pickerTrigger]
     );
 
     const {
@@ -184,7 +179,6 @@ function CreateRoutine() {
                 })),
             })),
         };
-        console.log('Routine data to create:', routineData);
         await routineService.create(routineData);
     };
 
@@ -302,10 +296,10 @@ function CreateRoutine() {
                                             <div className="sets-section">
                                                 <div className="sets-header">
                                                     <h3 className="sets-title">Series</h3>
-                                                    <button onClick={() => addSet(exercise.id)} className="btn-outline btn-sm">
+                                                    <Button variant="outline" size="sm" onClick={() => addSet(exercise.id)}>
                                                         <FiPlus size={14} />
                                                         <span>Agregar Serie</span>
-                                                    </button>
+                                                    </Button>
                                                 </div>
 
                                                 <div className="sets-table">

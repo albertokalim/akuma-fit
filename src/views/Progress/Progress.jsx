@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LineChart from '../../components/complex/LineChart/LineChart.jsx';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
+import ColorSwatch from '../../components/primitives/ColorSwatch/ColorSwatch.jsx';
 import { useResource } from '../../hooks/useResource.js';
 import { useAutoLoad } from '../../hooks/useAutoLoad.js';
 import { measurementService } from '../../services/measurementService.js';
@@ -74,15 +75,16 @@ function Progress() {
     };
 
     return (
-        <div className="progress">
-            <h1 className="progress-title">Progreso</h1>
-            <p className="progress-description">Visualiza la evolución de tus medidas a lo largo del tiempo.</p>
+        <div className="dashboard-main">
+            <div className="dashboard-title">
+                <h1>Progreso</h1>
+            </div>
 
             {loading && <Spinner text="Cargando mediciones..." />}
             {error && <div className="error-message">{error}</div>}
 
             {!loading && !error && measurements.length === 0 && (
-                <div className="progress-empty">
+                <div className="empty-state">
                     <p>Aún no has registrado ninguna medición.</p>
                     <p>¡Registra tu primera medición para empezar a ver tu progreso!</p>
                 </div>
@@ -90,7 +92,7 @@ function Progress() {
 
             {!loading && !error && measurements.length > 0 && (
                 <>
-                    <section className="progress-summary">
+                    <section className="stats-section">
                         <div className="stats-grid">
                             {currentWeight !== null && (
                                 <StatCard
@@ -116,68 +118,71 @@ function Progress() {
                         </div>
                     </section>
 
-                    <div className="progress-selector">
-                        <span className="progress-selector-label">Filtrar por fechas:</span>
-                        <div className="progress-date-filters">
-                            <div className="progress-date-filter">
-                                <label htmlFor="startDate">Desde:</label>
-                                <input
-                                    type="date"
-                                    id="startDate"
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                />
-                            </div>
-                            <div className="progress-date-filter">
-                                <label htmlFor="endDate">Hasta:</label>
-                                <input
-                                    type="date"
-                                    id="endDate"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="progress-selector">
-                        <span className="progress-selector-label">Selecciona las medidas a mostrar:</span>
-                        <div className="progress-options">
-                            {MEASUREMENT_OPTIONS.map((opt) => (
-                                <label key={opt.key} className="progress-option">
+                    <section className="events-section">
+                        <div className="measurements-selector">
+                            <span className="selector-label">Filtrar por fechas:</span>
+                            <div className="measurements-options">
+                                <div className="measurement-option">
+                                    <label htmlFor="startDate">Desde:</label>
                                     <input
-                                        type="checkbox"
-                                        checked={selectedMeasures.includes(opt.key)}
-                                        onChange={() => toggleMeasure(opt.key)}
+                                        type="date"
+                                        id="startDate"
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
                                     />
-                                    <span
-                                        className="progress-option-color"
-                                        style={{ backgroundColor: opt.color }}
+                                </div>
+                                <div className="measurement-option">
+                                    <label htmlFor="endDate">Hasta:</label>
+                                    <input
+                                        type="date"
+                                        id="endDate"
+                                        value={endDate}
+                                        onChange={(e) => setEndDate(e.target.value)}
                                     />
-                                    <span>{opt.label}</span>
-                                </label>
-                            ))}
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </section>
 
-                    {selectedMeasures.length > 0 ? (
-                        <LineChart
-                            title="Evolución de medidas"
-                            data={chartData}
-                            lines={activeLines}
-                        />
-                    ) : (
-                        <div className="progress-no-selection">
-                            <p>Selecciona al menos una medida para ver la gráfica.</p>
+                    <section className="events-section">
+                        <div className="measurements-selector">
+                            <span className="selector-label">Selecciona las medidas a mostrar:</span>
+                            <div className="measurements-options">
+                                {MEASUREMENT_OPTIONS.map((opt) => (
+                                    <label key={opt.key} className="measurement-option">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedMeasures.includes(opt.key)}
+                                            onChange={() => toggleMeasure(opt.key)}
+                                        />
+                                        <ColorSwatch color={opt.color} />
+                                        <span>{opt.label}</span>
+                                    </label>
+                                ))}
+                            </div>
                         </div>
-                    )}
+                    </section>
+
+                    <section className="events-section">
+                        {selectedMeasures.length > 0 ? (
+                            <LineChart
+                                title="Evolución de medidas"
+                                data={chartData}
+                                lines={activeLines}
+                            />
+                        ) : (
+                            <div className="empty-state">
+                                <p>Selecciona al menos una medida para ver la gráfica.</p>
+                            </div>
+                        )}
+                    </section>
                 </>
             )}
 
-            <button onClick={() => navigate('/app/progress/weight')} className="progress-fab progress-fab-weight">
+            <button onClick={() => navigate('/app/progress/weight')} className="btn-fab" style={{ right: '100px' }}>
                 <span className="button-icon"><FiActivity size={20} /></span>
             </button>
-            <button onClick={() => navigate('/app/progress/photos')} className="progress-fab progress-fab-photos">
+            <button onClick={() => navigate('/app/progress/photos')} className="btn-fab">
                 <span className="button-icon"><FiCamera size={20} /></span>
             </button>
         </div>

@@ -11,15 +11,15 @@ function Avatar({ src, profileId, avatarUid: avatarUidProp, alt, size = 'medium'
 
         const fetchAvatar = async () => {
             try {
-                let avatarUid = avatarUidProp;
-
-                if (!avatarUid) {
-                    avatarUid = await avatarService.getAvatarUid(profileId);
-                }
+                // `listFiles` no depende del avatar_uid, así que se puede lanzar
+                // en paralelo con su búsqueda en vez de esperar secuencialmente.
+                const [avatarUid, files] = await Promise.all([
+                    avatarUidProp ? Promise.resolve(avatarUidProp) : avatarService.getAvatarUid(profileId),
+                    avatarService.listFiles(profileId),
+                ]);
 
                 if (!avatarUid) return;
 
-                const files = await avatarService.listFiles(profileId);
                 const file = files.find(f => f.name.startsWith(avatarUid));
                 if (file) {
                     const signedUrl = await avatarService.getSignedUrl(profileId, file.name);

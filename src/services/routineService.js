@@ -13,8 +13,6 @@ export const routineService = {
     },
 
     async create(routineData) {
-        console.log('Creating routine with data:', routineData);
-        
         const { data: routine, error: routineError } = await supabase
             .from('routine')
             .insert({
@@ -26,13 +24,9 @@ export const routineService = {
             .single();
 
         if (routineError) throw new Error(routineError.message);
-        
-        console.log('Routine created:', routine);
 
         // Si hay un cliente, asignar la rutina PRIMERO (requerido por RLS)
         if (routineData.clientId) {
-            console.log('Assigning routine to client:', { routineId: routine.id, clientId: routineData.clientId });
-            
             const { error: assignError } = await supabase
                 .from('profile_has_routine')
                 .insert({
@@ -40,92 +34,105 @@ export const routineService = {
                     routine: routine.id,
                 });
 
-            if (assignError) {
-                console.error('Error assigning routine to client:', assignError);
-                throw new Error(assignError.message);
-            }
-            
-            console.log('Routine assigned to client successfully');
+            if (assignError) throw new Error(assignError.message);
         }
 
-        for (const exercise of routineData.exercises) {
-            console.log('Linking exercise to routine:', { routineId: routine.id, exerciseId: exercise.id });
-            
+        const exercises = routineData.exercises || [];
+
+        if (exercises.length > 0) {
+            // Vincular todos los ejercicios a la rutina en una sola llamada
             const { error: relationError } = await supabase
                 .from('routine_has_exercise_template')
-                .insert({
+                .insert(exercises.map(exercise => ({
                     routine: routine.id,
                     exercise_template: exercise.id,
-                });
+                })));
 
-            if (relationError) {
-                console.error('Error linking exercise:', relationError);
-                throw new Error(relationError.message);
-            }
-            
-            console.log('Exercise linked successfully');
+            if (relationError) throw new Error(relationError.message);
 
-            for (const set of exercise.sets) {
-                const { data: setTemplate, error: setError } = await supabase
-                    .from('set_template')
-                    .insert({
+            // Aplanar todas las series de todos los ejercicios para insertarlas en un único batch,
+            // manteniendo aparte a qué ejercicio pertenece cada una (por índice) para no incluir
+            // ese dato en el propio insert (la tabla set_template no tiene columna exercise_id).
+            const exerciseIdsBySet = [];
+            const setRows = exercises.flatMap(exercise =>
+                (exercise.sets || []).map(set => {
+                    exerciseIdsBySet.push(exercise.id);
+                    return {
                         order: set.order,
                         reps: set.reps,
                         kg: set.kg,
                         type: set.type,
-                    })
-                    .select()
-                    .single();
+                    };
+                })
+            );
+
+            if (setRows.length > 0) {
+                const { data: createdSets, error: setError } = await supabase
+                    .from('set_template')
+                    .insert(setRows)
+                    .select();
 
                 if (setError) throw new Error(setError.message);
 
-                await supabase
+                // Postgres/PostgREST devuelve las filas en el mismo orden en que
+                // se insertaron para un único INSERT con múltiples VALUES, por lo
+                // que podemos volver a asociarlas por índice con su ejercicio.
+                const links = createdSets.map((setTemplate, index) => ({
+                    exercise_template: exerciseIdsBySet[index],
+                    set_template: setTemplate.id,
+                }));
+
+                const { error: linkError } = await supabase
                     .from('exercise_template_has_set_template')
-                    .insert({
-                        exercise_template: exercise.id,
-                        set_template: setTemplate.id,
-                    });
+                    .insert(links);
+
+                if (linkError) throw new Error(linkError.message);
             }
         }
-
-        console.log('Routine creation completed successfully');
 
         return routine;
     },
 
     async getByClient(clientId) {
-        const { data, error } = await supabase
-            .from('profile_has_routine')
+        // Una sola consulta con embeds anidados en vez de N+1 queries secuenciales
+        const { data: routines, error } = await supabase
+            .from('routine')
             .select(`
-                routine:routine_id (
-                    id,
-                    title,
-                    coach_comment,
-                    created_at,
-                    routine_has_exercise_template (
-                        exercise_template:exercise_template_id (
-                            id,
-                            exercise_name,
-                            category,
-                            description,
-                            comments,
-                            exercise_template_has_set_template (
-                                set_template:set_template_id (
-                                    id,
-                                    order,
-                                    reps,
-                                    kg,
-                                    type
-                                )
-                            )
+                *,
+                profile_has_routine!inner(profile),
+                routine_has_exercise_template(
+                    exercise_template(
+                        *,
+                        exercise_template_has_set_template(
+                            set_template(*)
                         )
                     )
                 )
             `)
-            .eq('profile', clientId)
+            .eq('profile_has_routine.profile', clientId)
             .order('created_at', { ascending: false });
 
         if (error) throw new Error(error.message);
-        return data?.map(item => item.routine) || [];
+
+        return (routines || []).map(routine => {
+            const exercises = (routine.routine_has_exercise_template || [])
+                .map(rel => rel.exercise_template)
+                .filter(Boolean)
+                .map(exercise => {
+                    const sets = (exercise.exercise_template_has_set_template || [])
+                        .map(rel => rel.set_template)
+                        .filter(Boolean)
+                        .sort((a, b) => a.order - b.order);
+
+                    const exerciseRest = { ...exercise };
+                    delete exerciseRest.exercise_template_has_set_template;
+                    return { ...exerciseRest, sets };
+                });
+
+            const routineRest = { ...routine };
+            delete routineRest.profile_has_routine;
+            delete routineRest.routine_has_exercise_template;
+            return { ...routineRest, exercises };
+        });
     },
 };

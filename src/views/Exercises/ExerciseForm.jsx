@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiPlus, FiX, FiVideo, FiTrash2 } from 'react-icons/fi';
+import Button from '../../components/primitives/Button/Button.jsx';
 import { exerciseService, exerciseVideoService } from '../../services/exerciseService.js';
 import { tagService } from '../../services/tagService.js';
 import useFormSubmission from '../../hooks/useFormSubmission.js';
@@ -292,10 +293,10 @@ function ExerciseForm() {
                             <video controls src={existingVideoUrl} className="video-preview">
                                 Tu navegador no soporta videos.
                             </video>
-                            <button onClick={() => setExistingVideoUrl(null)} className="btn-outline btn-sm">
+                            <Button variant="outline" size="sm" onClick={() => setExistingVideoUrl(null)}>
                                 <FiTrash2 size={14} />
                                 Eliminar video actual
-                            </button>
+                            </Button>
                         </div>
                     )}
 
@@ -304,10 +305,10 @@ function ExerciseForm() {
                             <video controls src={videoPreview} className="video-preview">
                                 Tu navegador no soporta videos.
                             </video>
-                            <button onClick={removeVideo} className="btn-outline btn-sm">
+                            <Button variant="outline" size="sm" onClick={removeVideo}>
                                 <FiTrash2 size={14} />
                                 Eliminar video
-                            </button>
+                            </Button>
                         </div>
                     )}
 

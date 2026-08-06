@@ -15,6 +15,29 @@ export const profileService = {
         return profile;
     },
 
+    async getById(profileId) {
+        const { data: profile, error } = await supabase
+            .from('profile')
+            .select('*')
+            .eq('id', profileId)
+            .maybeSingle();
+
+        if (error) throw new Error(error.message);
+        return profile;
+    },
+
+    async update(profileId, data) {
+        const { data: profile, error } = await supabase
+            .from('profile')
+            .update(data)
+            .eq('id', profileId)
+            .select()
+            .single();
+
+        if (error) throw new Error(error.message);
+        return profile;
+    },
+
     async getIdByCurrentUser() {
         const user = await getCurrentUser();
 
