@@ -6,7 +6,9 @@ import NewWeightLog from '../views/Progress/NewWeightLog.jsx';
 import ProgressBodyPhotos from '../views/Progress/ProgressBodyPhotos.jsx';
 import CoachCheckIns from '../views/CoachCheckIns/CoachCheckIns.jsx';
 import Reports from '../views/Reports/Reports.jsx';
-import CreateRutine from '../views/CreateRutine/CreateRutine.jsx';
+import CreateRoutine from '../views/CreateRoutine/CreateRoutine.jsx';
+import Exercises from '../views/Exercises/Exercises.jsx';
+import ExerciseForm from '../views/Exercises/ExerciseForm.jsx';
 import PlaceholderComponent from '../components/primitives/PlaceholderComponent/PlaceholderComponent.jsx';
 
 /**
@@ -41,13 +43,15 @@ export const SECTION_ROUTES = {
         { path: 'clients', element: <PlaceholderComponent title="Clientes Component" /> },
     ],
     exercises: [
-        { path: 'exercises', element: <PlaceholderComponent title="Ejercicios Component" /> },
+        { path: 'exercises', element: <Exercises /> },
+        { path: 'exercises/new', element: <ExerciseForm /> },
+        { path: 'exercises/:id/edit', element: <ExerciseForm /> },
     ],
     alimentos: [
         { path: 'alimentos', element: <PlaceholderComponent title="Alimentos Component" /> },
     ],
     plans: [
-        { path: 'plans', element: <CreateRutine /> },
+        { path: 'plans', element: <CreateRoutine /> },
     ],
     'my-plan': [
         { path: 'my-plan', element: <PlaceholderComponent title="Mi Plan Component" /> },

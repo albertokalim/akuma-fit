@@ -14,6 +14,206 @@
     color: var(--color-text);
 }
 
+/* Exercise Cards */
+.exercise-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.exercise-card:hover {
+    border-color: var(--color-primary-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.exercise-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+}
+
+.exercise-card-title {
+    font-size: var(--font-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+    flex: 1;
+}
+
+.exercise-card-description {
+    font-size: var(--font-md);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.exercise-card-comments {
+    font-size: var(--font-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.exercise-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.exercise-card-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: auto;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+}
+
+/* Exercise Picker (Modal) */
+.exercise-picker-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.exercise-picker-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.2s;
+}
+
+.exercise-picker-item:hover {
+    border-color: var(--color-primary-border);
+}
+
+.exercise-picker-item.added {
+    opacity: 0.6;
+}
+
+.exercise-picker-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex: 1;
+    min-width: 0;
+}
+
+.exercise-picker-name {
+    font-size: var(--font-md);
+    font-weight: 500;
+    color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.exercise-picker-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+/* Routine Exercise Cards */
+.routine-exercise-card {
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+}
+
+.routine-exercise-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg) var(--space-xl);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.routine-exercise-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex: 1;
+    min-width: 0;
+}
+
+.routine-exercise-number {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.routine-exercise-name {
+    font-size: var(--font-lg);
+    font-weight: 500;
+    color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.routine-exercise-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+}
+
+.routine-exercise-content {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.routine-exercise-info {
+    font-size: var(--font-md);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.routine-exercise-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+/* Category Badge */
+.category-badge {
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+    font-size: var(--font-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
 /* Stat Card */
 .stat-card {
     display: flex;

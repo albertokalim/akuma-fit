@@ -77,7 +77,7 @@ function Login() {
     return (
         <div className="auth-page">
             <div className="auth-container">
-                <h2>{loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}</h2>
+                <h2>{'Iniciar Sesión'}</h2>
 
                 <form onSubmit={handleLogin} className="auth-form">
                     {errors.message && <div className="error-message">{errors.message}</div>}
