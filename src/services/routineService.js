@@ -1,5 +1,53 @@
 import { supabase } from '../supabaseClient.js';
 
+const ROUTINE_WITH_EXERCISES_SELECT = `
+    *,
+    routine_has_exercise_template(
+        exercise_template(
+            *,
+            exercise_template_has_set_template(
+                set_template(*)
+            )
+        )
+    )
+`;
+
+// Variante para filtrar por cliente asignado: el embed con !inner hace que
+// sólo se devuelvan rutinas con asignación para ese perfil.
+const ROUTINES_BY_CLIENT_SELECT = `
+    *,
+    profile_has_routine!inner(profile),
+    routine_has_exercise_template(
+        exercise_template(
+            *,
+            exercise_template_has_set_template(
+                set_template(*)
+            )
+        )
+    )
+`;
+
+function mapRoutineExercises(routine) {
+    const exercises = (routine.routine_has_exercise_template || [])
+        .map(rel => rel.exercise_template)
+        .filter(Boolean)
+        .map(exercise => {
+            const sets = (exercise.exercise_template_has_set_template || [])
+                .map(rel => rel.set_template)
+                .filter(Boolean)
+                .sort((a, b) => a.order - b.order);
+
+            const exerciseRest = { ...exercise };
+            delete exerciseRest.exercise_template_has_set_template;
+            return { ...exerciseRest, sets };
+        });
+
+    const routineRest = { ...routine };
+    delete routineRest.profile_has_routine;
+    delete routineRest.routine_has_exercise_template;
+    return { ...routineRest, exercises };
+}
+
 export const routineService = {
     async getClients() {
         const { data, error } = await supabase
@@ -97,42 +145,23 @@ export const routineService = {
         // Una sola consulta con embeds anidados en vez de N+1 queries secuenciales
         const { data: routines, error } = await supabase
             .from('routine')
-            .select(`
-                *,
-                profile_has_routine!inner(profile),
-                routine_has_exercise_template(
-                    exercise_template(
-                        *,
-                        exercise_template_has_set_template(
-                            set_template(*)
-                        )
-                    )
-                )
-            `)
+            .select(ROUTINES_BY_CLIENT_SELECT)
             .eq('profile_has_routine.profile', clientId)
             .order('created_at', { ascending: false });
 
         if (error) throw new Error(error.message);
 
-        return (routines || []).map(routine => {
-            const exercises = (routine.routine_has_exercise_template || [])
-                .map(rel => rel.exercise_template)
-                .filter(Boolean)
-                .map(exercise => {
-                    const sets = (exercise.exercise_template_has_set_template || [])
-                        .map(rel => rel.set_template)
-                        .filter(Boolean)
-                        .sort((a, b) => a.order - b.order);
+        return (routines || []).map(mapRoutineExercises);
+    },
 
-                    const exerciseRest = { ...exercise };
-                    delete exerciseRest.exercise_template_has_set_template;
-                    return { ...exerciseRest, sets };
-                });
+    async getById(routineId) {
+        const { data: routine, error } = await supabase
+            .from('routine')
+            .select(ROUTINE_WITH_EXERCISES_SELECT)
+            .eq('id', routineId)
+            .maybeSingle();
 
-            const routineRest = { ...routine };
-            delete routineRest.profile_has_routine;
-            delete routineRest.routine_has_exercise_template;
-            return { ...routineRest, exercises };
-        });
+        if (error) throw new Error(error.message);
+        return routine ? mapRoutineExercises(routine) : null;
     },
 };

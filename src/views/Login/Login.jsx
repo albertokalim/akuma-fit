@@ -12,7 +12,7 @@ function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [, setLoading] = useState(false);
     const [errors, setErrors] = useState({
         email: false,
         password: false,

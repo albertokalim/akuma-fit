@@ -22,4 +22,10 @@ export const authService = {
         if (error) throw error;
         return user;
     },
+
+    async updateUser(attributes) {
+        const { data, error } = await supabase.auth.updateUser(attributes);
+        if (error) throw error;
+        return data;
+    },
 };

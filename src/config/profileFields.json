@@ -2,10 +2,9 @@
     {
         "title": "Información personal",
         "fields": [
-            { "id": "first_name", "group": "profile", "component": "text", "label": "Nombre", "placeholder": "Tu nombre", "required": true },
-            { "id": "last_name", "group": "profile", "component": "text", "label": "Apellidos", "placeholder": "Tus apellidos", "required": true },
-            { "id": "email", "group": "profile", "component": "text", "type": "email", "label": "Email", "placeholder": "tu@email.com", "required": true },
-            { "id": "phone", "group": "profile", "component": "text", "type": "tel", "label": "Teléfono", "placeholder": "+34 600 000 000", "required": false }
+            { "id": "name", "group": "profile", "component": "text", "label": "Nombre", "placeholder": "Tu nombre", "required": true },
+            { "id": "surname", "group": "profile", "component": "text", "label": "Apellidos", "placeholder": "Tus apellidos", "required": true },
+            { "id": "email", "group": "profile", "component": "text", "type": "email", "label": "Email", "placeholder": "tu@email.com", "required": true }
         ]
     }
 ]

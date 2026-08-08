@@ -18,6 +18,7 @@ const CreateRoutine = lazy(() => import('../views/CreateRoutine/CreateRoutine.js
 const Exercises = lazy(() => import('../views/Exercises/Exercises.jsx'));
 const ExerciseForm = lazy(() => import('../views/Exercises/ExerciseForm.jsx'));
 const MyPlan = lazy(() => import('../views/MyPlan/MyPlan.jsx'));
+const Session = lazy(() => import('../views/Session/Session.jsx'));
 
 /**
  * Envuelve un elemento perezoso (`React.lazy`) en un `Suspense` con un
@@ -77,6 +78,9 @@ export const SECTION_ROUTES = {
     ],
     'my-plan': [
         { path: 'my-plan', element: withSuspense(<MyPlan />) },
+    ],
+    session: [
+        { path: 'session', element: withSuspense(<Session />) },
     ],
     nutrition: [
         { path: 'nutrition', element: <PlaceholderComponent title="Nutrición Component" /> },

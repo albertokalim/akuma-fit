@@ -14,8 +14,7 @@
                 ]
             },
             { "id": "weight", "group": "measurement", "component": "text", "type": "number", "label": "Peso actual en kg", "placeholder": "Peso en kg", "required": true },
-            { "id": "height", "group": "initialAssessment", "component": "text", "type": "number", "step": "any", "label": "Altura en cm", "placeholder": "Altura en cm", "required": true },
-            { "id": "phone", "group": "userInfo", "component": "text", "type": "tel", "label": "Teléfono de contacto", "placeholder": "Número de teléfono", "required": true }
+            { "id": "height", "group": "initialAssessment", "component": "text", "type": "number", "step": "any", "label": "Altura en cm", "placeholder": "Altura en cm", "required": true }
         ]
     },
     {

@@ -75,6 +75,33 @@ button:disabled,
     color: var(--color-bg);
 }
 
+/* Boton de peligro (acciones destructivas como abandonar una sesión) */
+.btn-danger {
+    padding: var(--space-md) var(--space-xl);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-error);
+    color: var(--color-bg);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-danger:hover:not(:disabled) {
+    filter: brightness(0.9);
+}
+
+.btn-danger:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.btn-danger:disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
 /* Boton grande */
 .btn-lg {
     padding: var(--space-lg) var(--space-3xl);

@@ -12,6 +12,7 @@
     { "id": "dashboard", "label": "Mi Dashboard", "icon": "dashboard" },
     { "id": "checkin", "label": "Check-In", "icon": "checkin" },
     { "id": "my-plan", "label": "Mi Plan", "icon": "plans" },
+    { "id": "session", "label": "Entrenar", "icon": "session" },
     { "id": "nutrition", "label": "Nutrición", "icon": "nutrition" },
     { "id": "progress", "label": "Progreso", "icon": "progress" }
   ]

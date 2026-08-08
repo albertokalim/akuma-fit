@@ -1,4 +1,4 @@
-import { FiGrid, FiUsers, FiClipboard, FiTrendingUp, FiCheckCircle } from 'react-icons/fi';
+import { FiGrid, FiUsers, FiClipboard, FiTrendingUp, FiCheckCircle, FiActivity } from 'react-icons/fi';
 import { GiWeightLiftingUp, GiFruitBowl, GiWeightScale } from 'react-icons/gi';
 
 // Mapa centralizado de iconos del menú: cada entrada de menuConfig.json referencia
@@ -14,6 +14,7 @@ const ICON_MAP = {
     reports: FiTrendingUp,
     progress: FiTrendingUp,
     checkin: FiCheckCircle,
+    session: FiActivity,
     'weight-log': GiWeightScale,
 };
 

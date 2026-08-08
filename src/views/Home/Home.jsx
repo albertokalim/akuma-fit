@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/complex/Header/Header.jsx';
 import Sidebar from '../../components/complex/Sidebar/Sidebar.jsx';
+import SessionBanner from '../../components/complex/SessionBanner/SessionBanner.jsx';
 import { useAuth } from '../../context/useAuth.js';
 import menuConfig from '../../config/menuConfig.json';
 
@@ -16,6 +17,7 @@ import menuConfig from '../../config/menuConfig.json';
 function AppLayout() {
     const { user, profileId, userRole, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const menuItems = useMemo(() => menuConfig[userRole] || menuConfig.coach, [userRole]);
@@ -35,6 +37,7 @@ function AppLayout() {
                 onMenuToggle={handleMenuToggle}
                 menuOpen={sidebarOpen}
             />
+            {!location.pathname.startsWith('/app/session') && <SessionBanner />}
             <div className="home-content">
                 <Sidebar
                     items={menuItems}

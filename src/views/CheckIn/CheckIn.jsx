@@ -9,7 +9,6 @@ import { checkInService } from '../../services/checkInService.js';
 import {
     calculateStreak,
     calculateAverageAdherence,
-    calculateAverage,
     buildChartData as buildCheckInChartData,
     generateInsights,
 } from '../../utils/checkInStats.js';
@@ -37,8 +36,6 @@ function CheckIn() {
     const streak = calculateStreak(checkIns);
     const avgDiet = calculateAverageAdherence(checkIns, 'diet_adherence');
     const avgTraining = calculateAverageAdherence(checkIns, 'training_adherence');
-    const avgRest = calculateAverage(checkIns, 'rest_quality');
-    const avgHunger = calculateAverage(checkIns, 'hunger_level');
 
     const chartData = buildCheckInChartData(checkIns);
 

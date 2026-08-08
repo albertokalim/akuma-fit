@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FiChevronLeft, FiChevronRight, FiInfo } from 'react-icons/fi';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
 import { routineService } from '../../services/routineService.js';
-import { exerciseVideoService } from '../../services/exerciseService.js';
+import ExerciseVideo from '../../components/complex/ExerciseVideo/ExerciseVideo.jsx';
 import { useAuth } from '../../context/useAuth.js';
 
 function MyPlan() {
@@ -111,7 +111,10 @@ function MyPlan() {
 
                         <div className="exercise-detail-section">
                             <h3 className="exercise-detail-subtitle">Video Explicativo</h3>
-                            <ExerciseVideo exerciseId={exercise.id} />
+                            <ExerciseVideo
+                                exerciseId={exercise.id}
+                                emptyMessage="No hay video disponible para este ejercicio."
+                            />
                         </div>
                     </div>
                 </div>
@@ -214,27 +217,6 @@ function MyPlan() {
                 </div>
             </div>
         </div>
-    );
-}
-
-function ExerciseVideo({ exerciseId }) {
-    const { data: videoUrl, loading } = useAsyncData(
-        async () => await exerciseVideoService.getSignedUrl(exerciseId),
-        [exerciseId]
-    );
-
-    if (loading) {
-        return <div className="loading-state">Cargando video...</div>;
-    }
-
-    if (!videoUrl) {
-        return <p className="exercise-detail-text">No hay video disponible para este ejercicio.</p>;
-    }
-
-    return (
-        <video controls src={videoUrl} className="video-preview">
-            Tu navegador no soporta videos.
-        </video>
     );
 }
 

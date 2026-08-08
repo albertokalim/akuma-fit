@@ -1,6 +1,7 @@
 import './index.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { SessionProvider } from './context/SessionContext.jsx';
 import { RequireAuth, PublicOnlyRoute, RootRedirect } from './routes/guards.jsx';
 import Login from './views/Login/Login.jsx';
 import Register from './views/Register/Register.jsx';
@@ -32,7 +33,13 @@ export default function App() {
 
                     <Route
                         path="/app"
-                        element={<RequireAuth requireAssessment><AppLayout /></RequireAuth>}
+                        element={(
+                            <RequireAuth requireAssessment>
+                                <SessionProvider>
+                                    <AppLayout />
+                                </SessionProvider>
+                            </RequireAuth>
+                        )}
                     >
                         <Route index element={<Navigate to="dashboard" replace />} />
                         <Route path="profile" element={<ProfileFormRoute />} />

@@ -2,21 +2,32 @@ import { useState } from 'react';
 import { FiEdit2 } from 'react-icons/fi';
 import ProfileAvatar from '../../components/complex/ProfileAvatar/ProfileAvatar.jsx';
 import { profileService } from '../../services/profileService.js';
+import { authService } from '../../services/authService.js';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
 import ProfileForm from './ProfileForm.jsx';
 
 function ProfileView({ profileId }) {
     const [isEditing, setIsEditing] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     const loadProfile = async () => {
-        return await profileService.getById(profileId);
+        const [profile, user] = await Promise.all([
+            profileService.getById(profileId),
+            authService.getUser(),
+        ]);
+        return { ...profile, email: user.email };
     };
 
-    const { data: profile, loading, error } = useAsyncData(loadProfile, [profileId]);
+    const { data: profile, loading, error } = useAsyncData(loadProfile, [profileId, refreshKey]);
 
     const handleSave = async (formData) => {
-        await profileService.update(profileId, formData);
+        const { email, ...profileData } = formData;
+        if (email) {
+            await authService.updateUser({ email });
+        }
+        await profileService.update(profileId, profileData);
         setIsEditing(false);
+        setRefreshKey((prev) => prev + 1);
     };
 
     const handleCancel = () => {
@@ -93,12 +104,6 @@ function ProfileView({ profileId }) {
                             <div className="profile-view-field">
                                 <span className="profile-view-label">Email</span>
                                 <span className="profile-view-value">{profile.email}</span>
-                            </div>
-                        )}
-                        {profile.phone && (
-                            <div className="profile-view-field">
-                                <span className="profile-view-label">Teléfono</span>
-                                <span className="profile-view-value">{profile.phone}</span>
                             </div>
                         )}
                     </div>
