@@ -10,9 +10,16 @@ const RPE_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
  * prescritos), selector de RPE y botón de completar/desmarcar. Compartida
  * por el layout móvil (una tarjeta con swipe) y el de escritorio (lista
  * completa).
+ *
+ * `row` es la fila `completed_exercise` de ESTA sesión (no la plantilla):
+ * es la identidad real usada para las claves de estado y para las llamadas
+ * a sessionService, de modo que dos sesiones sobre la misma rutina (o, en
+ * el futuro, dos apariciones del mismo ejercicio en una rutina) nunca
+ * comparten estado.
  */
 function ExerciseCard({
     exercise,
+    row,
     index,
     completed,
     canComplete,
@@ -56,7 +63,7 @@ function ExerciseCard({
                     <span className="set-col-type">Tipo</span>
                 </div>
                 {sets.map((set) => {
-                    const value = setValues[`${exercise.id}:${set.order}`] || {};
+                    const value = setValues[`${row.id}:${set.order}`] || {};
 
                     return (
                         <div key={set.id} className="sets-table-row session-sets-row">
@@ -68,8 +75,8 @@ function ExerciseCard({
                                 className="set-input"
                                 placeholder={set.reps || '—'}
                                 value={value.reps ?? ''}
-                                onChange={(event) => onSetChange(exercise, set.order, 'reps', event.target.value)}
-                                onBlur={() => onSetBlur(exercise, set)}
+                                onChange={(event) => onSetChange(row, set.order, 'reps', event.target.value)}
+                                onBlur={() => onSetBlur(row, set)}
                             />
                             <input
                                 type="number"
@@ -79,8 +86,8 @@ function ExerciseCard({
                                 className="set-input"
                                 placeholder={set.kg || '—'}
                                 value={value.kg ?? ''}
-                                onChange={(event) => onSetChange(exercise, set.order, 'kg', event.target.value)}
-                                onBlur={() => onSetBlur(exercise, set)}
+                                onChange={(event) => onSetChange(row, set.order, 'kg', event.target.value)}
+                                onBlur={() => onSetBlur(row, set)}
                             />
                             <span className="set-col-type">{set.type}</span>
                         </div>
@@ -105,7 +112,7 @@ function ExerciseCard({
                                     key={value}
                                     type="button"
                                     className={`session-rpe-btn ${rpe === value ? 'selected' : ''}`}
-                                    onClick={() => onRpeChange(exercise, rpe === value ? null : value)}
+                                    onClick={() => onRpeChange(row, rpe === value ? null : value)}
                                     aria-label={`RPE ${value}`}
                                 >
                                     {value}

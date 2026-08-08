@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient.js';
 const ROUTINE_WITH_EXERCISES_SELECT = `
     *,
     routine_has_exercise_template(
+        position,
         exercise_template(
             *,
             exercise_template_has_set_template(
@@ -18,6 +19,7 @@ const ROUTINES_BY_CLIENT_SELECT = `
     *,
     profile_has_routine!inner(profile),
     routine_has_exercise_template(
+        position,
         exercise_template(
             *,
             exercise_template_has_set_template(
@@ -28,7 +30,14 @@ const ROUTINES_BY_CLIENT_SELECT = `
 `;
 
 function mapRoutineExercises(routine) {
+    // El orden de un embed anidado no está garantizado por PostgREST sin un
+    // `.order()` explícito sobre esa relación (a diferencia de `set_template`,
+    // que sí lo tiene). Aquí se ordena en cliente por la columna `position`
+    // persistida en `routine_has_exercise_template`, así el orden que ve el
+    // cliente coincide siempre con el que definió el coach.
     const exercises = (routine.routine_has_exercise_template || [])
+        .slice()
+        .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
         .map(rel => rel.exercise_template)
         .filter(Boolean)
         .map(exercise => {
@@ -88,12 +97,17 @@ export const routineService = {
         const exercises = routineData.exercises || [];
 
         if (exercises.length > 0) {
-            // Vincular todos los ejercicios a la rutina en una sola llamada
+            // Vincular todos los ejercicios a la rutina en una sola llamada,
+            // persistiendo `position` según el orden en que el coach los dejó
+            // en el formulario (ver mapRoutineExercises: es la columna por la
+            // que se ordena al leer, ya que PostgREST no garantiza el orden
+            // de un embed sin ella).
             const { error: relationError } = await supabase
                 .from('routine_has_exercise_template')
-                .insert(exercises.map(exercise => ({
+                .insert(exercises.map((exercise, index) => ({
                     routine: routine.id,
                     exercise_template: exercise.id,
+                    position: index + 1,
                 })));
 
             if (relationError) throw new Error(relationError.message);

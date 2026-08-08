@@ -8,6 +8,8 @@ import RoutinePicker from './RoutinePicker.jsx';
 import TrainingView from './TrainingView.jsx';
 import SessionSummary from './SessionSummary.jsx';
 
+const RETRY_SPINNER_TEXT = 'Comprobando si tienes una sesión en curso...';
+
 /**
  * Pestaña "Entrenar" del cliente. Máquina de estados con tres pantallas:
  *
@@ -20,7 +22,13 @@ import SessionSummary from './SessionSummary.jsx';
  * el estado sobrevive a recargas, cierres de la app y cambios de pestaña.
  */
 function Session() {
-    const { activeSession, clearSession } = useSession();
+    const {
+        activeSession,
+        clearSession,
+        checkingActiveSession,
+        activeSessionCheckError,
+        retryActiveSessionCheck,
+    } = useSession();
     const [summary, setSummary] = useState(null);
 
     const handleFinished = useCallback((summaryData) => {
@@ -49,6 +57,30 @@ function Session() {
                 onFinished={handleFinished}
                 onCancelled={handleCancelled}
             />
+        );
+    }
+
+    // No confundir "no hay sesión activa" con "no hemos podido comprobarlo":
+    // si la consulta inicial falló, no sabemos con certeza si existe una
+    // sesión activa en BBDD. Mostrar el RoutinePicker aquí podría llevar a
+    // crear una segunda sesión activa en paralelo. Se pide reintentar en
+    // vez de asumir que no hay ninguna.
+    if (checkingActiveSession) {
+        return <Spinner text={RETRY_SPINNER_TEXT} />;
+    }
+
+    if (activeSessionCheckError) {
+        return (
+            <div className="session-page">
+                <div className="page-container">
+                    <div className="error-message">
+                        No se pudo comprobar si tienes una sesión en curso: {activeSessionCheckError}
+                    </div>
+                    <button className="btn-primary" onClick={retryActiveSessionCheck}>
+                        Reintentar
+                    </button>
+                </div>
+            </div>
         );
     }
 
