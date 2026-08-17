@@ -1,5 +1,5 @@
 import { FiGrid, FiUsers, FiClipboard, FiTrendingUp, FiCheckCircle, FiActivity } from 'react-icons/fi';
-import { GiWeightLiftingUp, GiFruitBowl, GiWeightScale } from 'react-icons/gi';
+import { GiWeightLiftingUp, GiFruitBowl, GiWeightScale, GiCookingPot, GiMeal } from 'react-icons/gi';
 
 // Mapa centralizado de iconos del menú: cada entrada de menuConfig.json referencia
 // una de estas claves (string) en vez de un emoji, y aquí resolvemos a un icono
@@ -15,6 +15,8 @@ const ICON_MAP = {
     progress: FiTrendingUp,
     checkin: FiCheckCircle,
     session: FiActivity,
+    recipes: GiCookingPot,
+    diet: GiMeal,
     'weight-log': GiWeightScale,
 };
 

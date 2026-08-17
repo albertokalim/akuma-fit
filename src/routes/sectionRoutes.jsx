@@ -19,6 +19,12 @@ const Exercises = lazy(() => import('../views/Exercises/Exercises.jsx'));
 const ExerciseForm = lazy(() => import('../views/Exercises/ExerciseForm.jsx'));
 const MyPlan = lazy(() => import('../views/MyPlan/MyPlan.jsx'));
 const Session = lazy(() => import('../views/Session/Session.jsx'));
+const Foods = lazy(() => import('../views/Foods/Foods.jsx'));
+const Recipes = lazy(() => import('../views/Recipes/Recipes.jsx'));
+const RecipeForm = lazy(() => import('../views/Recipes/RecipeForm.jsx'));
+const MealPlans = lazy(() => import('../views/MealPlans/MealPlans.jsx'));
+const MealPlanEditor = lazy(() => import('../views/MealPlans/MealPlanEditor.jsx'));
+const Nutrition = lazy(() => import('../views/Nutrition/Nutrition.jsx'));
 
 /**
  * Envuelve un elemento perezoso (`React.lazy`) en un `Suspense` con un
@@ -71,7 +77,17 @@ export const SECTION_ROUTES = {
         { path: 'exercises/:id/edit', element: withSuspense(<ExerciseForm />) },
     ],
     alimentos: [
-        { path: 'alimentos', element: <PlaceholderComponent title="Alimentos Component" /> },
+        { path: 'alimentos', element: withSuspense(<Foods />) },
+    ],
+    recetas: [
+        { path: 'recetas', element: withSuspense(<Recipes />) },
+        { path: 'recetas/new', element: withSuspense(<RecipeForm />) },
+        { path: 'recetas/:id/edit', element: withSuspense(<RecipeForm />) },
+    ],
+    dietas: [
+        { path: 'dietas', element: withSuspense(<MealPlans />) },
+        { path: 'dietas/new', element: withSuspense(<MealPlanEditor />) },
+        { path: 'dietas/:id/edit', element: withSuspense(<MealPlanEditor />) },
     ],
     plans: [
         { path: 'plans', element: withSuspense(<CreateRoutine />) },
@@ -83,7 +99,7 @@ export const SECTION_ROUTES = {
         { path: 'session', element: withSuspense(<Session />) },
     ],
     nutrition: [
-        { path: 'nutrition', element: <PlaceholderComponent title="Nutrición Component" /> },
+        { path: 'nutrition', element: withSuspense(<Nutrition />) },
     ],
 };
 

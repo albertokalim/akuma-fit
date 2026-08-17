@@ -15,6 +15,17 @@ export const assessmentService = {
         return !!data;
     },
 
+    async getByProfile(profileId) {
+        const { data, error } = await supabase
+            .from('initial_assessment')
+            .select('*')
+            .eq('profile_id', profileId)
+            .maybeSingle();
+
+        if (error) throw new Error(error.message);
+        return data || null;
+    },
+
     async create(profileId, assessmentData) {
         const payload = normalizeNumericFields(
             { ...assessmentData, profile_id: profileId },
