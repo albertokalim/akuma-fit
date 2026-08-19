@@ -49,7 +49,6 @@ function ExerciseForm() {
                 const videoUrl = await exerciseVideoService.getSignedUrl(id);
                 if (videoUrl) setExistingVideoUrl(videoUrl);
             } catch {
-                // No hay video
             }
         }
         return true;

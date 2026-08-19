@@ -9,11 +9,7 @@ const FEELING_LABELS = {
     mal: 'Mal',
 };
 
-/**
- * Paso 3: resumen al terminar la sesión (duración, ejercicios, series,
- * volumen total y sensación), con el desglose por ejercicio incluyendo el
- * RPE de cada uno y las notas del cliente.
- */
+ 
 function SessionSummary({ summary, onNewSession }) {
     const volumeLabel = `${Math.round(summary.totalVolume).toLocaleString('es-ES')} kg`;
 

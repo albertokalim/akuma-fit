@@ -5,13 +5,9 @@ import { profileService } from '../services/profileService.js';
 import { assessmentService } from '../services/assessmentService.js';
 import { AuthContext } from './authContextInstance.js';
 
-/**
- * Centraliza el estado de sesión/perfil (email, profileId, userRole, assessmentCompleted)
- * y expone acciones de auth (login/logout). Elimina el prop-drilling de email/onLogout/
- * profileId/userRole a través de App -> Home -> pantallas.
- */
+ 
 export function AuthProvider({ children }) {
-    const [status, setStatus] = useState('loading'); // 'loading' | 'signed-out' | 'signed-in'
+    const [status, setStatus] = useState('loading'); 
     const [user, setUser] = useState(null);
     const [profileId, setProfileId] = useState(null);
     const [userRole, setUserRole] = useState('client');

@@ -2,9 +2,6 @@ import { useEffect } from 'react';
 
 
 function FormField({ label, id, type = 'text', step, placeholder, value, onChange, required = false, hasError = false, onValidityChange }) {
-    // El propio campo sabe qué significa "estar vacío" para su tipo de valor (string)
-    // y avisa al padre de su validez cada vez que cambia, sin que el padre tenga
-    // que conocer esta lógica.
     useEffect(() => {
         if (!onValidityChange) return;
         const isEmpty = value === undefined || value === null || value === '';

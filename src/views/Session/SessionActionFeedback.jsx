@@ -1,8 +1,4 @@
-/**
- * Mensaje de error persistente + hint temporal de una acción (guardar serie,
- * completar ejercicio, etc.). Compartido por los layouts móvil y escritorio
- * de TrainingView.
- */
+ 
 function SessionActionFeedback({ error, hint }) {
     return (
         <>

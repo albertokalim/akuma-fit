@@ -16,13 +16,6 @@ export const sessionService = {
     },
 
     async create(profileId, routine) {
-        // Se apoya en la función Postgres `create_training_session`
-        // (supabase/migrations/20260808120000_session_hardening.sql), que
-        // inserta la training_session y sus completed_exercise en una única
-        // transacción. Antes esto eran dos inserts secuenciales desde el
-        // cliente: si el segundo fallaba, quedaba una sesión "activa" sin
-        // ejercicios asociados (zombi, imposible de completar o cancelar
-        // correctamente desde la UI).
         const { data: session, error } = await supabase
             .rpc('create_training_session', {
                 p_profile_id: profileId,

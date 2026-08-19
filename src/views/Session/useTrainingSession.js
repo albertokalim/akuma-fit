@@ -11,18 +11,7 @@ import {
 
 const HINT_DURATION_MS = 2500;
 
-/**
- * Encapsula todo el estado y la lógica de negocio de la pantalla de
- * entrenamiento (paso 2): construcción del estado inicial a partir de la
- * sesión persistida, autosave de series, completar/desmarcar ejercicios,
- * avance automático, resumen final y abandono de sesión.
- *
- * Se extrae de TrainingView.jsx para que este último quede como un
- * componente de presentación (elige layout móvil/escritorio y pinta el
- * estado), y para poder testear las reglas de negocio (p.ej. "no se puede
- * completar un ejercicio sin todas las reps") sin depender del DOM ni de
- * gestos táctiles.
- */
+ 
 export function useTrainingSession({ session, routine, fullSession, onFinished, onCancelled }) {
     const matchedExercises = useMemo(
         () => matchExerciseRows(routine.exercises || [], fullSession.completed_exercise || []),
@@ -33,15 +22,12 @@ export function useTrainingSession({ session, routine, fullSession, onFinished, 
     const [completedMap, setCompletedMap] = useState(() => buildInitialCompletedMap(matchedExercises));
     const [rpeMap, setRpeMap] = useState(() => buildInitialRpeMap(matchedExercises));
     const [currentIndex, setCurrentIndex] = useState(() => firstIncompleteIndex(matchedExercises));
-    const [phase, setPhase] = useState('training'); // 'training' | 'feedback'
+    const [phase, setPhase] = useState('training'); 
     const [busy, setBusy] = useState(false);
     const [actionError, setActionError] = useState(null);
     const [hint, setHint] = useState(null);
     const [confirmAbandon, setConfirmAbandon] = useState(false);
 
-    // Último valor confirmado como guardado en BBDD por clave `${rowId}:${setOrder}`.
-    // Permite revertir el input si `saveSet` falla, en vez de dejar en pantalla
-    // un valor que el usuario cree guardado pero que nunca llegó a persistirse.
     const lastSavedValuesRef = useRef(buildInitialSetValues(matchedExercises));
 
     useEffect(() => {
@@ -88,10 +74,6 @@ export function useTrainingSession({ session, routine, fullSession, onFinished, 
             });
             lastSavedValuesRef.current[key] = value;
         } catch (err) {
-            // Revertir al último valor confirmado: si no se revierte, el input
-            // muestra un valor que el usuario cree guardado pero que nunca
-            // llegó a persistirse en BBDD (se perdería silenciosamente si
-            // cierra la app justo después).
             setSetValues((prev) => ({ ...prev, [key]: lastSavedValuesRef.current[key] || {} }));
             setActionError(`No se pudo guardar la serie: ${err.message}`);
         }

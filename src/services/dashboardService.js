@@ -5,8 +5,6 @@ export const dashboardService = {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        // Usamos count: 'exact', head: true para pedirle a Postgres solo el
-        // número de filas, sin transferir los datos por la red.
         const [{ count: activeClients, error: clientsError }, { count: weeklyCheckIns, error: checkInsError }] = await Promise.all([
             supabase
                 .from('profile')

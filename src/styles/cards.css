@@ -1,4 +1,4 @@
-/* Card base styles */
+ 
 .card {
     padding: var(--space-xl);
     border-radius: var(--radius-lg);
@@ -14,7 +14,7 @@
     color: var(--color-text);
 }
 
-/* Exercise Cards */
+ 
 .exercise-card {
     display: flex;
     flex-direction: column;
@@ -82,7 +82,7 @@
     border-top: 1px solid var(--color-border);
 }
 
-/* Exercise Picker (Modal) */
+ 
 .exercise-picker-list {
     display: flex;
     flex-direction: column;
@@ -131,7 +131,7 @@
     gap: var(--space-xs);
 }
 
-/* Routine Exercise Cards */
+ 
 .routine-exercise-card {
     background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border);
@@ -201,7 +201,7 @@
     gap: var(--space-xs);
 }
 
-/* Category Badge */
+ 
 .category-badge {
     padding: var(--space-xs) var(--space-md);
     border-radius: var(--radius-md);
@@ -214,7 +214,7 @@
     white-space: nowrap;
 }
 
-/* Stat Card */
+ 
 .stat-card {
     display: flex;
     align-items: center;
@@ -251,7 +251,7 @@
     color: var(--color-text-secondary);
 }
 
-/* Event List */
+ 
 .event-list {
     padding: var(--space-xl);
     border-radius: var(--radius-lg);
@@ -303,7 +303,7 @@
     white-space: nowrap;
 }
 
-/* Line Chart */
+ 
 .line-chart {
     padding: var(--space-xl);
     border-radius: var(--radius-lg);
@@ -362,7 +362,7 @@
     color: var(--color-text-muted);
 }
 
-/* Data Table */
+ 
 .data-table-container {
     width: 100%;
     overflow-x: auto;
@@ -416,7 +416,7 @@
     border: 1px solid var(--color-border);
 }
 
-/* Responsive */
+ 
 @media (max-width: 768px) {
     .stat-card {
         padding: var(--space-lg);

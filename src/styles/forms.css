@@ -1,4 +1,4 @@
-/* Field card base (shared by form-field, checkbox/radio/scale/boolean groups) */
+ 
 .form-field,
 .checkbox-group-field,
 .radio-group-field,
@@ -48,7 +48,7 @@
     border-color: var(--color-primary);
 }
 
-/* Checkbox Group Field */
+ 
 .checkbox-options {
     display: flex;
     flex-direction: column;
@@ -83,7 +83,7 @@
     color: var(--color-primary);
 }
 
-/* Radio Group Field */
+ 
 .radio-options {
     display: flex;
     flex-direction: column;
@@ -103,7 +103,7 @@
     accent-color: var(--color-primary);
 }
 
-/* Scale Field */
+ 
 .scale-options {
     display: flex;
     justify-content: space-between;
@@ -150,7 +150,7 @@
     text-align: right;
 }
 
-/* Boolean Checkbox Field */
+ 
 .boolean-checkbox-option {
     display: flex;
     align-items: center;
@@ -165,7 +165,7 @@
     flex-shrink: 0;
 }
 
-/* Form Section */
+ 
 .form-section {
     margin-bottom: var(--space-3xl);
 }
@@ -183,7 +183,7 @@
     gap: 0;
 }
 
-/* Responsive */
+ 
 @media (max-width: 768px) {
     .form-field,
     .checkbox-group-field,
@@ -279,7 +279,7 @@
     }
 }
 
-/* Tarjeta de formulario reutilizable (form-card, profile-form, check-in-form, weight-log-form, initial-assessment) */
+ 
 .form-card,
 .profile-form,
 .check-in-form,
@@ -372,7 +372,7 @@
     }
 }
 
-/* Fila de submit centrada (form-submit-row, profile-form-submit-row, check-in-form-submit-row, weight-log-form-submit-row, initial-assessment-submit-row) */
+ 
 .form-submit-row,
 .profile-form-submit-row,
 .check-in-form-submit-row,
@@ -387,7 +387,7 @@
     border-top: 1px solid var(--color-border);
 }
 
-/* Profile Form (contenedor, titulo y submit-row compartidos arriba) */
+ 
 .profile-form-avatar-section {
     display: flex;
     justify-content: center;
@@ -415,7 +415,7 @@
     border-color: var(--color-primary-border);
 }
 
-/* Mensajes de estado */
+ 
 .error-message {
     width: 100%;
     text-align: center;
@@ -436,7 +436,7 @@
     font-size: var(--font-md);
 }
 
-/* Section Subtitle */
+ 
 .section-subtitle {
     font-size: var(--font-2xl);
     font-weight: 600;
@@ -450,7 +450,7 @@
     margin: 0;
 }
 
-/* Form Field Textarea */
+ 
 .form-field-textarea {
     padding: var(--space-sm);
     border-radius: var(--radius-sm);
@@ -475,7 +475,7 @@
     box-shadow: 0 0 0 1px var(--color-error);
 }
 
-/* Form Footer / Action row (usado en exercises, routines, my-plan y otros formularios) */
+ 
 .form-footer {
     display: flex;
     flex-direction: column;
@@ -502,7 +502,7 @@
     }
 }
 
-/* Profile View */
+ 
 .profile-view {
     max-width: 800px;
     margin: 0 auto;

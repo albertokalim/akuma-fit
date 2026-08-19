@@ -5,12 +5,7 @@ import ICON_MAP from '../../../config/iconMap.jsx';
 import { FiUser, FiX } from 'react-icons/fi';
 
 
-/**
- * El estado "activo" ya no lo decide un prop (`activeItem`) sino la propia
- * URL a través de <NavLink>, que añade la clase automáticamente. Esto evita
- * que el sidebar y el contenido mostrado puedan desincronizarse (como pasaba
- * antes con el booleano paralelo `showProfileForm`).
- */
+ 
 function Sidebar({ items, isOpen, onClose, userName, profileId }) {
     const handleItemClick = useCallback(() => {
         if (onClose) onClose();

@@ -1,4 +1,4 @@
-/* Page Containers */
+ 
 .exercises-page,
 .routine-page {
     padding: var(--space-3xl);
@@ -50,7 +50,7 @@
     gap: var(--space-sm);
 }
 
-/* Form Sections */
+ 
 .form-section-card {
     display: flex;
     flex-direction: column;
@@ -61,7 +61,7 @@
     border-radius: var(--radius-xl);
 }
 
-/* Exercises Section */
+ 
 .exercises-section {
     display: flex;
     flex-direction: column;
@@ -75,21 +75,21 @@
     gap: var(--space-lg);
 }
 
-/* Exercises Grid */
+ 
 .exercises-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: var(--space-xl);
 }
 
-/* Exercises List */
+ 
 .exercises-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
 }
 
-/* Sets Table */
+ 
 .sets-section {
     display: flex;
     flex-direction: column;
@@ -171,7 +171,7 @@
     border-color: var(--color-primary);
 }
 
-/* Video Upload */
+ 
 .video-upload-area {
     display: flex;
     flex-direction: column;
@@ -216,7 +216,7 @@
     background-color: var(--color-bg);
 }
 
-/* Responsive */
+ 
 @media (max-width: 768px) {
     .exercises-page,
     .routine-page,

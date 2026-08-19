@@ -1,8 +1,24 @@
+/**
+ * Convierte un tipo MIME de imagen a su extensión de archivo. Si el MIME no
+ * está soportado, devuelve `png` por defecto.
+ *
+ * @param {string} mime - Tipo MIME (p. ej. `image/jpeg`).
+ * @returns {string} Extensión del archivo (sin punto).
+ */
 export const mimeToExtension = (mime) => {
     const map = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
     return map[mime] || 'png';
 };
 
+/**
+ * Redimensiona una imagen a un tamaño máximo (por el lado más largo),
+ * manteniendo la proporción, mediante un canvas. Devuelve un nuevo `File`
+ * redimensionado con el mismo nombre y tipo.
+ *
+ * @param {File} file - Archivo de imagen original.
+ * @param {number} [maxSize=200] - Tamaño máximo en píxeles del lado más largo.
+ * @returns {Promise<File>} Imagen redimensionada.
+ */
 export const resizeImage = (file, maxSize = 200) => {
     return new Promise((resolve, reject) => {
         const img = new Image();

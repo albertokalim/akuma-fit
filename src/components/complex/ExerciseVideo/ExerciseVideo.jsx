@@ -1,11 +1,7 @@
 import { useAsyncData } from '../../../hooks/useAsyncData.js';
 import { exerciseVideoService } from '../../../services/exerciseService.js';
 
-/**
- * Video explicativo de un ejercicio (firmado desde Supabase Storage).
- * Si `emptyMessage` se proporciona, se muestra cuando el ejercicio no tiene
- * video; si no, el componente no renderiza nada.
- */
+ 
 function ExerciseVideo({ exerciseId, emptyMessage }) {
     const { data: videoUrl, loading } = useAsyncData(
         async () => await exerciseVideoService.getSignedUrl(exerciseId),

@@ -1,10 +1,10 @@
 /**
- * Normaliza campos numéricos en un objeto de datos
- * Convierte valores a números o null si están vacíos
- * 
- * @param {Object} data - Objeto con los datos
- * @param {string[]} numericFields - Array con los nombres de los campos numéricos
- * @returns {Object} - Objeto con los campos numéricos normalizados
+ * Normaliza los campos numéricos de un objeto: convierte cada valor a número
+ * o a `null` cuando está vacío (cadena vacía, `undefined` o `null`).
+ *
+ * @param {Object} data - Objeto con los datos a normalizar.
+ * @param {string[]} numericFields - Nombres de los campos a tratar como numéricos.
+ * @returns {Object} Copia del objeto con los campos numéricos normalizados.
  */
 export const normalizeNumericFields = (data, numericFields) => {
     const result = { ...data };
@@ -15,11 +15,12 @@ export const normalizeNumericFields = (data, numericFields) => {
 };
 
 /**
- * Formatea una fecha a formato locale español
- * 
- * @param {string} dateString - String de fecha ISO
- * @param {Object} options - Opciones de formato para toLocaleDateString
- * @returns {string} - Fecha formateada
+ * Formatea una fecha ISO al formato local español (es-ES), por defecto
+ * `dd/mm/yyyy`.
+ *
+ * @param {string} dateString - Fecha en formato ISO.
+ * @param {Object} [options] - Opciones extra para `Date.prototype.toLocaleDateString`.
+ * @returns {string} Fecha formateada en español.
  */
 export const formatDate = (dateString, options = {}) => {
     const defaultOptions = {
@@ -33,12 +34,14 @@ export const formatDate = (dateString, options = {}) => {
 };
 
 /**
- * Filtra mediciones por rango de fechas
- * 
- * @param {Array} measurements - Array de mediciones
- * @param {string} startDate - Fecha de inicio (YYYY-MM-DD)
- * @param {string} endDate - Fecha de fin (YYYY-MM-DD)
- * @returns {Array} - Mediciones filtradas
+ * Filtra una lista de mediciones por rango de fechas sobre el campo
+ * `created_at`. El límite superior es inclusivo (hasta las 23:59:59.999
+ * del día indicado).
+ *
+ * @param {Array<{created_at: string}>} measurements - Mediciones a filtrar.
+ * @param {string|null} startDate - Fecha de inicio (YYYY-MM-DD) o `null`.
+ * @param {string|null} endDate - Fecha de fin (YYYY-MM-DD) o `null`.
+ * @returns {Array} Mediciones cuya fecha cae dentro del rango.
  */
 export const filterByDateRange = (measurements, startDate, endDate) => {
     return measurements.filter(m => {

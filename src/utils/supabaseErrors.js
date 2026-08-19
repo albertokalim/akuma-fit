@@ -1,7 +1,11 @@
-// Supabase devuelve sus propios mensajes de error de autenticación en inglés.
-// Este traductor centraliza el mapeo de los casos más comunes a mensajes en
-// español, para usarlo de forma consistente en Login, Register y cualquier
-// otro flujo que llame a supabase.auth.*.
+/**
+ * Traduce un mensaje de error de Supabase Auth a un texto legible en español.
+ * Si el mensaje no coincide con ningún caso conocido (o está vacío), devuelve
+ * un mensaje genérico.
+ *
+ * @param {string} message - Mensaje de error original de Supabase.
+ * @returns {string} Mensaje traducido para mostrar al usuario.
+ */
 export function translateSupabaseAuthError(message) {
     if (!message) {
         return 'No se pudo completar la operación. Inténtalo de nuevo más tarde.';
@@ -41,7 +45,5 @@ export function translateSupabaseAuthError(message) {
         return 'No se pudo conectar con el servidor. Comprueba tu conexión a internet e inténtalo de nuevo.';
     }
 
-    // Si no reconocemos el error, mostramos un mensaje genérico en español en vez
-    // de exponer el texto interno de Supabase (que suele venir en inglés).
     return 'No se pudo completar la operación. Inténtalo de nuevo más tarde.';
 }

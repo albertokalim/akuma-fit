@@ -88,7 +88,6 @@ export const photoService = {
     async getSignedUrls(storagePaths) {
         if (!storagePaths || storagePaths.length === 0) return {};
 
-        // Una única llamada por lote en vez de N llamadas HTTP individuales.
         const { data, error } = await supabase.storage
             .from(BUCKET_NAME)
             .createSignedUrls(storagePaths, 3600);

@@ -1,11 +1,7 @@
 import ExerciseCard from './ExerciseCard.jsx';
 import SessionActionFeedback from './SessionActionFeedback.jsx';
 
-/**
- * Layout de escritorio de la pantalla de entrenamiento: lista completa de
- * ejercicios, cada uno completándose de forma independiente (sin swipe ni
- * animación de salida).
- */
+ 
 function DesktopTrainingView({ training }) {
     const { matchedExercises, setValues, completedMap, rpeMap, busy, actionError, hint } = training;
 

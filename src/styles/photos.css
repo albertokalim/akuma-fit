@@ -1,4 +1,4 @@
-/* Photo Gallery */
+ 
 .photo-gallery {
     width: 100%;
 }
@@ -64,7 +64,7 @@
     font-size: var(--font-lg);
 }
 
-/* Lightbox */
+ 
 .photo-lightbox {
     position: fixed;
     top: 0;
@@ -215,7 +215,7 @@
     object-fit: cover;
 }
 
-/* Photo Compare */
+ 
 .photo-compare {
     width: 100%;
 }
@@ -324,7 +324,7 @@
     font-size: var(--font-lg);
 }
 
-/* Body Photo Capture */
+ 
 .body-photo-capture {
     display: flex;
     flex-direction: column;
@@ -485,7 +485,7 @@
     margin-left: var(--space-xs);
 }
 
-/* Camera Modal */
+ 
 .camera-modal {
     position: fixed;
     top: 0;
@@ -603,7 +603,7 @@
     align-items: center;
 }
 
-/* Profile Avatar */
+ 
 .profile-avatar-wrapper {
     position: relative;
     display: inline-block;
@@ -654,7 +654,7 @@
     white-space: nowrap;
 }
 
-/* Responsive */
+ 
 @media (max-width: 768px) {
     .photo-gallery-dates {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

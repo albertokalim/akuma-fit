@@ -1,4 +1,4 @@
-/* Tags and Badges */
+ 
 .tag-badge {
     padding: var(--space-xs) var(--space-sm);
     border-radius: var(--radius-sm);
@@ -61,7 +61,7 @@
     color: var(--color-bg);
 }
 
-/* Tags Filter */
+ 
 .tags-filter {
     display: flex;
     align-items: center;
@@ -86,7 +86,7 @@
     gap: var(--space-sm);
 }
 
-/* Tag Input */
+ 
 .tag-input-container {
     position: relative;
 }

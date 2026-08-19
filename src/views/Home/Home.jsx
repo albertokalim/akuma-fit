@@ -7,13 +7,7 @@ import { useAuth } from '../../context/useAuth.js';
 import menuConfig from '../../config/menuConfig.json';
 
 
-/**
- * Layout de la app autenticada: cabecera + sidebar + <Outlet /> con la
- * sección activa, resuelta por react-router en vez de un estado local
- * (activeMenuId) que no sincronizaba con la URL. El formulario de perfil
- * ahora es la ruta "/app/profile" en vez de un booleano paralelo que podía
- * quedar desincronizado del menú activo.
- */
+ 
 function AppLayout() {
     const { user, profileId, userRole, logout } = useAuth();
     const navigate = useNavigate();

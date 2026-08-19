@@ -8,20 +8,7 @@ import FeedbackScreen from './FeedbackScreen.jsx';
 import MobileTrainingView from './MobileTrainingView.jsx';
 import DesktopTrainingView from './DesktopTrainingView.jsx';
 
-/**
- * Paso 2: pantalla de entrenamiento.
- *
- * Orquesta el estado (useTrainingSession) y elige el layout según el ancho
- * de pantalla (móvil: swipe; escritorio: lista completa), pero no contiene
- * lógica de negocio propia: toda vive en useTrainingSession/sessionMappers,
- * y el gesto táctil en useSwipeGesture (usado sólo por MobileTrainingView).
- *
- * Todo lo que hace el usuario se persiste en Supabase en el momento (cada
- * serie al perder el foco, cada ejercicio al completarlo), así cerrar la
- * app o irse a otra pestaña no pierde nada: al volver, ActiveSessionLoader
- * recarga el estado persistido y esta vista se inicializa desde él, con el
- * cronómetro siguiendo desde `started_at`.
- */
+ 
 function TrainingView({ session, routine, fullSession, onFinished, onCancelled }) {
     const isMobile = useIsMobile();
     const elapsedMs = useElapsedTime(session.started_at);

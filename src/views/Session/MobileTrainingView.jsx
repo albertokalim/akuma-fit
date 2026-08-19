@@ -5,12 +5,7 @@ import { useSwipeGesture } from './useSwipeGesture.js';
 const SWIPE_THRESHOLD = 80;
 const LEAVE_ANIMATION_MS = 220;
 
-/**
- * Layout móvil de la pantalla de entrenamiento: un ejercicio por pantalla,
- * navegable con puntos o deslizando (derecha completa, izquierda vuelve al
- * anterior). El gesto táctil vive en `useSwipeGesture`; este componente sólo
- * conecta ese gesto con las acciones de `useTrainingSession`.
- */
+ 
 function MobileTrainingView({ training, currentIndex, setCurrentIndex }) {
     const { matchedExercises, currentPair, setValues, completedMap, rpeMap, busy, actionError, hint } = training;
 

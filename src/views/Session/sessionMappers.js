@@ -1,31 +1,6 @@
-/**
- * Funciones puras para transformar los datos crudos de Supabase
- * (`routine.exercises` + `training_session.completed_exercise`) al estado
- * interno que usa `useTrainingSession`. Se extraen aquí (en vez de vivir
- * como funciones privadas dentro de TrainingView.jsx) para poder testearlas
- * sin montar componentes ni simular DOM/gestos táctiles.
- *
- * Importante: el estado interno de la sesión se indexa por
- * `completed_exercise.id` (la fila real de esta sesión), NO por
- * `exercise_template_id`. Antes se usaba el id de la plantilla como única
- * clave en todo TrainingView; eso funciona mientras una rutina no repita el
- * mismo ejercicio dos veces (hoy lo impide `CreateRoutine`), pero es una
- * regla que sólo vive en la UI del coach, no en el modelo de datos ni en el
- * servicio. Si esa regla cambiara, dos filas `completed_exercise` distintas
- * colisionarían en la misma clave. Indexar por el id de la fila de sesión
- * es la identidad correcta y evita ese acoplamiento implícito.
- */
+ 
 
-/**
- * Empareja cada ejercicio de la plantilla de la rutina con su fila
- * `completed_exercise` correspondiente en esta sesión.
- *
- * Se empareja por `exercise_template_id` (no por posición/índice) porque
- * es la única referencia estable si en el futuro una rutina se edita
- * después de haber empezado sesiones sobre ella (añadir/quitar ejercicios
- * desordenaría los índices, pero el id de plantilla de un ejercicio ya
- * empezado se mantiene).
- */
+ 
 export function matchExerciseRows(routineExercises, completedExerciseRows) {
     const rowsByTemplateId = new Map();
     for (const row of completedExerciseRows) {
@@ -79,11 +54,7 @@ export function firstIncompleteIndex(matchedExercises) {
     return index === -1 ? 0 : index;
 }
 
-/**
- * Calcula el resumen final de la sesión (duración, series/ejercicios
- * completados, volumen total y desglose por ejercicio) a partir del estado
- * en memoria de la vista de entrenamiento.
- */
+ 
 export function buildSummary({
     matchedExercises,
     routineTitle,
