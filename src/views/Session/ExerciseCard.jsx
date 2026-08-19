@@ -3,20 +3,7 @@ import ExerciseVideo from '../../components/complex/ExerciseVideo/ExerciseVideo.
 
 const RPE_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-/**
- * Tarjeta de un ejercicio dentro de la sesión: información de la plantilla
- * (descripción, comentarios del coach y video explicativo), tabla de series
- * con inputs de reps/kg (precargados como placeholder con los valores
- * prescritos), selector de RPE y botón de completar/desmarcar. Compartida
- * por el layout móvil (una tarjeta con swipe) y el de escritorio (lista
- * completa).
- *
- * `row` es la fila `completed_exercise` de ESTA sesión (no la plantilla):
- * es la identidad real usada para las claves de estado y para las llamadas
- * a sessionService, de modo que dos sesiones sobre la misma rutina (o, en
- * el futuro, dos apariciones del mismo ejercicio en una rutina) nunca
- * comparten estado.
- */
+ 
 function ExerciseCard({
     exercise,
     row,

@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 function CheckboxGroupField({ label, id, options, value, onChange, required = false, multiple = true, hasError = false, onValidityChange }) {
     useEffect(() => {
         if (!onValidityChange) return;
-        // El criterio de "vacío" depende de si el campo admite selección múltiple (array) o única (string).
         const isEmpty = multiple ? !Array.isArray(value) || value.length === 0 : (value === undefined || value === null || value === '');
         onValidityChange(id, !required || !isEmpty);
     }, [id, value, required, multiple, onValidityChange]);

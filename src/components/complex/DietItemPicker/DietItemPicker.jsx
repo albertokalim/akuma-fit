@@ -6,11 +6,6 @@ import { useAsyncData } from '../../../hooks/useAsyncData.js';
 import { useDebouncedValue } from '../../../hooks/useDebouncedValue.js';
 import { recipeServingMacros, formatMacros } from '../../../utils/dietMacros.js';
 
-/**
- * Modal para añadir un ítem a una comida del plan: pestañas Alimentos y
- * Recetas con búsqueda. Al seleccionar, el editor lo añade con cantidad
- * por defecto (100 g / 1 ración) editable en la propia fila.
- */
 function DietItemPicker({ onClose, onPickFood, onPickRecipe }) {
     const [tab, setTab] = useState('foods');
     const [searchText, setSearchText] = useState('');

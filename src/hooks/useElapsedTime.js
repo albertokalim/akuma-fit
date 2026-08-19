@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 
-/**
- * Devuelve los milisegundos transcurridos desde `startedAt` (fecha ISO),
- * actualizándose cada segundo. Se usa para el cronómetro de la sesión de
- * entrenamiento, tanto en la propia vista como en el banner del header.
- */
+ 
 export function useElapsedTime(startedAt) {
     const [elapsedMs, setElapsedMs] = useState(0);
 

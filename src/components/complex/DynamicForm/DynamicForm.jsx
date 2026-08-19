@@ -5,18 +5,7 @@ import CheckboxGroupField from '../CheckboxGroupField/CheckboxGroupField.jsx';
 import ScaleField from '../ScaleField/ScaleField.jsx';
 import BooleanCheckboxField from '../BooleanCheckboxField/BooleanCheckboxField.jsx';
 
-/**
- * Componente de formulario dinámico que renderiza campos basado en configuración JSON
- * Centraliza la lógica de renderField() que estaba duplicada en múltiples formularios
- * 
- * @param {Object} props
- * @param {Array} props.sections - Secciones del formulario desde JSON
- * @param {Object} props.values - Valores actuales del formulario { groupName: { fieldId: value } }
- * @param {Function} props.onChange - Callback para cambios de campo (group, event) => void
- * @param {Object} props.fieldValidity - Objeto de validez de campos { fieldId: boolean }
- * @param {boolean} props.submitAttempted - Si se ha intentado enviar el formulario
- * @param {Function} props.onValidityChange - Callback para cambios de validez (id, isValid) => void
- */
+ 
 function DynamicForm({ 
     sections, 
     values, 

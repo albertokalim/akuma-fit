@@ -16,9 +16,6 @@ const PLAN_FULL_SELECT = `
     )
 `;
 
-// Valor temporal para intercambiar órdenes sin violar la restricción unique
-// (padre, orden): se mueve la fila actual a -1, se libera su hueco y se
-// recoloca.
 const TEMP_ORDER = -1;
 
 function mapPlan(plan) {
@@ -53,7 +50,6 @@ async function getMaxOrder(table, parentColumn, parentId, orderColumn) {
     return data ? data[orderColumn] : 0;
 }
 
-/** Renumeración 1..N tras un borrado, para no dejar huecos en el orden. */
 async function normalizeOrders(table, parentColumn, parentId, orderColumn) {
     const { data: rows, error } = await supabase
         .from(table)
@@ -75,11 +71,6 @@ async function normalizeOrders(table, parentColumn, parentId, orderColumn) {
     }
 }
 
-/**
- * Mueve una fila una posición arriba (direction = -1) o abajo (+1)
- * intercambiando su orden con el vecino. Usa un valor temporal para no
- * chocar con la restricción unique (padre, orden).
- */
 async function moveRow(table, rowId, parentColumn, orderColumn, direction) {
     const { data: row, error: rowError } = await supabase
         .from(table)

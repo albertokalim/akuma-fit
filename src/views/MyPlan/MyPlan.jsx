@@ -49,7 +49,6 @@ function MyPlan() {
         );
     }
 
-    // Vista de detalles de ejercicio
     if (selectedRoutine && expandedExercise) {
         const exercise = selectedRoutine.exercises?.find(e => e.id === expandedExercise);
 
@@ -122,7 +121,6 @@ function MyPlan() {
         );
     }
 
-    // Vista de ejercicios de una rutina
     if (selectedRoutine) {
         const exercises = selectedRoutine.exercises || [];
 
@@ -185,7 +183,6 @@ function MyPlan() {
         );
     }
 
-    // Vista de lista de rutinas
     return (
         <div className="my-plan-page">
             <div className="page-container">

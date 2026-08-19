@@ -2,11 +2,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/useAuth.js';
 import Spinner from '../components/primitives/Spinner/Spinner.jsx';
 
-/**
- * Protege rutas que requieren sesión iniciada. Si además `requireAssessment`
- * es true, obliga a los clientes que no han completado su valoración inicial
- * a pasar antes por /assessment.
- */
+ 
 export function RequireAuth({ children, requireAssessment = false }) {
     const { status, userRole, assessmentCompleted } = useAuth();
     const location = useLocation();
@@ -26,10 +22,7 @@ export function RequireAuth({ children, requireAssessment = false }) {
     return children;
 }
 
-/**
- * Protege rutas que solo tienen sentido para usuarios NO autenticados
- * (login/registro). Si ya hay sesión, redirige directamente a la app.
- */
+ 
 export function PublicOnlyRoute({ children }) {
     const { status } = useAuth();
 
@@ -44,7 +37,7 @@ export function PublicOnlyRoute({ children }) {
     return children;
 }
 
-/** Redirige "/" al destino correcto según el estado de sesión/valoración. */
+ 
 export function RootRedirect() {
     const { status, userRole, assessmentCompleted } = useAuth();
 

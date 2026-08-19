@@ -1,12 +1,6 @@
 import { getAdherenceClass, ADHERENCE_MAP } from '../../../utils/checkInStats.js';
 
-/**
- * Bloque de detalle de un check-in, usado tanto para el "último check-in"
- * como para cada tarjeta del historial en CoachCheckIns. Antes ambos
- * bloques repetían casi los mismos campos con markup ligeramente distinto;
- * `compact` controla la variante de historial (agrupada en un solo bloque
- * de detalles simples en vez de las 4 secciones con títulos).
- */
+ 
 function CheckInDetailBlock({ checkIn, compact = false }) {
     if (!checkIn) return null;
 

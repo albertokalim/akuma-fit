@@ -10,10 +10,7 @@ const SIZE_CLASS = {
     lg: 'btn-lg',
 };
 
-/**
- * Boton reutilizable. Compone las clases CSS existentes (btn-primary/btn-secondary/btn-outline
- * + btn-sm/btn-lg) en vez de repetir combinaciones de className en cada vista.
- */
+ 
 function Button({ variant = 'primary', size = 'md', className = '', children, ...rest }) {
     const classes = [VARIANT_CLASS[variant] ?? VARIANT_CLASS.primary, SIZE_CLASS[size], className]
         .filter(Boolean)

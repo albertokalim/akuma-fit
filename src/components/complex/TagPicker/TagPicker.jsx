@@ -3,11 +3,6 @@ import { FiPlus, FiX } from 'react-icons/fi';
 import { tagService } from '../../../services/tagService.js';
 import { useAsyncData } from '../../../hooks/useAsyncData.js';
 
-/**
- * Selector/creador de tags reutilizable (mismo patrón que ExerciseForm).
- * Si se pasa `category`, sólo sugiere tags de esa categoría y crea los
- * nuevos con ella (p.ej. 'dieta' para alimentos y recetas).
- */
 function TagPicker({ selectedTags, onChange, category = null, placeholder }) {
     const [tagInput, setTagInput] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -46,7 +41,6 @@ function TagPicker({ selectedTags, onChange, category = null, placeholder }) {
             setCreatedTags(prev => [...prev, newTag]);
             addTag(newTag);
         } catch {
-            // tagService.create ya resuelve el duplicado devolviendo el existente
         }
     };
 

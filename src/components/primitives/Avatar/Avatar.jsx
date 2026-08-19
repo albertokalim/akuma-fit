@@ -11,8 +11,6 @@ function Avatar({ src, profileId, avatarUid: avatarUidProp, alt, size = 'medium'
 
         const fetchAvatar = async () => {
             try {
-                // `listFiles` no depende del avatar_uid, así que se puede lanzar
-                // en paralelo con su búsqueda en vez de esperar secuencialmente.
                 const [avatarUid, files] = await Promise.all([
                     avatarUidProp ? Promise.resolve(avatarUidProp) : avatarService.getAvatarUid(profileId),
                     avatarService.listFiles(profileId),
@@ -28,7 +26,6 @@ function Avatar({ src, profileId, avatarUid: avatarUidProp, alt, size = 'medium'
                     }
                 }
             } catch {
-                // Silently fail - avatar is optional
             }
         };
 

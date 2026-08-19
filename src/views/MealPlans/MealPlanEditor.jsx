@@ -15,10 +15,6 @@ import useFormSubmission from '../../hooks/useFormSubmission.js';
 import DietItemPicker from '../../components/complex/DietItemPicker/DietItemPicker.jsx';
 import { itemMacros, slotMacros, dayMacros, formatMacros } from '../../utils/dietMacros.js';
 
-/**
- * Input compacto que guarda al perder el foco (patrón de autosave del
- * módulo: cada cambio persiste en BD al momento).
- */
 function InlineText({ value, onSave, placeholder, className }) {
     const [draft, setDraft] = useState(value ?? '');
 
@@ -62,7 +58,6 @@ function InlineNumber({ value, onSave, className, step = '0.1' }) {
     );
 }
 
-/** Formulario de cabecera del plan (título, descripción, macros objetivo). */
 function PlanHeaderForm({ plan, onSaved }) {
     const [title, setTitle] = useState(plan.title);
     const [description, setDescription] = useState(plan.description || '');
@@ -172,7 +167,6 @@ function PlanHeaderForm({ plan, onSaved }) {
     );
 }
 
-/** Asignación del plan a clientes, con banner de restricciones alimentarias. */
 function PlanAssignment({ plan, onSaved }) {
     const { data: clients } = useAsyncData(() => mealPlanService.getClients(), [], []);
     const [selectedClientId, setSelectedClientId] = useState('');
@@ -270,7 +264,6 @@ function PlanAssignment({ plan, onSaved }) {
     );
 }
 
-/** Fila de un ítem (alimento o receta) dentro de una comida. */
 function ItemRow({ item, busy, onUpdate, onMove, onRemove }) {
     const macros = itemMacros(item);
 
@@ -556,7 +549,6 @@ function MealPlanEditor() {
     );
 }
 
-/** Modo creación: sólo la cabecera; al crear navega al editor completo. */
 function PlanCreate() {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');

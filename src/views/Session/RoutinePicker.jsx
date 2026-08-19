@@ -5,12 +5,7 @@ import { routineService } from '../../services/routineService.js';
 import { useAuth } from '../../context/useAuth.js';
 import { useSession } from '../../context/useSession.js';
 
-/**
- * Paso 1: el cliente elige qué rutina asignada quiere entrenar. Al pulsar
- * "Empezar sesión" se crea la sesión en Supabase inmediatamente (status
- * 'active'), de modo que si la app se cierra justo después, al volver a
- * entrar se reanuda en vez de perderse.
- */
+ 
 function RoutinePicker() {
     const { profileId } = useAuth();
     const { startSession } = useSession();

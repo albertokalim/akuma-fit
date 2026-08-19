@@ -1,7 +1,7 @@
 import { useAuth } from '../../context/useAuth.js';
 import ProfileView from './ProfileView.jsx';
 
-/** Ruta "/app/profile": conecta ProfileView con el AuthContext. */
+ 
 function ProfileFormRoute() {
     const { profileId } = useAuth();
 

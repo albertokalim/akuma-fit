@@ -10,17 +10,7 @@ import SessionSummary from './SessionSummary.jsx';
 
 const RETRY_SPINNER_TEXT = 'Comprobando si tienes una sesión en curso...';
 
-/**
- * Pestaña "Entrenar" del cliente. Máquina de estados con tres pantallas:
- *
- *  - Sin sesión activa: selector de rutina asignada (RoutinePicker).
- *  - Con sesión activa (recién creada o reanudada tras cerrar la app /
- *    navegar a otra pestaña): pantalla de entrenamiento (TrainingView).
- *  - Al terminar: resumen de la sesión (SessionSummary).
- *
- * La sesión activa vive en SessionContext (respaldada por Supabase), así
- * el estado sobrevive a recargas, cierres de la app y cambios de pestaña.
- */
+ 
 function Session() {
     const {
         activeSession,
@@ -60,11 +50,6 @@ function Session() {
         );
     }
 
-    // No confundir "no hay sesión activa" con "no hemos podido comprobarlo":
-    // si la consulta inicial falló, no sabemos con certeza si existe una
-    // sesión activa en BBDD. Mostrar el RoutinePicker aquí podría llevar a
-    // crear una segunda sesión activa en paralelo. Se pide reintentar en
-    // vez de asumir que no hay ninguna.
     if (checkingActiveSession) {
         return <Spinner text={RETRY_SPINNER_TEXT} />;
     }
@@ -87,12 +72,7 @@ function Session() {
     return <RoutinePicker />;
 }
 
-/**
- * Carga la plantilla de la rutina y el estado persistido de la sesión antes
- * de montar TrainingView. Así TrainingView puede inicializar su estado
- * local directamente desde props (sin efectos de sincronización) y se
- * remonta limpio por cada sesión gracias al `key`.
- */
+ 
 function ActiveSessionLoader({ session, onFinished, onCancelled }) {
     const { data: routine, loading: routineLoading, error: routineError } = useAsyncData(
         () => routineService.getById(session.routine_id),

@@ -1,10 +1,6 @@
 import { FiGrid, FiUsers, FiClipboard, FiTrendingUp, FiCheckCircle, FiActivity } from 'react-icons/fi';
 import { GiWeightLiftingUp, GiFruitBowl, GiWeightScale, GiCookingPot, GiMeal } from 'react-icons/gi';
 
-// Mapa centralizado de iconos del menú: cada entrada de menuConfig.json referencia
-// una de estas claves (string) en vez de un emoji, y aquí resolvemos a un icono
-// vectorial real (react-icons), consistente en tamaño, grosor de trazo y color
-// con el resto de la interfaz.
 const ICON_MAP = {
     dashboard: FiGrid,
     clients: FiUsers,

@@ -1,3 +1,7 @@
+/**
+ * Columnas esperadas en un CSV de alimentos, en orden. La cabecera debe
+ * contener al menos la columna `name`; el resto son opcionales.
+ */
 export const CSV_COLUMNS = ['name', 'brand', 'calories', 'protein', 'carbs', 'fat', 'fiber', 'serving_size'];
 
 const NUMERIC_COLUMNS = ['calories', 'protein', 'carbs', 'fat', 'fiber'];
@@ -10,8 +14,11 @@ Arroz blanco cocido,,130,2.7,28,0.3,0.4,100 g
 "Yogur griego","Marca X",97,9,3.9,5,0,"1 tarrina (125 g)"`;
 
 /**
- * Divide una línea CSV respetando campos entrecomillados (con comillas
- * dobles escapadas estilo RFC 4180).
+ * Divide una línea de CSV en valores, respetando campos entrecomillados y
+ * comillas dobles escapadas (estilo RFC 4180).
+ *
+ * @param {string} line - Línea de CSV a dividir.
+ * @returns {string[]} Valores de la línea.
  */
 function splitCsvLine(line) {
     const values = [];
@@ -41,9 +48,13 @@ function splitCsvLine(line) {
 }
 
 /**
- * Convierte el texto de un CSV en filas de alimentos listas para
- * foodService.createBulk. Devuelve { rows, errors }: si hay errores, la
- * vista debe mostrarlos y no importar nada.
+ * Convierte el texto de un CSV de alimentos en filas listas para
+ * `foodService.createBulk`. Valida la cabecera y convierte los campos
+ * numéricos (aceptando coma decimal).
+ *
+ * @param {string} text - Contenido completo del CSV.
+ * @returns {{rows: Array<Object>, errors: string[]}} Filas válidas y lista de
+ *   errores. Si hay errores, la vista debe mostrarlos y no importar nada.
  */
 export function parseFoodCsv(text) {
     const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);

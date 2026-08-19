@@ -35,10 +35,6 @@ function toNumeric(value) {
     return Number.isNaN(numeric) ? null : numeric;
 }
 
-/**
- * Modal de alta/edición de un alimento. Los macros se introducen por 100 g.
- * `food` = null para crear; objeto para editar.
- */
 function FoodForm({ food, onClose, onSaved }) {
     const isEditing = Boolean(food);
 

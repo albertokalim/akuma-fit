@@ -1,4 +1,4 @@
-/* Auth container */
+ 
 .auth-page {
     flex: 1;
     display: flex;
@@ -82,7 +82,7 @@
     }
 }
 
-/* Register - success state */
+ 
 .success-content {
     text-align: center;
 }
@@ -92,7 +92,7 @@
     font-size: var(--font-lg);
 }
 
-/* Input de texto reutilizable */
+ 
 .text-input {
     padding: var(--space-sm);
     border-radius: var(--radius-sm);
@@ -113,7 +113,7 @@
     box-shadow: 0 0 0 1px var(--color-error);
 }
 
-/* Link reutilizable */
+ 
 .link {
     color: var(--color-primary);
     cursor: pointer;
@@ -126,7 +126,7 @@
     color: var(--color-primary-hover);
 }
 
-/* Google button */
+ 
 .google-button {
     display: flex;
     align-items: center;
@@ -148,7 +148,7 @@
     border-color: var(--color-primary-border);
 }
 
-/* Login button */
+ 
 .login-button {
     padding: var(--space-md) var(--space-2xl);
     border: none;
@@ -170,7 +170,7 @@
     transform: scale(0.98);
 }
 
-/* Required asterisk */
+ 
 .required-asterisk {
     color: var(--color-error);
     font-weight: bold;

@@ -16,7 +16,6 @@ export const useSignedPhotoUrls = (storagePaths) => {
 
             setLoading(true);
             try {
-                // Una sola petición por lote en vez de N peticiones paralelas.
                 const urlMap = await photoService.getSignedUrls(storagePaths.filter(Boolean));
                 if (active) setUrls(urlMap);
             } finally {
@@ -29,7 +28,7 @@ export const useSignedPhotoUrls = (storagePaths) => {
         return () => {
             active = false;
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- se recalcula por contenido, no por referencia
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(storagePaths)]);
 
     return { urls, loading };

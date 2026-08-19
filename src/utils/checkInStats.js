@@ -1,8 +1,7 @@
 /**
- * Módulo único de estadísticas de check-ins, compartido por la vista del
- * cliente (CheckIn.jsx) y la del coach (CoachCheckIns.jsx). Antes existía
- * una copia casi idéntica en coachCheckInStats.js (ADHERENCE_MAP,
- * getWeekNumber, calculateAverage, calculateAverageAdherence duplicados).
+ * Mapa de etiquetas de adherencia (`Totalmente`/`Parcialmente`/`Nada`) a su
+ * valor porcentual, para convertir las respuestas de check-in en números
+ * comparables.
  */
 export const ADHERENCE_MAP = {
     'Totalmente': 100,
@@ -10,12 +9,26 @@ export const ADHERENCE_MAP = {
     'Nada': 0,
 };
 
+/**
+ * Devuelve la clase CSS de color según el porcentaje de adherencia: alto
+ * (>= 80), medio (>= 50) o bajo (el resto).
+ *
+ * @param {number} value - Porcentaje de adherencia.
+ * @returns {string} Nombre de la clase CSS (`adherence-high|medium|low`).
+ */
 export const getAdherenceClass = (value) => {
     if (value >= 80) return 'adherence-high';
     if (value >= 50) return 'adherence-medium';
     return 'adherence-low';
 };
 
+/**
+ * Devuelve el número de semana ISO de una fecha en formato `AAAASS`
+ * (p. ej. `202634`), para poder agrupar check-ins por semana.
+ *
+ * @param {string|Date} date - Fecha de la que obtener la semana.
+ * @returns {number} Número de semana en formato `AAAASS`.
+ */
 export const getWeekNumber = (date) => {
     const d = new Date(date);
     d.setHours(0, 0, 0, 0);
@@ -24,6 +37,14 @@ export const getWeekNumber = (date) => {
     return d.getFullYear() * 100 + Math.round(((d - yearStart) / 604800000) + 1);
 };
 
+/**
+ * Calcula la racha de semanas consecutivas con check-in, contando desde la
+ * semana actual o la anterior. Si la última semana registrada es anterior a
+ * esas dos, la racha es 0.
+ *
+ * @param {Array<{created_at: string}>} checkIns - Lista de check-ins.
+ * @returns {number} Número de semanas consecutivas con check-in.
+ */
 export const calculateStreak = (checkIns) => {
     if (!checkIns || checkIns.length === 0) return 0;
 
@@ -52,6 +73,15 @@ export const calculateStreak = (checkIns) => {
     return streak;
 };
 
+/**
+ * Calcula la adherencia media (en %) de un campo de adherencia
+ * (`diet_adherence` o `training_adherence`), mapeando cada respuesta con
+ * {@link ADHERENCE_MAP}.
+ *
+ * @param {Array<Object>} checkIns - Lista de check-ins.
+ * @param {string} field - Campo de adherencia a promediar.
+ * @returns {number} Porcentaje medio de adherencia (0-100), entero.
+ */
 export const calculateAverageAdherence = (checkIns, field) => {
     if (!checkIns || checkIns.length === 0) return 0;
 
@@ -64,6 +94,14 @@ export const calculateAverageAdherence = (checkIns, field) => {
     return Math.round(values.reduce((sum, v) => sum + v, 0) / values.length);
 };
 
+/**
+ * Calcula la media (redondeada a 1 decimal) de un campo numérico de los
+ * check-ins, ignorando valores no numéricos o nulos.
+ *
+ * @param {Array<Object>} checkIns - Lista de check-ins.
+ * @param {string} field - Campo numérico a promediar.
+ * @returns {number} Media redondeada a 1 decimal (0 si no hay valores).
+ */
 export const calculateAverage = (checkIns, field) => {
     if (!checkIns || checkIns.length === 0) return 0;
 
@@ -77,10 +115,14 @@ export const calculateAverage = (checkIns, field) => {
 };
 
 /**
- * Construye los datos para las gráficas de evolución de check-ins.
- * `extraFields` permite añadir campos adicionales (usado por la vista de
- * coach para incluir energía, hambre y rendimiento de gimnasio) sin
- * duplicar toda la función.
+ * Construye los puntos de datos para el gráfico de check-ins, ordenados por
+ * fecha. Incluye hambre, descanso, adherencia a dieta y entrenamiento, más
+ * los campos extra indicados en `extraFields`.
+ *
+ * @param {Array<Object>} checkIns - Lista de check-ins.
+ * @param {Array<{key: string, source: string}>} [extraFields] - Campos extra a
+ *   añadir a cada punto, mapeados desde `source` a `key`.
+ * @returns {Array<Object>} Puntos de datos con `date` y los campos calculados.
  */
 export const buildChartData = (checkIns, extraFields = []) => {
     if (!checkIns || checkIns.length === 0) return [];
@@ -105,6 +147,13 @@ export const buildChartData = (checkIns, extraFields = []) => {
         });
 };
 
+/**
+ * Genera hasta 4 insights (positivos, neutrales o de advertencia) para el
+ * cliente a partir de la evolución de su descanso, hambre y adherencia.
+ *
+ * @param {Array<Object>} checkIns - Lista de check-ins.
+ * @returns {Array<{type: string, text: string}>} Insights generados (máx. 4).
+ */
 export const generateInsights = (checkIns) => {
     if (!checkIns || checkIns.length < 2) return [];
 
@@ -212,7 +261,14 @@ export const generateInsights = (checkIns) => {
     return insights.slice(0, 4);
 };
 
-/** Genera alertas para el coach a partir del historial de check-ins de un cliente. */
+/**
+ * Genera alertas para el coach a partir del historial de check-ins de un
+ * cliente: baja adherencia, energía/recuperación insuficiente, hambre elevada
+ * y rachas de check-ins rotas.
+ *
+ * @param {Array<Object>} checkIns - Lista de check-ins del cliente.
+ * @returns {Array<{type: string, text: string}>} Alertas generadas.
+ */
 export const generateCoachAlerts = (checkIns) => {
     if (!checkIns || checkIns.length === 0) return [];
 
@@ -266,7 +322,6 @@ export const generateCoachAlerts = (checkIns) => {
         }
     }
 
-    // Detectar racha rota: si han pasado 2+ semanas sin check-in
     const currentWeek = getWeekNumber(new Date());
     const lastCheckInWeek = sorted.length > 0 ? getWeekNumber(sorted[sorted.length - 1].created_at) : null;
 

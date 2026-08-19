@@ -8,11 +8,7 @@ const FEELINGS = [
     { value: 'mal', label: 'Mal' },
 ];
 
-/**
- * Paso intermedio entre completar el último ejercicio y el resumen: el
- * cliente valora cómo ha ido la sesión (sensación general obligatoria +
- * notas opcionales). El RPE se recoge por ejercicio al completarlos, no aquí.
- */
+ 
 function FeedbackScreen({ busy, onSubmit }) {
     const [feeling, setFeeling] = useState(null);
     const [notes, setNotes] = useState('');

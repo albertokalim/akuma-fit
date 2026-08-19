@@ -1,7 +1,4 @@
-/**
- * Selector de cliente reutilizado por las vistas de coach (CoachCheckIns,
- * Reports) que antes duplicaban el mismo <select> con distinto className.
- */
+ 
 function ClientSelector({ clients, selectedClientId, onChange, className = '' }) {
     return (
         <div className={className}>

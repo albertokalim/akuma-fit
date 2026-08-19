@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { FiX, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { useRef, useState } from 'react';
+import { FiX, FiPlus, FiTrash2, FiUpload } from 'react-icons/fi';
 import { foodService } from '../../services/foodService.js';
-import { parseFoodCsv, CSV_HEADER, CSV_EXAMPLE } from '../../utils/dietCsv.js';
+import { parseFoodCsv, CSV_HEADER } from '../../utils/dietCsv.js';
 
 const EMPTY_ROW = {
     name: '',
@@ -31,15 +31,11 @@ function toNumeric(value) {
     return Number.isNaN(numeric) ? null : numeric;
 }
 
-/**
- * Importación masiva de alimentos con dos modalidades:
- *  - Grid: mini-hoja de cálculo para teclear varias filas a mano.
- *  - CSV: pegar el contenido de un CSV (cabecera + filas) y validarlo.
- */
 function FoodBulkImport({ onClose, onSaved }) {
+    const fileInputRef = useRef(null);
     const [tab, setTab] = useState('grid');
     const [rows, setRows] = useState([{ ...EMPTY_ROW }, { ...EMPTY_ROW }, { ...EMPTY_ROW }]);
-    const [csvText, setCsvText] = useState('');
+    const [fileName, setFileName] = useState('');
     const [csvErrors, setCsvErrors] = useState([]);
     const [csvPreview, setCsvPreview] = useState(null);
     const [submitting, setSubmitting] = useState(false);
@@ -85,25 +81,62 @@ function FoodBulkImport({ onClose, onSaved }) {
         }
     };
 
-    const handleParseCsv = () => {
-        const { rows: parsedRows, errors } = parseFoodCsv(csvText);
-        setCsvErrors(errors);
-        setCsvPreview(errors.length === 0 ? parsedRows : null);
-    };
-
-    const handleImportCsv = async () => {
-        if (!csvPreview || csvPreview.length === 0) return;
+    const runCsvImport = async (rowsToImport) => {
+        if (!rowsToImport || rowsToImport.length === 0) return;
 
         setSubmitting(true);
         setSubmitError(null);
 
         try {
-            await foodService.createBulk(csvPreview);
+            await foodService.createBulk(rowsToImport);
             onSaved();
         } catch (err) {
             setSubmitError(err.message);
             setSubmitting(false);
         }
+    };
+
+    const handleImportCsv = () => runCsvImport(csvPreview);
+
+    const handleFileButtonClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files?.[0];
+        event.target.value = '';
+        if (!file) return;
+
+        setFileName(file.name);
+        setCsvErrors([]);
+        setCsvPreview(null);
+        setSubmitError(null);
+
+        if (!file.name.toLowerCase().endsWith('.csv')) {
+            setCsvErrors(['El fichero debe tener extensión .csv.']);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const text = String(reader.result ?? '').replace(/^\uFEFF/, '');
+            const { rows: parsedRows, errors } = parseFoodCsv(text);
+
+            setCsvErrors(errors);
+            setCsvPreview(errors.length === 0 && parsedRows.length > 0 ? parsedRows : null);
+
+            if (errors.length === 0) {
+                if (parsedRows.length > 0) {
+                    runCsvImport(parsedRows);
+                } else {
+                    setCsvErrors(['El fichero no contiene alimentos (solo cabecera).']);
+                }
+            }
+        };
+        reader.onerror = () => {
+            setCsvErrors(['No se pudo leer el fichero.']);
+        };
+        reader.readAsText(file);
     };
 
     return (
@@ -188,28 +221,27 @@ function FoodBulkImport({ onClose, onSaved }) {
                     ) : (
                         <>
                             <p className="section-help">
-                                Pega el contenido de un CSV. Cabecera esperada:
+                                Sube un fichero .csv. Cabecera esperada:
                             </p>
                             <code className="diet-csv-header">{CSV_HEADER}</code>
-                            <textarea
-                                className="diet-csv-textarea"
-                                rows={8}
-                                value={csvText}
-                                onChange={(event) => {
-                                    setCsvText(event.target.value);
-                                    setCsvErrors([]);
-                                    setCsvPreview(null);
-                                }}
-                                placeholder={CSV_EXAMPLE}
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept=".csv,text/csv"
+                                onChange={handleFileChange}
+                                className="diet-csv-file-input"
                             />
                             <button
                                 type="button"
                                 className="btn-outline"
-                                onClick={handleParseCsv}
-                                disabled={!csvText.trim()}
+                                onClick={handleFileButtonClick}
                             >
-                                Validar CSV
+                                <FiUpload size={14} />
+                                <span>Seleccionar fichero .csv</span>
                             </button>
+                            {fileName && (
+                                <p className="diet-csv-filename">{fileName}</p>
+                            )}
 
                             {csvErrors.length > 0 && (
                                 <div className="diet-csv-errors">
@@ -219,7 +251,7 @@ function FoodBulkImport({ onClose, onSaved }) {
                                 </div>
                             )}
 
-                            {csvPreview && (
+                            {csvPreview && csvPreview.length > 0 && (
                                 <div className="success-message">
                                     {csvPreview.length} alimentos listos para importar.
                                 </div>

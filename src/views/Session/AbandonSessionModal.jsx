@@ -1,9 +1,6 @@
 import { FiX } from 'react-icons/fi';
 
-/**
- * Modal de confirmación para abandonar la sesión de entrenamiento. Extraído
- * de TrainingView.jsx (antes era una función `renderAbandonModal` local).
- */
+ 
 function AbandonSessionModal({ open, busy, onCancel, onConfirm }) {
     if (!open) return null;
 

@@ -4,10 +4,6 @@ import { foodService } from '../../../services/foodService.js';
 import { useAsyncData } from '../../../hooks/useAsyncData.js';
 import { useDebouncedValue } from '../../../hooks/useDebouncedValue.js';
 
-/**
- * Modal para buscar y seleccionar un alimento de la biblioteca. Compartido
- * por RecipeForm (ingredientes) y DietEditor (ítems de comida).
- */
 function FoodPicker({ title = 'Seleccionar alimento', onSelect, onClose }) {
     const [searchText, setSearchText] = useState('');
     const debouncedSearchText = useDebouncedValue(searchText);

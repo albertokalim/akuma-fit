@@ -1,6 +1,3 @@
-// Este archivo es un mapa de configuración de rutas (no un componente), por lo
-// que no aplica la regla de fast-refresh que exige que un archivo sólo
-// exporte componentes.
 /* eslint-disable react-refresh/only-export-components */
 import { lazy, Suspense } from 'react';
 import Spinner from '../components/primitives/Spinner/Spinner.jsx';
@@ -26,29 +23,12 @@ const MealPlans = lazy(() => import('../views/MealPlans/MealPlans.jsx'));
 const MealPlanEditor = lazy(() => import('../views/MealPlans/MealPlanEditor.jsx'));
 const Nutrition = lazy(() => import('../views/Nutrition/Nutrition.jsx'));
 
-/**
- * Envuelve un elemento perezoso (`React.lazy`) en un `Suspense` con un
- * fallback consistente, para que cada carga de sección bajo demanda
- * (code-splitting) muestre un spinner en vez de quedar en blanco mientras
- * se descarga el chunk correspondiente.
- */
+ 
 function withSuspense(element) {
     return <Suspense fallback={<Spinner />}>{element}</Suspense>;
 }
 
-/**
- * Fuente única de verdad para el contenido de cada sección del menú.
- * `menuConfig.json` define label/icon/orden por rol; aquí se define qué
- * se renderiza para cada `id` de sección (rutas relativas a "/app").
- *
- * Cada entrada es una lista de rutas: la primera es la "principal" (a la
- * que apunta el enlace del sidebar); el resto son sub-vistas propias de
- * esa sección (p.ej. el formulario de un nuevo check-in).
- *
- * Las vistas se cargan con `React.lazy` para dividir el bundle por
- * sección (code-splitting) en vez de incluir todas las pantallas de la
- * app en un único chunk inicial.
- */
+ 
 export const SECTION_ROUTES = {
     dashboard: [
         { path: 'dashboard', element: withSuspense(<Dashboard />) },
@@ -103,5 +83,5 @@ export const SECTION_ROUTES = {
     ],
 };
 
-/** Todas las rutas (aplanadas) de todas las secciones, para generar el <Routes>. */
+ 
 export const ALL_SECTION_ROUTES = Object.values(SECTION_ROUTES).flat();

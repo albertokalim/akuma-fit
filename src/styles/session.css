@@ -1,4 +1,4 @@
-/* Entrenar - contenedor */
+ 
 .session-page {
     padding: var(--space-3xl);
     max-width: 1200px;
@@ -12,7 +12,7 @@
     gap: var(--space-xl);
 }
 
-/* Barra superior: rutina + cronómetro + progreso */
+ 
 .session-topbar {
     position: sticky;
     top: 0;
@@ -72,7 +72,7 @@
     color: var(--color-text-secondary);
 }
 
-/* Puntos de navegación (móvil) */
+ 
 .session-dots {
     display: flex;
     justify-content: center;
@@ -102,7 +102,7 @@
     transform: scale(1.3);
 }
 
-/* Área de swipe (móvil) */
+ 
 .session-swipe-area {
     position: relative;
     transition: transform 0.2s ease;
@@ -157,7 +157,7 @@
     margin: 0;
 }
 
-/* Tarjeta de ejercicio */
+ 
 .session-exercise-card {
     display: flex;
     flex-direction: column;
@@ -232,7 +232,7 @@
     max-width: 100%;
 }
 
-/* Tabla de series de la sesión (4 columnas en vez de las 5 genéricas) */
+ 
 .session-sets-table .sets-table-header,
 .session-sets-table .sets-table-row {
     grid-template-columns: 40px 1fr 1fr 0.8fr;
@@ -252,7 +252,7 @@
     gap: var(--space-sm);
 }
 
-/* Selector de RPE */
+ 
 .session-rpe {
     display: flex;
     flex-direction: column;
@@ -317,7 +317,7 @@
     white-space: nowrap;
 }
 
-/* Pantalla de valoración final */
+ 
 .session-feedback-card {
     display: flex;
     flex-direction: column;
@@ -410,7 +410,7 @@
     border-color: var(--color-primary);
 }
 
-/* Notas en el resumen */
+ 
 .session-summary-notes {
     background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border);
@@ -431,14 +431,14 @@
     gap: var(--space-sm);
 }
 
-/* Lista de ejercicios (escritorio) */
+ 
 .session-exercises-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-xl);
 }
 
-/* Aviso contextual */
+ 
 .session-hint {
     padding: var(--space-md) var(--space-lg);
     background-color: var(--color-warning-bg);
@@ -449,7 +449,7 @@
     text-align: center;
 }
 
-/* Resumen de sesión */
+ 
 .session-summary-header {
     display: flex;
     flex-direction: column;
@@ -515,7 +515,7 @@
     border-radius: var(--radius-sm);
 }
 
-/* Modal de abandonar */
+ 
 .session-abandon-modal {
     max-width: 420px;
 }
@@ -532,7 +532,7 @@
     gap: var(--space-md);
 }
 
-/* Banner de sesión en curso (bajo el header) */
+ 
 .session-banner {
     display: flex;
     align-items: center;
@@ -570,7 +570,7 @@
     letter-spacing: 0.5px;
 }
 
-/* Tarjeta de rutina en el selector */
+ 
 .session-routine-card .btn-primary {
     display: flex;
     align-items: center;
@@ -578,7 +578,7 @@
     gap: var(--space-sm);
 }
 
-/* Responsive */
+ 
 @media (max-width: 768px) {
     .session-page {
         padding: var(--space-lg);

@@ -1,5 +1,14 @@
 import { formatDate, filterByDateRange } from './data.js';
 
+/**
+ * Calcula la diferencia entre el primer y el último valor no nulo de un
+ * campo en una serie de mediciones (en el orden en que llegan).
+ *
+ * @param {Array<Object>} measurements - Lista de mediciones.
+ * @param {string} field - Campo numérico sobre el que calcular el delta.
+ * @returns {number|null} Delta redondeado a 1 decimal, o `null` si no hay
+ *   al menos dos mediciones con valor.
+ */
 export const calculateDelta = (measurements, field) => {
     if (!measurements || measurements.length < 2) return null;
     
@@ -12,6 +21,15 @@ export const calculateDelta = (measurements, field) => {
     return Math.round(delta * 10) / 10;
 };
 
+/**
+ * Calcula la velocidad de cambio semanal de un campo entre la primera y la
+ * última medición (ordenadas por fecha), expresada como variación por semana.
+ *
+ * @param {Array<Object>} measurements - Lista de mediciones.
+ * @param {string} field - Campo numérico sobre el que calcular la velocidad.
+ * @returns {number|null} Variación por semana redondeada a 2 decimales, o
+ *   `null` si no se puede calcular.
+ */
 export const calculateVelocity = (measurements, field) => {
     if (!measurements || measurements.length < 2) return null;
     
@@ -31,6 +49,13 @@ export const calculateVelocity = (measurements, field) => {
     return Math.round(velocityPerWeek * 100) / 100;
 };
 
+/**
+ * Devuelve el último valor no nulo de un campo en una serie de mediciones.
+ *
+ * @param {Array<Object>} measurements - Lista de mediciones.
+ * @param {string} field - Campo cuyo valor se quiere obtener.
+ * @returns {*} Último valor no nulo del campo, o `null` si no existe.
+ */
 export const getCurrentValue = (measurements, field) => {
     if (!measurements || measurements.length === 0) return null;
     const last = [...measurements].reverse().find(m => m[field] !== null && m[field] !== undefined);
@@ -38,13 +63,15 @@ export const getCurrentValue = (measurements, field) => {
 };
 
 /**
- * Construye datos para gráficos a partir de mediciones
- * 
- * @param {Array} measurements - Array de mediciones
- * @param {Array} options - Array de opciones de medición { key, label, color }
- * @param {string} startDate - Fecha de inicio (opcional)
- * @param {string} endDate - Fecha de fin (opcional)
- * @returns {Array} - Datos formateados para el gráfico
+ * Construye los puntos de datos para un gráfico a partir de una lista de
+ * mediciones, opcionalmente filtradas por rango de fechas. Cada punto incluye
+ * la fecha formateada y las claves indicadas en `options`.
+ *
+ * @param {Array<Object>} measurements - Lista de mediciones.
+ * @param {Array<{key: string}>} options - Campos a incluir en cada punto.
+ * @param {string|null} [startDate] - Fecha de inicio (YYYY-MM-DD).
+ * @param {string|null} [endDate] - Fecha de fin (YYYY-MM-DD).
+ * @returns {Array<Object>} Puntos de datos con `date` y los campos solicitados.
  */
 export const buildChartData = (measurements, options, startDate = null, endDate = null) => {
     const filtered = startDate || endDate 
@@ -63,11 +90,12 @@ export const buildChartData = (measurements, options, startDate = null, endDate 
 };
 
 /**
- * Construye configuración de líneas activas para gráficos
- * 
- * @param {Array} allOptions - Todas las opciones disponibles
- * @param {Array} selectedKeys - Keys seleccionadas
- * @returns {Array} - Configuración de líneas activas
+ * Filtra las opciones de gráfico que están seleccionadas y las transforma en
+ * la forma que espera Recharts para pintar líneas (`dataKey`, `name`, `color`).
+ *
+ * @param {Array<{key: string, label: string, color: string}>} allOptions - Todas las opciones disponibles.
+ * @param {string[]} selectedKeys - Claves de las opciones seleccionadas.
+ * @returns {Array<{dataKey: string, name: string, color: string}>} Líneas a pintar.
  */
 export const buildActiveLines = (allOptions, selectedKeys) => {
     return allOptions

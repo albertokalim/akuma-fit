@@ -47,10 +47,6 @@ function TargetLine({ plan, macros }) {
     return <span className="nutrition-target">Objetivo: {parts.join(' · ')}</span>;
 }
 
-/**
- * Vista de nutrición del cliente: lista de planes asignados y detalle de
- * cada uno (días → comidas → alimentos) con macros calculados en vivo.
- */
 function Nutrition() {
     const { profileId } = useAuth();
     const [selectedPlan, setSelectedPlan] = useState(null);
