@@ -294,3 +294,117 @@ CREATE TABLE public.meal_plan_item (
                                        CONSTRAINT meal_plan_item_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.recipe(id),
                                        CONSTRAINT meal_plan_item_food_id_fkey FOREIGN KEY (food_id) REFERENCES public.food(id)
 );
+-- Módulo de eventos / calendario.
+--
+-- `calendar_event` es el evento "maestro": almacena la regla de recurrencia
+-- (RFC 5545 RRULE) o, si `freq` es NULL, un evento único. Los eventos fijos
+-- del sistema (mediciones semanales el lunes y check-in el domingo) no se
+-- persisten: se generan en el cliente.
+--
+-- `calendar_event_exception` modela EXDATE (status 'cancelled') y los
+-- overrides RECURRENCE-ID (status 'modified') por ocurrencia concreta.
+CREATE TABLE public.calendar_event (
+                                       id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+                                       profile_id bigint NOT NULL,
+                                       created_by bigint NOT NULL,
+                                       event_type text NOT NULL,
+                                       title text NOT NULL,
+                                       description text,
+                                       dtstart date NOT NULL,
+                                       start_time time without time zone,
+                                       freq text,
+                                       recurrence_interval smallint NOT NULL DEFAULT 1,
+                                       byday smallint,
+                                       bymonthday smallint,
+                                       bymonth smallint,
+                                       count integer,
+                                       until date,
+                                       routine_id bigint,
+                                       active boolean NOT NULL DEFAULT true,
+                                       created_at timestamp with time zone NOT NULL DEFAULT now(),
+                                       CONSTRAINT calendar_event_pkey PRIMARY KEY (id),
+                                       CONSTRAINT calendar_event_event_type_check CHECK (event_type = ANY (ARRAY['training'::text, 'info'::text, 'photos'::text])),
+                                       CONSTRAINT calendar_event_freq_check CHECK (freq IS NULL OR freq = ANY (ARRAY['weekly'::text, 'monthly'::text, 'yearly'::text])),
+                                       CONSTRAINT calendar_event_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES public.profile(id),
+                                       CONSTRAINT calendar_event_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.profile(id),
+                                       CONSTRAINT calendar_event_routine_id_fkey FOREIGN KEY (routine_id) REFERENCES public.routine(id)
+);
+CREATE TABLE public.calendar_event_exception (
+                                                 id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+                                                 event_id bigint NOT NULL,
+                                                 recurrence_id date NOT NULL,
+                                                 status text NOT NULL,
+                                                 new_date date,
+                                                 new_start_time time without time zone,
+                                                 title text,
+                                                 description text,
+                                                 created_at timestamp with time zone NOT NULL DEFAULT now(),
+                                                 CONSTRAINT calendar_event_exception_pkey PRIMARY KEY (id),
+                                                 CONSTRAINT calendar_event_exception_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.calendar_event(id),
+                                                 CONSTRAINT calendar_event_exception_event_id_recurrence_id_key UNIQUE (event_id, recurrence_id),
+                                                 CONSTRAINT calendar_event_exception_status_check CHECK (status = ANY (ARRAY['cancelled'::text, 'modified'::text]))
+);
+-- Parte una serie recurrente en dos ("editar esta y las siguientes").
+-- Corta el maestro original con `until` justo antes de `p_from_date` y crea un
+-- maestro nuevo a partir de esa fecha con los valores indicados. De forma
+-- atómica (una sola transacción).
+CREATE OR REPLACE FUNCTION public.split_calendar_event(
+    p_event_id bigint,
+    p_from_date date,
+    p_title text,
+    p_description text,
+    p_start_time time without time zone,
+    p_freq text,
+    p_interval smallint,
+    p_byday smallint,
+    p_bymonthday smallint,
+    p_bymonth smallint,
+    p_count integer,
+    p_until date,
+    p_routine_id bigint
+)
+ RETURNS bigint
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+AS $function$
+DECLARE
+    v_original public.calendar_event%ROWTYPE;
+    v_new_id bigint;
+BEGIN
+    SELECT * INTO v_original FROM public.calendar_event WHERE id = p_event_id;
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Evento no encontrado';
+    END IF;
+
+    UPDATE public.calendar_event
+       SET until = p_from_date - 1
+     WHERE id = p_event_id;
+
+    INSERT INTO public.calendar_event (
+        profile_id, created_by, event_type, title, description,
+        dtstart, start_time, freq, recurrence_interval, byday, bymonthday, bymonth,
+        count, until, routine_id, active
+    )
+    VALUES (
+        v_original.profile_id,
+        v_original.created_by,
+        v_original.event_type,
+        p_title,
+        p_description,
+        p_from_date,
+        p_start_time,
+        p_freq,
+        p_interval,
+        p_byday,
+        p_bymonthday,
+        p_bymonth,
+        p_count,
+        p_until,
+        p_routine_id,
+        true
+    )
+    RETURNING id INTO v_new_id;
+
+    RETURN v_new_id;
+END;
+$function$;

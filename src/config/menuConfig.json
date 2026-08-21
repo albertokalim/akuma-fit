@@ -3,6 +3,8 @@
     { "id": "dashboard", "label": "Dashboard", "icon": "dashboard" },
     { "id": "clients", "label": "Clientes", "icon": "clients" },
     { "id": "client-checkins", "label": "Check-Ins Clientes", "icon": "checkin" },
+    { "id": "calendario", "label": "Calendario", "icon": "calendar" },
+    { "id": "calendario/nuevo", "label": "Crear evento", "icon": "calendar" },
     { "id": "exercises", "label": "Ejercicios", "icon": "exercises" },
     { "id": "alimentos", "label": "Alimentos", "icon": "nutrition" },
     { "id": "recetas", "label": "Recetas", "icon": "recipes" },
@@ -12,6 +14,7 @@
   ],
   "client": [
     { "id": "dashboard", "label": "Mi Dashboard", "icon": "dashboard" },
+    { "id": "calendario", "label": "Calendario", "icon": "calendar" },
     { "id": "checkin", "label": "Check-In", "icon": "checkin" },
     { "id": "my-plan", "label": "Mi Plan", "icon": "plans" },
     { "id": "session", "label": "Entrenar", "icon": "session" },

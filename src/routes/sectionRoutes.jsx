@@ -22,6 +22,8 @@ const RecipeForm = lazy(() => import('../views/Recipes/RecipeForm.jsx'));
 const MealPlans = lazy(() => import('../views/MealPlans/MealPlans.jsx'));
 const MealPlanEditor = lazy(() => import('../views/MealPlans/MealPlanEditor.jsx'));
 const Nutrition = lazy(() => import('../views/Nutrition/Nutrition.jsx'));
+const Calendar = lazy(() => import('../views/Calendar/Calendar.jsx'));
+const EventCreator = lazy(() => import('../views/Calendar/EventCreator.jsx'));
 
  
 function withSuspense(element) {
@@ -80,6 +82,10 @@ export const SECTION_ROUTES = {
     ],
     nutrition: [
         { path: 'nutrition', element: withSuspense(<Nutrition />) },
+    ],
+    calendario: [
+        { path: 'calendario', element: withSuspense(<Calendar />) },
+        { path: 'calendario/nuevo', element: withSuspense(<EventCreator />) },
     ],
 };
 

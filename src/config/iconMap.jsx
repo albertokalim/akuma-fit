@@ -1,4 +1,4 @@
-import { FiGrid, FiUsers, FiClipboard, FiTrendingUp, FiCheckCircle, FiActivity } from 'react-icons/fi';
+import { FiGrid, FiUsers, FiClipboard, FiTrendingUp, FiCheckCircle, FiActivity, FiCalendar } from 'react-icons/fi';
 import { GiWeightLiftingUp, GiFruitBowl, GiWeightScale, GiCookingPot, GiMeal } from 'react-icons/gi';
 
 const ICON_MAP = {
@@ -14,6 +14,7 @@ const ICON_MAP = {
     recipes: GiCookingPot,
     diet: GiMeal,
     'weight-log': GiWeightScale,
+    calendar: FiCalendar,
 };
 
 export default ICON_MAP;
