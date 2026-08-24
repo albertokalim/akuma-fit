@@ -324,7 +324,7 @@ CREATE TABLE public.calendar_event (
                                        created_at timestamp with time zone NOT NULL DEFAULT now(),
                                        CONSTRAINT calendar_event_pkey PRIMARY KEY (id),
                                        CONSTRAINT calendar_event_event_type_check CHECK (event_type = ANY (ARRAY['training'::text, 'info'::text, 'photos'::text])),
-                                       CONSTRAINT calendar_event_freq_check CHECK (freq IS NULL OR freq = ANY (ARRAY['weekly'::text, 'monthly'::text, 'yearly'::text])),
+                                       CONSTRAINT calendar_event_freq_check CHECK (freq IS NULL OR freq = ANY (ARRAY['once'::text, 'weekly'::text, 'monthly'::text, 'yearly'::text])),
                                        CONSTRAINT calendar_event_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES public.profile(id),
                                        CONSTRAINT calendar_event_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.profile(id),
                                        CONSTRAINT calendar_event_routine_id_fkey FOREIGN KEY (routine_id) REFERENCES public.routine(id)
