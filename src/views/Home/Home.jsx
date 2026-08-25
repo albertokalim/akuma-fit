@@ -7,7 +7,11 @@ import { useAuth } from '../../context/useAuth.js';
 import menuConfig from '../../config/menuConfig.json';
 
 
- 
+/**
+ * Layout de la app autenticada: cabecera + sidebar + <Outlet /> con la
+ * sección activa, resuelta por react-router. El formulario de perfil es la
+ * ruta "/app/profile".
+ */
 function AppLayout() {
     const { user, profileId, userRole, logout } = useAuth();
     const navigate = useNavigate();

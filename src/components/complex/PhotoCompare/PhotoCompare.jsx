@@ -3,6 +3,7 @@ import { useSignedPhotoUrls } from '../../../hooks/useSignedPhotoUrls.js';
 import { formatDate } from '../../../utils/data.js';
 
 
+/** Etiquetas legibles por posición corporal. */
 const POSITION_LABELS = {
     front: 'Frontal',
     left: 'Lateral Izquierdo',
@@ -10,8 +11,15 @@ const POSITION_LABELS = {
     back: 'Dorsal'
 };
 
+/** Orden en que se muestran las posiciones. */
 const POSITIONS = ['front', 'left', 'right', 'back'];
 
+/**
+ * Comparador de fotos "antes/después" por posición corporal.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Array<{taken_at: string, position: string, storage_path: string}>} props.photos - Fotos.
+ */
 function PhotoCompare({ photos }) {
     const groupedPhotos = photos.reduce((acc, photo) => {
         if (!acc[photo.taken_at]) {

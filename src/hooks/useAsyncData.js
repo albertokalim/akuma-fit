@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 /**
  * Realiza una carga asíncrona y expone su estado (`data`, `loading`, `error`).
  * Vuelve a ejecutar `loadFn` cada vez que cambia algún elemento de `deps` y
- * evita actualizar el estado si el componente se desmonta durante la carga.
+ * evita actualizar el estado si el componente se elimina durante la carga.
  *
  * @param {Function} loadFn - Función asíncrona que devuelve los datos.
  * @param {Array} deps - Dependencias que disparan una nueva carga.

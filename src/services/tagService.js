@@ -1,6 +1,15 @@
 import { supabase } from '../supabaseClient.js';
 
+/**
+ * Servicio de acceso a datos de las etiquetas (`tag`) y sus relaciones con
+ * ejercicios.
+ */
 export const tagService = {
+    /**
+     * Obtiene todas las etiquetas, ordenadas por nombre.
+     *
+     * @returns {Promise<Array>} Lista de etiquetas.
+     */
     async getAll() {
         const { data, error } = await supabase
             .from('tag')
@@ -11,6 +20,14 @@ export const tagService = {
         return data || [];
     },
 
+    /**
+     * Crea una etiqueta (o devuelve la existente si ya hay una con el mismo
+     * nombre).
+     *
+     * @param {string} name - Nombre de la etiqueta.
+     * @param {string|null} [category] - Categoría de la etiqueta.
+     * @returns {Promise<Object>} Etiqueta creada o existente.
+     */
     async create(name, category = null) {
         const { data, error } = await supabase
             .from('tag')
@@ -32,6 +49,12 @@ export const tagService = {
         return data;
     },
 
+    /**
+     * Obtiene las etiquetas asociadas a un ejercicio.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     * @returns {Promise<Array>} Lista de etiquetas.
+     */
     async getByExercise(exerciseId) {
         const { data, error } = await supabase
             .from('exercise_template_has_tag')
@@ -48,6 +71,12 @@ export const tagService = {
         return data?.map(item => item.tag).filter(Boolean) || [];
     },
 
+    /**
+     * Asocia una etiqueta a un ejercicio (ignora duplicados).
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     * @param {number} tagId - Id de la etiqueta.
+     */
     async addTagToExercise(exerciseId, tagId) {
         const { error } = await supabase
             .from('exercise_template_has_tag')
@@ -61,6 +90,12 @@ export const tagService = {
         }
     },
 
+    /**
+     * Desasocia una etiqueta de un ejercicio.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     * @param {number} tagId - Id de la etiqueta.
+     */
     async removeTagFromExercise(exerciseId, tagId) {
         const { error } = await supabase
             .from('exercise_template_has_tag')

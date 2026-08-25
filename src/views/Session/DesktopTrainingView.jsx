@@ -1,7 +1,12 @@
 import ExerciseCard from './ExerciseCard.jsx';
 import SessionActionFeedback from './SessionActionFeedback.jsx';
 
- 
+/**
+ * Vista de entrenamiento en escritorio: lista completa de ejercicios.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.training - Estado devuelto por `useTrainingSession`.
+ */
 function DesktopTrainingView({ training }) {
     const { matchedExercises, setValues, completedMap, rpeMap, busy, actionError, hint } = training;
 

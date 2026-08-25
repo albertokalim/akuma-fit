@@ -5,6 +5,10 @@ import Button from '../../components/primitives/Button/Button.jsx';
 import { mealPlanService } from '../../services/mealPlanService.js';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
 
+/**
+ * Listado de planes de alimentación (dietas) del coach, con creación y
+ * borrado.
+ */
 function MealPlans() {
     const navigate = useNavigate();
     const [reloadKey, setReloadKey] = useState(0);

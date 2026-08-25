@@ -1,6 +1,15 @@
 import { supabase } from '../supabaseClient.js';
 
+/**
+ * Servicio de acceso a datos del dashboard del coach.
+ */
 export const dashboardService = {
+    /**
+     * Obtiene las estadísticas del dashboard: número de clientes activos y de
+     * check-ins de la última semana.
+     *
+     * @returns {Promise<{activeClients: number, weeklyCheckIns: number}>} Estadísticas.
+     */
     async getStats() {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -25,6 +34,12 @@ export const dashboardService = {
         };
     },
 
+    /**
+     * Obtiene los check-ins más recientes con el nombre del cliente.
+     *
+     * @param {number} [limit=5] - Número máximo de check-ins.
+     * @returns {Promise<Array<{text: string, time: string}>>} Check-ins recientes.
+     */
     async getRecentCheckIns(limit = 5) {
         const { data, error } = await supabase
             .from('check_in')

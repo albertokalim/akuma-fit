@@ -15,6 +15,15 @@ import useFormSubmission from '../../hooks/useFormSubmission.js';
 import DietItemPicker from '../../components/complex/DietItemPicker/DietItemPicker.jsx';
 import { itemMacros, slotMacros, dayMacros, formatMacros } from '../../utils/dietMacros.js';
 
+/**
+ * Input de texto editable inline que guarda al perder el foco.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.value - Valor actual.
+ * @param {(value: string) => void} props.onSave - Callback al guardar.
+ * @param {string} [props.placeholder] - Placeholder.
+ * @param {string} [props.className] - Clases extra.
+ */
 function InlineText({ value, onSave, placeholder, className }) {
     const [draft, setDraft] = useState(value ?? '');
 
@@ -35,6 +44,15 @@ function InlineText({ value, onSave, placeholder, className }) {
     );
 }
 
+/**
+ * Input numérico editable inline que guarda al perder el foco.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {number|null} props.value - Valor actual.
+ * @param {(value: number|null) => void} props.onSave - Callback al guardar.
+ * @param {string} [props.className] - Clases extra.
+ * @param {string} [props.step='0.1'] - Paso del input.
+ */
 function InlineNumber({ value, onSave, className, step = '0.1' }) {
     const [draft, setDraft] = useState(value ?? '');
 
@@ -58,6 +76,14 @@ function InlineNumber({ value, onSave, className, step = '0.1' }) {
     );
 }
 
+/**
+ * Formulario de datos generales de un plan (título, descripción y macros
+ * objetivo).
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.plan - Plan.
+ * @param {() => void} props.onSaved - Callback tras guardar.
+ */
 function PlanHeaderForm({ plan, onSaved }) {
     const [title, setTitle] = useState(plan.title);
     const [description, setDescription] = useState(plan.description || '');
@@ -167,6 +193,14 @@ function PlanHeaderForm({ plan, onSaved }) {
     );
 }
 
+/**
+ * Asignación/desasignación de clientes a un plan, mostrando sus restricciones
+ * alimentarias.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.plan - Plan con sus clientes.
+ * @param {() => void} props.onSaved - Callback tras un cambio.
+ */
 function PlanAssignment({ plan, onSaved }) {
     const { data: clients } = useAsyncData(() => mealPlanService.getClients(), [], []);
     const [selectedClientId, setSelectedClientId] = useState('');
@@ -264,6 +298,17 @@ function PlanAssignment({ plan, onSaved }) {
     );
 }
 
+/**
+ * Fila de un ítem dentro de una comida, con cantidad/raciones editables y
+ * acciones de mover/eliminar.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.item - Ítem.
+ * @param {boolean} props.busy - Si hay una acción en curso.
+ * @param {(item: Object, changes: Object) => void} props.onUpdate - Callback de actualización.
+ * @param {(itemId: number, direction: number) => void} props.onMove - Callback de mover.
+ * @param {(itemId: number) => void} props.onRemove - Callback de eliminar.
+ */
 function ItemRow({ item, busy, onUpdate, onMove, onRemove }) {
     const macros = itemMacros(item);
 
@@ -322,6 +367,11 @@ function ItemRow({ item, busy, onUpdate, onMove, onRemove }) {
     );
 }
 
+/**
+ * Editor de un plan de alimentación: datos generales, asignación de clientes
+ * y estructura de días -> comidas -> ítems. En modo creación delega en
+ * {@link PlanCreate}.
+ */
 function MealPlanEditor() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -549,6 +599,10 @@ function MealPlanEditor() {
     );
 }
 
+/**
+ * Formulario de creación de un plan (título y descripción). Tras crear,
+ * navega al editor del plan.
+ */
 function PlanCreate() {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');

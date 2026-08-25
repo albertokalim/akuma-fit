@@ -1,7 +1,19 @@
 import { FiX } from 'react-icons/fi';
 import { formatElapsed } from '../../hooks/useElapsedTime.js';
 
- 
+/**
+ * Barra superior de la sesión: nombre de la rutina, temporizador, progreso y
+ * botón de abandonar.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.routineTitle - Título de la rutina.
+ * @param {number} props.elapsedMs - Tiempo transcurrido.
+ * @param {number} props.completedCount - Ejercicios completados.
+ * @param {number} props.totalCount - Ejercicios totales.
+ * @param {number} props.progressPercent - Porcentaje de progreso.
+ * @param {boolean} props.busy - Si hay una acción en curso.
+ * @param {() => void} props.onAbandon - Callback de abandonar.
+ */
 function SessionTopBar({ routineTitle, elapsedMs, completedCount, totalCount, progressPercent, busy, onAbandon }) {
     return (
         <div className="session-topbar">

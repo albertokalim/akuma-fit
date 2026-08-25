@@ -12,6 +12,12 @@ import { buildChartData, buildActiveLines, calculateDelta, calculateVelocity, ge
 import { FiActivity, FiCamera, FiTrendingDown, FiTrendingUp } from 'react-icons/fi';
 
 
+/**
+ * Calcula las fechas (lunes y domingo) de la semana actual en formato
+ * YYYY-MM-DD.
+ *
+ * @returns {{start: string, end: string}} Fechas de inicio y fin de la semana.
+ */
 const getCurrentWeekDates = () => {
     const now = new Date();
     const dayOfWeek = now.getDay();
@@ -39,6 +45,10 @@ const getCurrentWeekDates = () => {
 
 const initialDates = getCurrentWeekDates();
 
+/**
+ * Vista "Progreso" del cliente: medidas corporales con filtros de fecha,
+ * métricas (peso, delta, velocidad) y gráfico de evolución.
+ */
 function Progress() {
     const navigate = useNavigate();
     const { items: measurements, loading, error, load } = useResource(measurementService);

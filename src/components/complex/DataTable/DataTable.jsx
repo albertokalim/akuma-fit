@@ -1,5 +1,14 @@
 
 
+/**
+ * Tabla de datos genérica con columnas configurables. Cada columna puede
+ * definir `render(value, row)` para personalizar la celda.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Array<{key: string, label: string, width?: string, render?: Function}>} props.columns - Columnas.
+ * @param {Array<Object>} props.data - Filas de datos.
+ * @param {string} [props.emptyMessage='No hay datos disponibles'] - Mensaje cuando no hay datos.
+ */
 function DataTable({ columns, data, emptyMessage = 'No hay datos disponibles' }) {
     if (!data || data.length === 0) {
         return (

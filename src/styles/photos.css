@@ -1,4 +1,78 @@
  
+.body-photos {
+    max-width: 1200px;
+    margin: var(--space-4xl) auto;
+    padding: var(--space-3xl);
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+}
+
+.body-photos-header {
+    margin-bottom: var(--space-2xl);
+}
+
+.body-photos-title {
+    font-size: var(--font-4xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.body-photos-description {
+    font-size: var(--font-md);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.body-photos-actions {
+    margin-top: var(--space-2xl);
+}
+
+.body-photos-buttons {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+}
+
+.back-button,
+.save-photos-button {
+    padding: var(--space-md) var(--space-xl);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.back-button {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+}
+
+.back-button:hover:not(:disabled) {
+    background-color: var(--color-border);
+}
+
+.save-photos-button {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.save-photos-button:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.back-button:disabled,
+.save-photos-button:disabled {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+ 
 .photo-gallery {
     width: 100%;
 }
@@ -610,7 +684,7 @@
     cursor: pointer;
 }
 
-.profile-avatar-wrapper .avatar {
+.profile-avatar-wrapper .avatar:not(.avatar-placeholder) {
     display: block;
 }
 
@@ -656,6 +730,24 @@
 
  
 @media (max-width: 768px) {
+    .body-photos {
+        margin: var(--space-lg);
+        padding: var(--space-xl);
+    }
+
+    .body-photos-title {
+        font-size: var(--font-3xl);
+    }
+
+    .body-photos-buttons {
+        flex-direction: column;
+    }
+
+    .back-button,
+    .save-photos-button {
+        width: 100%;
+    }
+
     .photo-gallery-dates {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: var(--space-md);
@@ -759,6 +851,15 @@
 }
 
 @media (max-width: 480px) {
+    .body-photos {
+        margin: var(--space-md);
+        padding: var(--space-lg);
+    }
+
+    .body-photos-title {
+        font-size: var(--font-2xl);
+    }
+
     .body-photo-capture {
         padding: var(--space-md);
     }

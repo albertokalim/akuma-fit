@@ -6,6 +6,15 @@ import { useAsyncData } from '../../../hooks/useAsyncData.js';
 import { useDebouncedValue } from '../../../hooks/useDebouncedValue.js';
 import { recipeServingMacros, formatMacros } from '../../../utils/dietMacros.js';
 
+/**
+ * Modal para elegir un alimento o una receta y añadirlo a una comida, con
+ * pestañas y búsqueda.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {() => void} props.onClose - Callback de cierre.
+ * @param {(food: Object) => void} props.onPickFood - Callback al elegir un alimento.
+ * @param {(recipe: Object) => void} props.onPickRecipe - Callback al elegir una receta.
+ */
 function DietItemPicker({ onClose, onPickFood, onPickRecipe }) {
     const [tab, setTab] = useState('foods');
     const [searchText, setSearchText] = useState('');

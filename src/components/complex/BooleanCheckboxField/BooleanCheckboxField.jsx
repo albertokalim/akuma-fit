@@ -1,6 +1,18 @@
 import { useEffect } from 'react';
 
 
+/**
+ * Checkbox booleano (sí/no) con validación de obligatoriedad.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.label - Etiqueta.
+ * @param {string} props.id - Id del campo.
+ * @param {boolean} props.value - Valor del checkbox.
+ * @param {(event: Object) => void} props.onChange - Callback de cambio.
+ * @param {boolean} [props.required=false] - Si es obligatorio.
+ * @param {boolean} [props.hasError=false] - Si debe marcarse como error.
+ * @param {(id: string, isValid: boolean) => void} [props.onValidityChange] - Callback de validez.
+ */
 function BooleanCheckboxField({ label, id, value, onChange, required = false, hasError = false, onValidityChange }) {
     useEffect(() => {
         if (!onValidityChange) return;

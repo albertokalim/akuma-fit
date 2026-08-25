@@ -10,10 +10,22 @@ import {
     formatMacros,
 } from '../../utils/dietMacros.js';
 
+/**
+ * Devuelve el nombre legible de un ítem de plan (alimento o receta).
+ *
+ * @param {Object} item - Ítem con `food` o `recipe`.
+ * @returns {string} Nombre del ítem.
+ */
 function itemName(item) {
     return item.food ? item.food.name : `${item.recipe.name} (receta)`;
 }
 
+/**
+ * Devuelve la etiqueta de cantidad de un ítem (gramos o raciones).
+ *
+ * @param {Object} item - Ítem con `food` y `quantity_g`, o `recipe` y `servings`.
+ * @returns {string} Etiqueta de cantidad.
+ */
 function itemQuantityLabel(item) {
     if (item.food) {
         return item.quantity_g ? `${item.quantity_g} g` : '';
@@ -24,6 +36,13 @@ function itemQuantityLabel(item) {
     return `${item.servings} ${item.servings === 1 ? 'ración' : 'raciones'}`;
 }
 
+/**
+ * Línea que muestra los macros consumidos frente a los objetivos del plan.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.plan - Plan con objetivos (`target_calories`, etc.).
+ * @param {Object} props.macros - Macros actuales.
+ */
 function TargetLine({ plan, macros }) {
     if (!plan.target_calories && !plan.target_protein && !plan.target_carbs && !plan.target_fat) {
         return null;
@@ -47,6 +66,10 @@ function TargetLine({ plan, macros }) {
     return <span className="nutrition-target">Objetivo: {parts.join(' · ')}</span>;
 }
 
+/**
+ * Vista "Nutrición" del cliente: lista sus planes de alimentación y muestra
+ * por día/comida los macros de cada ítem frente a los objetivos.
+ */
 function Nutrition() {
     const { profileId } = useAuth();
     const [selectedPlan, setSelectedPlan] = useState(null);

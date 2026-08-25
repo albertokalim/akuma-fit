@@ -15,6 +15,10 @@ import { formatDate } from '../../utils/data.js';
 import { FiActivity, FiCamera, FiTrendingDown, FiTrendingUp } from 'react-icons/fi';
 
 
+/**
+ * Vista de reportes del coach: medidas corporales (gráficos, deltas y tabla)
+ * y fotos (galería y comparador) de un cliente.
+ */
 function Reports() {
     const [selectedClientId, setSelectedClientId] = useState(null);
     const [selectedMeasures, setSelectedMeasures] = useState(['weight']);

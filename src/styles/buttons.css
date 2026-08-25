@@ -1,6 +1,21 @@
  
-button,
+button {
+    font-family: var(--font-main);
+    padding: var(--space-md) var(--space-xl);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
 .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
     font-family: var(--font-main);
     padding: var(--space-md) var(--space-xl);
     border: none;
@@ -59,6 +74,10 @@ button:disabled,
 
  
 .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    align-self: flex-start;
     padding: var(--space-sm) var(--space-lg);
     border: 1px solid var(--color-primary-border);
     border-radius: var(--radius-md);
@@ -134,6 +153,8 @@ button:disabled,
  
 .btn-fab {
     position: fixed;
+    bottom: 32px;
+    right: 32px;
     width: 56px;
     height: 56px;
     padding: 0;
@@ -163,6 +184,8 @@ button:disabled,
 
 @media (max-width: 768px) {
     .btn-fab {
+        bottom: 20px;
+        right: 20px;
         width: 48px;
         height: 48px;
     }
@@ -170,6 +193,8 @@ button:disabled,
 
 @media (max-width: 480px) {
     .btn-fab {
+        bottom: 16px;
+        right: 16px;
         width: 44px;
         height: 44px;
     }

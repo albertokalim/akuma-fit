@@ -196,7 +196,8 @@
     font-size: var(--font-lg);
 }
 
-.coach-checkins-client-selector {
+.coach-checkins-client-selector,
+.reports-client-selector {
     display: flex;
     align-items: center;
     gap: var(--space-md);
@@ -489,7 +490,8 @@
         flex-direction: column;
     }
 
-    .coach-checkins-client-selector {
+    .coach-checkins-client-selector,
+    .reports-client-selector {
         flex-direction: column;
         align-items: stretch;
     }

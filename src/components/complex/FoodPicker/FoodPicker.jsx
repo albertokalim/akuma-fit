@@ -4,6 +4,14 @@ import { foodService } from '../../../services/foodService.js';
 import { useAsyncData } from '../../../hooks/useAsyncData.js';
 import { useDebouncedValue } from '../../../hooks/useDebouncedValue.js';
 
+/**
+ * Modal para buscar y seleccionar un alimento.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} [props.title='Seleccionar alimento'] - Título del modal.
+ * @param {(food: Object) => void} props.onSelect - Callback al seleccionar un alimento.
+ * @param {() => void} props.onClose - Callback de cierre.
+ */
 function FoodPicker({ title = 'Seleccionar alimento', onSelect, onClose }) {
     const [searchText, setSearchText] = useState('');
     const debouncedSearchText = useDebouncedValue(searchText);

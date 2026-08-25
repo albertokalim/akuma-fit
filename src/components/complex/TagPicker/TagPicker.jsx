@@ -3,6 +3,15 @@ import { FiPlus, FiX } from 'react-icons/fi';
 import { tagService } from '../../../services/tagService.js';
 import { useAsyncData } from '../../../hooks/useAsyncData.js';
 
+/**
+ * Selector de etiquetas con autocompletado y creación de nuevas etiquetas.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Array<Object>} props.selectedTags - Etiquetas seleccionadas.
+ * @param {(tags: Array<Object>) => void} props.onChange - Callback al cambiar la selección.
+ * @param {string|null} [props.category] - Categoría para filtrar las etiquetas.
+ * @param {string} [props.placeholder] - Placeholder del input.
+ */
 function TagPicker({ selectedTags, onChange, category = null, placeholder }) {
     const [tagInput, setTagInput] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);

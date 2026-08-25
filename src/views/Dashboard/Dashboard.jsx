@@ -6,6 +6,10 @@ import { FiUsers, FiCheckCircle } from 'react-icons/fi';
 import { dashboardService } from '../../services/dashboardService.js';
 
 
+/**
+ * Dashboard del coach: tarjetas con clientes activos y check-ins de la semana,
+ * y lista de últimos check-ins.
+ */
 function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({ activeClients: 0, weeklyCheckIns: 0 });

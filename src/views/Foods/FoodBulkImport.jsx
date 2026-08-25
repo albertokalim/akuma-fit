@@ -25,12 +25,26 @@ const GRID_COLUMNS = [
     { key: 'serving_size', label: 'Ración' },
 ];
 
+/**
+ * Convierte un valor a número o `null` si está vacío/inválido.
+ *
+ * @param {string|number|null} value - Valor a convertir.
+ * @returns {number|null} Número o `null`.
+ */
 function toNumeric(value) {
     if (value === '' || value === null || value === undefined) return null;
     const numeric = Number(value);
     return Number.isNaN(numeric) ? null : numeric;
 }
 
+/**
+ * Modal de importación masiva de alimentos con dos modalidades: rejilla
+ * editable o subida de un fichero CSV.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {() => void} props.onClose - Callback de cierre.
+ * @param {() => void} props.onSaved - Callback tras importar.
+ */
 function FoodBulkImport({ onClose, onSaved }) {
     const fileInputRef = useRef(null);
     const [tab, setTab] = useState('grid');

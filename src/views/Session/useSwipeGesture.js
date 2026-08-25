@@ -3,6 +3,21 @@ import { useCallback, useRef, useState } from 'react';
 const IGNORED_TARGETS_SELECTOR = 'input, button, textarea, select, video';
 
  
+/**
+ * Hook de gestos de swipe para la vista móvil de entrenamiento. Detecta
+ * swipe horizontal (ignorando inputs) y dispara las acciones de volver o
+ * completar.
+ *
+ * @param {Object} [options] - Opciones.
+ * @param {number} [options.threshold=80] - Umbral de píxeles.
+ * @param {number} [options.leaveAnimationMs=220] - Duración de la animación de salida.
+ * @param {boolean} [options.canGoBack] - Si se puede volver atrás.
+ * @param {() => void} [options.onSwipeBack] - Callback al volver.
+ * @param {boolean} [options.canComplete] - Si se puede completar.
+ * @param {(animate: Function) => void} [options.onSwipeComplete] - Callback al completar.
+ * @param {() => void} [options.onBlockedComplete] - Callback al intentar completar sin series.
+ * @returns {{dragging: boolean, dragDelta: number, leaving: boolean, runWithLeaveAnimation: Function, touchHandlers: Object}} Estado y handlers del swipe.
+ */
 export function useSwipeGesture({
     threshold = 80,
     leaveAnimationMs = 220,

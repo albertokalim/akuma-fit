@@ -10,7 +10,11 @@ import SessionSummary from './SessionSummary.jsx';
 
 const RETRY_SPINNER_TEXT = 'Comprobando si tienes una sesión en curso...';
 
- 
+/**
+ * Punto de entrada de la sección Entrenar. Según el estado de la sesión
+ * muestra el resumen, la sesión activa, la comprobación o el selector de
+ * rutinas.
+ */
 function Session() {
     const {
         activeSession,
@@ -72,7 +76,15 @@ function Session() {
     return <RoutinePicker />;
 }
 
- 
+/**
+ * Carga la rutina y la sesión completa de una sesión activa y renderiza la
+ * vista de entrenamiento.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.session - Sesión activa.
+ * @param {(summary: Object) => void} props.onFinished - Callback al finalizar.
+ * @param {() => void} props.onCancelled - Callback al cancelar.
+ */
 function ActiveSessionLoader({ session, onFinished, onCancelled }) {
     const { data: routine, loading: routineLoading, error: routineError } = useAsyncData(
         () => routineService.getById(session.routine_id),

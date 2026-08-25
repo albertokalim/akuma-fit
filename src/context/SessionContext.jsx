@@ -3,7 +3,16 @@ import { SessionContext } from './sessionContextInstance.js';
 import { sessionService } from '../services/sessionService.js';
 import { useAuth } from './useAuth.js';
 
- 
+/**
+ * Proveedor del estado de la sesión de entrenamiento activa. Al montar (o al
+ * reabrir la app tras un cierre) consulta a Supabase si el cliente tiene una
+ * sesión con estado `active`; si existe, las vistas pueden mostrar el banner
+ * de "sesión en curso" y la pestaña Entrenar la reanuda donde se quedó. Solo
+ * aplica a clientes.
+ *
+ * @param {Object} props - Props del provider.
+ * @param {React.ReactNode} props.children - Hijos a envolver.
+ */
 export function SessionProvider({ children }) {
     const { profileId, userRole } = useAuth();
     const [activeSession, setActiveSession] = useState(null);

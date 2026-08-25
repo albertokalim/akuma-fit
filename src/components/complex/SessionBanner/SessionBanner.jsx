@@ -3,7 +3,10 @@ import { FiActivity } from 'react-icons/fi';
 import { useSession } from '../../../context/useSession.js';
 import { useElapsedTime, formatElapsed } from '../../../hooks/useElapsedTime.js';
 
- 
+/**
+ * Banner que muestra la sesión de entrenamiento en curso, con el tiempo
+ * transcurrido y un enlace para reanudarla.
+ */
 function SessionBanner() {
     const { activeSession } = useSession();
     const elapsedMs = useElapsedTime(activeSession?.started_at);

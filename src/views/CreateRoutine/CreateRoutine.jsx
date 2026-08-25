@@ -29,6 +29,10 @@ const SET_TYPES = [
     'Tempo',
 ];
 
+/**
+ * Creador de rutinas de entrenamiento: título, cliente, ejercicios (con
+ * series) y asignación.
+ */
 function CreateRoutine() {
     const navigate = useNavigate();
     const idCounter = useRef(0);

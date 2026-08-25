@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 /**
- * Ejecuta `loadFn` una vez al montar el componente y devuelve `reload` para
+ * Ejecuta `loadFn` una vez al crear el componente y devuelve `reload` para
  * poder volver a ejecutarla manualmente.
  *
  * @param {Function} loadFn - Función de carga a ejecutar.

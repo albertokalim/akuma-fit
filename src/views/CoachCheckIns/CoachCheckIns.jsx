@@ -16,6 +16,10 @@ const COACH_CHART_FIELDS = [
     { key: 'gymPerformance', source: 'gym_performance' },
 ];
 
+/**
+ * Vista de check-ins de clientes para el coach: selector de cliente, alertas,
+ * último check-in, gráficos de evolución e historial desplegable.
+ */
 function CoachCheckIns() {
     const [selectedClientId, setSelectedClientId] = useState(null);
     const [expandedCards, setExpandedCards] = useState({});

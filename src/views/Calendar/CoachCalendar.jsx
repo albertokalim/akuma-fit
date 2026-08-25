@@ -108,11 +108,12 @@ function CoachCalendar() {
                 <h1 className="page-title">Calendario</h1>
                 <p className="page-description">Consulta y gestiona los eventos de tus clientes.</p>
 
-                <div className="coach-checkins-client-selector">
+                <div className="calendar-client-actions">
                     <ClientSelector
                         clients={clients}
                         selectedClientId={selectedClientId}
                         onChange={setSelectedClientId}
+                        className="coach-checkins-client-selector"
                     />
                     <button type="button" className="btn-primary" onClick={() => navigate('/app/calendario/nuevo')}>
                         <FiPlus size={16} />

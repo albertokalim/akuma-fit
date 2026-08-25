@@ -5,7 +5,9 @@ import { routineService } from '../../services/routineService.js';
 import { useAuth } from '../../context/useAuth.js';
 import { useSession } from '../../context/useSession.js';
 
- 
+/**
+ * Selector de rutina para iniciar una sesión de entrenamiento.
+ */
 function RoutinePicker() {
     const { profileId } = useAuth();
     const { startSession } = useSession();

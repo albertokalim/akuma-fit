@@ -2,6 +2,17 @@ import { useState } from 'react';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
+/**
+ * Gráfico de líneas basado en Recharts, con controles opcionales para
+ * mostrar/ocultar líneas.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.title - Título del gráfico.
+ * @param {Array<Object>} props.data - Datos a representar.
+ * @param {Array<{dataKey: string, name: string, color: string}>} [props.lines] - Líneas.
+ * @param {string} [props.xKey='date'] - Clave del eje X.
+ * @param {boolean} [props.showControls=false] - Mostrar controles para ocultar líneas.
+ */
 function LineChart({ title, data, lines = [], xKey = 'date', showControls = false }) {
     const [activeLines, setActiveLines] = useState(
         Object.fromEntries(lines.map(line => [line.dataKey, true]))

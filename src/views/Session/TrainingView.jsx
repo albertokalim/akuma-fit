@@ -8,7 +8,17 @@ import FeedbackScreen from './FeedbackScreen.jsx';
 import MobileTrainingView from './MobileTrainingView.jsx';
 import DesktopTrainingView from './DesktopTrainingView.jsx';
 
- 
+/**
+ * Vista de entrenamiento: orquesta el estado de la sesión y elige entre la
+ * vista móvil (swipe) o de escritorio, con feedback y pantalla final.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.session - Sesión activa.
+ * @param {Object} props.routine - Rutina.
+ * @param {Object} props.fullSession - Sesión completa (ejercicios y series).
+ * @param {(summary: Object) => void} props.onFinished - Callback al finalizar.
+ * @param {() => void} props.onCancelled - Callback al cancelar.
+ */
 function TrainingView({ session, routine, fullSession, onFinished, onCancelled }) {
     const isMobile = useIsMobile();
     const elapsedMs = useElapsedTime(session.started_at);

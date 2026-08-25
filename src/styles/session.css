@@ -302,6 +302,7 @@
 .session-rpe-hints {
     display: flex;
     justify-content: space-between;
+    max-width: 480px;
     font-size: var(--font-xs);
     color: var(--color-text-muted);
 }

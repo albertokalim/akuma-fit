@@ -8,6 +8,14 @@ import { checkInService } from '../../services/checkInService.js';
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
+/**
+ * Formulario de check-in construido dinámicamente desde
+ * `checkInFields.json`, con validación por campos.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {() => void} [props.onComplete] - Callback al completar.
+ * @param {() => void} [props.onCancel] - Callback de cancelación.
+ */
 function CheckInForm({ onComplete, onCancel }) {
     const [checkIn, setCheckIn] = useState({});
 
