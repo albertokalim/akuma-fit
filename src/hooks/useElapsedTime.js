@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 
- 
+/**
+ * Cuenta el tiempo transcurrido (en milisegundos) desde `startedAt`,
+ * actualizándose cada segundo. Devuelve 0 si `startedAt` es nulo.
+ *
+ * @param {string|Date|null} startedAt - Momento de inicio.
+ * @returns {number} Milisegundos transcurridos.
+ */
 export function useElapsedTime(startedAt) {
     const [elapsedMs, setElapsedMs] = useState(0);
 
@@ -22,6 +28,13 @@ export function useElapsedTime(startedAt) {
     return elapsedMs;
 }
 
+/**
+ * Formatea una duración en milisegundos como `mm:ss`, o `hh:mm:ss` si
+ * supera la hora.
+ *
+ * @param {number} ms - Duración en milisegundos.
+ * @returns {string} Duración formateada.
+ */
 export function formatElapsed(ms) {
     const totalSeconds = Math.floor(ms / 1000);
     const hours = Math.floor(totalSeconds / 3600);

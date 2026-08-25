@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 
 const MOBILE_QUERY = '(max-width: 768px)';
 
- 
+/**
+ * Devuelve `true` si el viewport es móvil (<= 768px) y se actualiza al
+ * cambiar el tamaño de la ventana.
+ *
+ * @returns {boolean} `true` si el viewport es móvil.
+ */
 export function useIsMobile() {
     const [isMobile, setIsMobile] = useState(() => window.matchMedia(MOBILE_QUERY).matches);
 

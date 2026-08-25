@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import { photoService } from '../services/photoService.js';
 
+/**
+ * Obtiene URLs firmadas para una lista de rutas de almacenamiento de fotos y
+ * expone el mapa de URLs por ruta junto con el estado de carga. Vuelve a
+ * consultar cuando cambia el contenido de `storagePaths`.
+ *
+ * @param {string[]} storagePaths - Rutas de almacenamiento de las fotos.
+ * @returns {{urls: Object<string, string>, loading: boolean}} Mapa de URLs y estado de carga.
+ */
 export const useSignedPhotoUrls = (storagePaths) => {
     const [urls, setUrls] = useState({});
     const [loading, setLoading] = useState(false);

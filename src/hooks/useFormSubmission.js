@@ -1,5 +1,15 @@
 import { useState, useRef, useCallback } from 'react';
 
+/**
+ * Gestiona el estado de un formulario con validación por campos: validez de
+ * cada campo, intento de envío, envío en curso, error y éxito. Al enviar,
+ * valida los campos y, si todos son válidos, ejecuta la función recibida.
+ *
+ * @param {Object} options - Opciones del hook.
+ * @param {Object<string, string>} [options.fieldLabelsById] - Etiquetas legibles por id de campo, para los mensajes de error.
+ * @param {Function} [options.onSuccess] - Callback invocado tras un envío correcto.
+ * @returns {{fieldValidity: Object, submitAttempted: boolean, submitting: boolean, submitError: string, submitSuccess: boolean, handleValidityChange: Function, handleSubmit: Function, resetForm: Function}} Estado y acciones del formulario.
+ */
 function useFormSubmission({ fieldLabelsById = {}, onSuccess }) {
     const [fieldValidity, setFieldValidity] = useState({});
     const [submitAttempted, setSubmitAttempted] = useState(false);
