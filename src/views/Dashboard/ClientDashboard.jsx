@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiActivity, FiCheckCircle, FiTarget, FiPlay, FiTrendingUp, FiClipboard, FiPlus } from 'react-icons/fi';
+import { FiActivity, FiCheckCircle, FiPlay, FiTrendingUp, FiClipboard, FiPlus } from 'react-icons/fi';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import StatCard from '../../components/complex/StatCard/StatCard.jsx';
 import Spinner from '../../components/primitives/Spinner/Spinner.jsx';
@@ -44,8 +44,6 @@ function ClientDashboard() {
         { value: weightData.current !== null ? `${weightData.current} kg` : '—', label: 'Peso actual', icon: <FiActivity /> },
         { value: weightData.delta !== null ? `${weightData.delta > 0 ? '+' : ''}${weightData.delta} kg` : '—', label: 'Cambio total', icon: <FiTrendingUp /> },
         { value: checkInStats.streak, label: 'Racha check-ins', icon: <FiCheckCircle /> },
-        { value: `${checkInStats.dietAdherence}%`, label: 'Adherencia dieta', icon: <FiTarget /> },
-        { value: `${checkInStats.trainingAdherence}%`, label: 'Adherencia entreno', icon: <FiActivity /> },
         { value: trainingStats.completedThisWeek, label: 'Sesiones esta semana', icon: <FiCheckCircle /> },
     ];
 
