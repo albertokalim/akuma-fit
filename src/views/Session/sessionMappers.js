@@ -1,6 +1,14 @@
  
 
  
+/**
+ * Empareja los ejercicios de una rutina con sus filas de `completed_exercise`,
+ * devolviendo solo los que tienen fila.
+ *
+ * @param {Array<Object>} routineExercises - Ejercicios de la rutina.
+ * @param {Array<Object>} completedExerciseRows - Filas completadas.
+ * @returns {Array<{exercise: Object, row: Object}>} Pares emparejados.
+ */
 export function matchExerciseRows(routineExercises, completedExerciseRows) {
     const rowsByTemplateId = new Map();
     for (const row of completedExerciseRows) {
@@ -12,6 +20,13 @@ export function matchExerciseRows(routineExercises, completedExerciseRows) {
         .filter((pair) => pair.row !== null);
 }
 
+/**
+ * Construye el estado inicial de valores de series desde las series
+ * completadas.
+ *
+ * @param {Array<{row: Object}>} matchedExercises - Ejercicios emparejados.
+ * @returns {Object} Mapa clave -> { reps, kg }.
+ */
 export function buildInitialSetValues(matchedExercises) {
     const values = {};
 
@@ -27,6 +42,12 @@ export function buildInitialSetValues(matchedExercises) {
     return values;
 }
 
+/**
+ * Construye el mapa inicial de ejercicios completados.
+ *
+ * @param {Array<{row: Object}>} matchedExercises - Ejercicios emparejados.
+ * @returns {Object} Mapa rowId -> completado.
+ */
 export function buildInitialCompletedMap(matchedExercises) {
     const completed = {};
 
@@ -37,6 +58,12 @@ export function buildInitialCompletedMap(matchedExercises) {
     return completed;
 }
 
+/**
+ * Construye el mapa inicial de RPE por ejercicio.
+ *
+ * @param {Array<{row: Object}>} matchedExercises - Ejercicios emparejados.
+ * @returns {Object} Mapa rowId -> rpe.
+ */
 export function buildInitialRpeMap(matchedExercises) {
     const rpeMap = {};
 
@@ -49,12 +76,25 @@ export function buildInitialRpeMap(matchedExercises) {
     return rpeMap;
 }
 
+/**
+ * Devuelve el índice del primer ejercicio no completado (o 0 si no hay).
+ *
+ * @param {Array<{row: Object}>} matchedExercises - Ejercicios emparejados.
+ * @returns {number} Índice.
+ */
 export function firstIncompleteIndex(matchedExercises) {
     const index = matchedExercises.findIndex(({ row }) => !row.completed);
     return index === -1 ? 0 : index;
 }
 
  
+/**
+ * Construye el resumen final de la sesión: duración, ejercicios/series
+ * completados, volumen total, sensación y desglose por ejercicio.
+ *
+ * @param {Object} params - Parámetros.
+ * @returns {Object} Resumen de la sesión.
+ */
 export function buildSummary({
     matchedExercises,
     routineTitle,

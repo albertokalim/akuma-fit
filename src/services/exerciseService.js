@@ -3,7 +3,17 @@ import { getCurrentProfile } from '../utils/auth.js';
 
 const BUCKET_NAME = 'exercise-video';
 
+/**
+ * Servicio de acceso a datos de los ejercicios (`exercise_template`) y sus
+ * etiquetas.
+ */
 export const exerciseService = {
+    /**
+     * Crea un ejercicio para el perfil actual.
+     *
+     * @param {Object} exerciseData - Datos del ejercicio.
+     * @returns {Promise<Object>} Ejercicio creado.
+     */
     async create(exerciseData) {
         const profile = await getCurrentProfile();
 
@@ -23,6 +33,13 @@ export const exerciseService = {
         return data;
     },
 
+    /**
+     * Actualiza los datos de un ejercicio.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     * @param {Object} exerciseData - Datos a actualizar.
+     * @returns {Promise<Object>} Ejercicio actualizado.
+     */
     async update(exerciseId, exerciseData) {
         const { data, error } = await supabase
             .from('exercise_template')
@@ -40,6 +57,11 @@ export const exerciseService = {
         return data;
     },
 
+    /**
+     * Obtiene todos los ejercicios con sus etiquetas, ordenados por nombre.
+     *
+     * @returns {Promise<Array>} Lista de ejercicios.
+     */
     async getAll() {
         const { data, error } = await supabase
             .from('exercise_template')
@@ -63,6 +85,12 @@ export const exerciseService = {
         })) || [];
     },
 
+    /**
+     * Obtiene un ejercicio por id con sus etiquetas.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     * @returns {Promise<Object>} Ejercicio.
+     */
     async getById(exerciseId) {
         const { data, error } = await supabase
             .from('exercise_template')
@@ -87,6 +115,12 @@ export const exerciseService = {
         };
     },
 
+    /**
+     * Busca ejercicios por texto, categoría y etiquetas.
+     *
+     * @param {Object} [filters] - Filtros (`text`, `category`, `tags`).
+     * @returns {Promise<Array>} Lista de ejercicios filtrados.
+     */
     async search(filters = {}) {
         let query = supabase
             .from('exercise_template')
@@ -124,6 +158,11 @@ export const exerciseService = {
         })) || [];
     },
 
+    /**
+     * Elimina un ejercicio.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     */
     async delete(exerciseId) {
         const { error } = await supabase
             .from('exercise_template')
@@ -134,7 +173,18 @@ export const exerciseService = {
     },
 };
 
+/**
+ * Servicio de almacenamiento del vídeo de demostración de un ejercicio en el
+ * bucket `exercise-video`.
+ */
 export const exerciseVideoService = {
+    /**
+     * Sube el vídeo de un ejercicio.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     * @param {File} file - Archivo de vídeo.
+     * @returns {Promise<string>} Nombre del archivo subido.
+     */
     async upload(exerciseId, file) {
         const fileExt = file.name.split('.').pop();
         const fileName = `${exerciseId}.${fileExt}`;
@@ -151,6 +201,13 @@ export const exerciseVideoService = {
         return fileName;
     },
 
+    /**
+     * Obtiene la URL firmada del vídeo de un ejercicio, probando varias
+     * extensiones.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     * @returns {Promise<string|null>} URL firmada o `null` si no hay vídeo.
+     */
     async getSignedUrl(exerciseId) {
         const extensions = ['mp4', 'webm', 'mov', 'avi'];
         
@@ -168,6 +225,11 @@ export const exerciseVideoService = {
         return null;
     },
 
+    /**
+     * Elimina el vídeo de un ejercicio del bucket.
+     *
+     * @param {number} exerciseId - Id del ejercicio.
+     */
     async delete(exerciseId) {
         const { data: files, error: listError } = await supabase.storage
             .from(BUCKET_NAME)

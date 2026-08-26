@@ -5,6 +5,13 @@ import { photoService } from '../../services/photoService.js';
 import { getCurrentProfile } from '../../utils/auth.js';
 
 
+/**
+ * Convierte un data URL (base64) en un objeto File.
+ *
+ * @param {string} dataurl - Data URL de la imagen.
+ * @param {string} filename - Nombre del archivo resultante.
+ * @returns {File} Archivo.
+ */
 function dataURLtoFile(dataurl, filename) {
     const arr = dataurl.split(',');
     const mime = arr[0].match(/:(.*?);/)[1];
@@ -17,6 +24,12 @@ function dataURLtoFile(dataurl, filename) {
     return new File([u8arr], filename, { type: mime });
 }
 
+/**
+ * Vista de captura y guardado de las fotos corporales del cliente.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {() => void} [props.onBack] - Callback para volver atrás.
+ */
 function BodyPhotos({ onBack }) {
     const [photos, setPhotos] = useState({});
     const [saving, setSaving] = useState(false);

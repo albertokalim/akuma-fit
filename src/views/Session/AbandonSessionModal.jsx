@@ -1,6 +1,14 @@
 import { FiX } from 'react-icons/fi';
 
- 
+/**
+ * Modal de confirmación para abandonar la sesión de entrenamiento.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {boolean} props.open - Si está abierto.
+ * @param {boolean} props.busy - Si hay una acción en curso.
+ * @param {() => void} props.onCancel - Callback de cancelar.
+ * @param {() => void} props.onConfirm - Callback de confirmar abandono.
+ */
 function AbandonSessionModal({ open, busy, onCancel, onConfirm }) {
     if (!open) return null;
 

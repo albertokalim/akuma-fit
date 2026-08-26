@@ -4,6 +4,7 @@ import { useSignedPhotoUrls } from '../../../hooks/useSignedPhotoUrls.js';
 import { formatDate } from '../../../utils/data.js';
 
 
+/** Etiquetas legibles por posición corporal. */
 const POSITION_LABELS = {
     front: 'Frontal',
     left: 'Lateral Izquierdo',
@@ -11,6 +12,12 @@ const POSITION_LABELS = {
     back: 'Dorsal'
 };
 
+/**
+ * Galería de fotos agrupadas por fecha, con lightbox y navegación.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Array<{taken_at: string, position: string, storage_path: string}>} props.photos - Fotos.
+ */
 function PhotoGallery({ photos }) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState(null);

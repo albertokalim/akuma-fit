@@ -13,6 +13,10 @@ import { assessmentService } from '../../services/assessmentService.js';
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
+/**
+ * Valoración inicial del cliente: cuestionario dinámico (datos personales,
+ * medidas y valoración) y captura opcional de fotos corporales.
+ */
 function InitialAssessment() {
     const { completeAssessment } = useAuth();
     const navigate = useNavigate();

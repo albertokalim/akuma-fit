@@ -12,6 +12,19 @@ import {
 const HINT_DURATION_MS = 2500;
 
  
+/**
+ * Hook que gestiona el estado de una sesión de entrenamiento: valores de
+ * series, completado, RPE, avance entre ejercicios, guardado, finalización y
+ * abandono.
+ *
+ * @param {Object} params - Parámetros.
+ * @param {Object} params.session - Sesión activa.
+ * @param {Object} params.routine - Rutina.
+ * @param {Object} params.fullSession - Sesión completa (ejercicios y series).
+ * @param {(summary: Object) => void} params.onFinished - Callback al finalizar.
+ * @param {() => void} params.onCancelled - Callback al cancelar.
+ * @returns {Object} Estado y acciones de la sesión.
+ */
 export function useTrainingSession({ session, routine, fullSession, onFinished, onCancelled }) {
     const matchedExercises = useMemo(
         () => matchExerciseRows(routine.exercises || [], fullSession.completed_exercise || []),

@@ -5,7 +5,15 @@ import { useSwipeGesture } from './useSwipeGesture.js';
 const SWIPE_THRESHOLD = 80;
 const LEAVE_ANIMATION_MS = 220;
 
- 
+/**
+ * Vista de entrenamiento móvil: un ejercicio a la vez con navegación por
+ * swipe y puntos de progreso.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.training - Estado devuelto por `useTrainingSession`.
+ * @param {number} props.currentIndex - Índice del ejercicio actual.
+ * @param {(index: number) => void} props.setCurrentIndex - Setter del índice.
+ */
 function MobileTrainingView({ training, currentIndex, setCurrentIndex }) {
     const { matchedExercises, currentPair, setValues, completedMap, rpeMap, busy, actionError, hint } = training;
 

@@ -7,6 +7,9 @@ import { useAsyncData } from '../../hooks/useAsyncData.js';
 import { useDebouncedValue } from '../../hooks/useDebouncedValue.js';
 import { recipeServingMacros, formatMacros } from '../../utils/dietMacros.js';
 
+/**
+ * Listado de recetas del coach con búsqueda, creación, edición y borrado.
+ */
 function Recipes() {
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');

@@ -9,7 +9,14 @@ const FEELING_LABELS = {
     mal: 'Mal',
 };
 
- 
+/**
+ * Resumen final de la sesión completada: duración, ejercicios, series,
+ * volumen y desglose por ejercicio.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.summary - Resumen devuelto por `buildSummary`.
+ * @param {() => void} props.onNewSession - Callback para iniciar otra sesión.
+ */
 function SessionSummary({ summary, onNewSession }) {
     const volumeLabel = `${Math.round(summary.totalVolume).toLocaleString('es-ES')} kg`;
 

@@ -1,6 +1,16 @@
 import { supabase } from '../supabaseClient.js';
 
+/**
+ * Servicio de acceso a datos de las sesiones de entrenamiento
+ * (`training_session`).
+ */
 export const sessionService = {
+    /**
+     * Obtiene la sesión activa de un perfil, si existe.
+     *
+     * @param {number} profileId - Id del perfil.
+     * @returns {Promise<Object|null>} Sesión activa o `null`.
+     */
     async getActive(profileId) {
         const { data, error } = await supabase
             .from('training_session')
@@ -15,6 +25,13 @@ export const sessionService = {
         return data || null;
     },
 
+    /**
+     * Crea una sesión de entrenamiento para un perfil y una rutina.
+     *
+     * @param {number} profileId - Id del perfil.
+     * @param {Object} routine - Rutina (con `id`).
+     * @returns {Promise<Object>} Sesión creada.
+     */
     async create(profileId, routine) {
         const { data: session, error } = await supabase
             .rpc('create_training_session', {
@@ -28,6 +45,12 @@ export const sessionService = {
         return session;
     },
 
+    /**
+     * Carga una sesión completa con sus ejercicios y series completados.
+     *
+     * @param {number} sessionId - Id de la sesión.
+     * @returns {Promise<Object|null>} Sesión completa o `null`.
+     */
     async loadFull(sessionId) {
         const { data, error } = await supabase
             .from('training_session')
@@ -48,6 +71,13 @@ export const sessionService = {
         return data || null;
     },
 
+    /**
+     * Guarda (upsert) una serie completada de un ejercicio de la sesión.
+     *
+     * @param {number} completedExerciseId - Id del ejercicio completado.
+     * @param {number} setOrder - Orden de la serie.
+     * @param {Object} values - Valores (`reps`, `kg`, `type`).
+     */
     async saveSet(completedExerciseId, setOrder, values) {
         const { error } = await supabase
             .from('completed_set')
@@ -62,6 +92,13 @@ export const sessionService = {
         if (error) throw new Error(error.message);
     },
 
+    /**
+     * Marca un ejercicio como completado (o no), registrando el RPE.
+     *
+     * @param {number} completedExerciseId - Id del ejercicio completado.
+     * @param {boolean} completed - Estado de completado.
+     * @param {number} [rpe] - Esfuerzo percibido (RPE).
+     */
     async setExerciseCompleted(completedExerciseId, completed, rpe) {
         const { error } = await supabase
             .from('completed_exercise')
@@ -75,6 +112,12 @@ export const sessionService = {
         if (error) throw new Error(error.message);
     },
 
+    /**
+     * Finaliza una sesión, registrando el feedback (sensación y notas).
+     *
+     * @param {number} sessionId - Id de la sesión.
+     * @param {Object} [feedback] - Feedback (`feeling`, `notes`).
+     */
     async finish(sessionId, feedback = {}) {
         const { error } = await supabase
             .from('training_session')
@@ -90,6 +133,11 @@ export const sessionService = {
         if (error) throw new Error(error.message);
     },
 
+    /**
+     * Cancela una sesión.
+     *
+     * @param {number} sessionId - Id de la sesión.
+     */
     async cancel(sessionId) {
         const { error } = await supabase
             .from('training_session')

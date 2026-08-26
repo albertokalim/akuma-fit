@@ -3,8 +3,18 @@ import { getCurrentProfile } from '../utils/auth.js';
 
 const FOOD_SELECT = '*, food_has_tag(tag(id, name, category))';
 
+/**
+ * Campos numéricos del alimento que se normalizan antes de insertar.
+ */
 const NUMERIC_FIELDS = ['calories', 'protein', 'carbs', 'fat', 'fiber'];
 
+/**
+ * Convierte la fila de Supabase en un alimento con su lista de etiquetas
+ * (`tags`), quitando el embed crudo `food_has_tag`.
+ *
+ * @param {Object} food - Fila de `food` con `food_has_tag`.
+ * @returns {Object} Alimento con `tags`.
+ */
 function mapFood(food) {
     const tags = (food.food_has_tag || []).map(rel => rel.tag).filter(Boolean);
     const rest = { ...food };
@@ -12,6 +22,14 @@ function mapFood(food) {
     return { ...rest, tags };
 }
 
+/**
+ * Construye el payload de inserción/actualización de un alimento a partir de
+ * sus datos en camelCase.
+ *
+ * @param {Object} foodData - Datos del alimento.
+ * @param {number} [createdBy] - Id del creador (solo en creación).
+ * @returns {Object} Payload para Supabase.
+ */
 function buildPayload(foodData, createdBy) {
     return {
         name: foodData.name,
@@ -26,6 +44,13 @@ function buildPayload(foodData, createdBy) {
     };
 }
 
+/**
+ * Sincroniza las etiquetas de un alimento: borra las actuales e inserta las
+ * indicadas en `tagIds`.
+ *
+ * @param {number} foodId - Id del alimento.
+ * @param {number[]} tagIds - Ids de etiquetas.
+ */
 async function syncFoodTags(foodId, tagIds) {
     const { error: deleteError } = await supabase
         .from('food_has_tag')
@@ -43,7 +68,17 @@ async function syncFoodTags(foodId, tagIds) {
     }
 }
 
+/**
+ * Servicio de acceso a datos de los alimentos (`food`) y sus etiquetas.
+ */
 export const foodService = {
+    /**
+     * Obtiene los alimentos con sus etiquetas, opcionalmente filtrados por
+     * texto y etiquetas.
+     *
+     * @param {Object} [filters] - Filtros (`text`, `tagIds`).
+     * @returns {Promise<Array>} Lista de alimentos.
+     */
     async getAll(filters = {}) {
         let query = supabase
             .from('food')
@@ -64,6 +99,12 @@ export const foodService = {
         return (data || []).map(mapFood);
     },
 
+    /**
+     * Obtiene un alimento por id con sus etiquetas.
+     *
+     * @param {number} foodId - Id del alimento.
+     * @returns {Promise<Object>} Alimento.
+     */
     async getById(foodId) {
         const { data, error } = await supabase
             .from('food')
@@ -75,6 +116,13 @@ export const foodService = {
         return mapFood(data);
     },
 
+    /**
+     * Crea un alimento (opcionalmente con etiquetas) para el perfil actual.
+     *
+     * @param {Object} foodData - Datos del alimento.
+     * @param {number[]} [tagIds] - Ids de etiquetas.
+     * @returns {Promise<Object>} Alimento creado.
+     */
     async create(foodData, tagIds = []) {
         const profile = await getCurrentProfile();
 
@@ -93,6 +141,11 @@ export const foodService = {
         return food;
     },
 
+    /**
+     * Crea varios alimentos a la vez (importación masiva).
+     *
+     * @param {Array<Object>} items - Lista de alimentos a crear.
+     */
     async createBulk(items) {
         const profile = await getCurrentProfile();
 
@@ -102,6 +155,14 @@ export const foodService = {
         if (error) throw new Error(error.message);
     },
 
+    /**
+     * Actualiza un alimento y, si se indica, sus etiquetas.
+     *
+     * @param {number} foodId - Id del alimento.
+     * @param {Object} foodData - Datos a actualizar.
+     * @param {number[]} [tagIds] - Etiquetas a sincronizar.
+     * @returns {Promise<Object>} Alimento actualizado.
+     */
     async update(foodId, foodData, tagIds) {
         const { data, error } = await supabase
             .from('food')
@@ -119,6 +180,11 @@ export const foodService = {
         return data;
     },
 
+    /**
+     * Elimina un alimento.
+     *
+     * @param {number} foodId - Id del alimento.
+     */
     async delete(foodId) {
         const { error } = await supabase
             .from('food')

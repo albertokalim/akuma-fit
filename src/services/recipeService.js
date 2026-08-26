@@ -11,6 +11,13 @@ const RECIPE_SELECT = `
     )
 `;
 
+/**
+ * Convierte la fila de Supabase en una receta con `ingredients` y `tags`,
+ * quitando los embeds crudos `recipe_food` y `recipe_has_tag`.
+ *
+ * @param {Object} recipe - Fila de `recipe` con embeds.
+ * @returns {Object} Receta con `ingredients` y `tags`.
+ */
 function mapRecipe(recipe) {
     const ingredients = (recipe.recipe_food || [])
         .filter(rel => rel.food)
@@ -29,6 +36,13 @@ function mapRecipe(recipe) {
     return { ...rest, ingredients, tags };
 }
 
+/**
+ * Sincroniza las etiquetas de una receta: borra las actuales e inserta las
+ * indicadas en `tagIds`.
+ *
+ * @param {number} recipeId - Id de la receta.
+ * @param {number[]} tagIds - Ids de etiquetas.
+ */
 async function syncRecipeTags(recipeId, tagIds) {
     const { error: deleteError } = await supabase
         .from('recipe_has_tag')
@@ -46,6 +60,12 @@ async function syncRecipeTags(recipeId, tagIds) {
     }
 }
 
+/**
+ * Reemplaza los ingredientes de una receta por los indicados.
+ *
+ * @param {number} recipeId - Id de la receta.
+ * @param {Array<Object>} ingredients - Ingredientes (`food_id`, `quantity_g`, `notes`).
+ */
 async function setIngredients(recipeId, ingredients) {
     const { error: deleteError } = await supabase
         .from('recipe_food')
@@ -68,7 +88,17 @@ async function setIngredients(recipeId, ingredients) {
     }
 }
 
+/**
+ * Servicio de acceso a datos de las recetas (`recipe`).
+ */
 export const recipeService = {
+    /**
+     * Obtiene las recetas con sus ingredientes y etiquetas, opcionalmente
+     * filtradas por texto y etiquetas.
+     *
+     * @param {Object} [filters] - Filtros (`text`, `tagIds`).
+     * @returns {Promise<Array>} Lista de recetas.
+     */
     async getAll(filters = {}) {
         let query = supabase
             .from('recipe')
@@ -89,6 +119,12 @@ export const recipeService = {
         return (data || []).map(mapRecipe);
     },
 
+    /**
+     * Obtiene una receta por id con ingredientes y etiquetas.
+     *
+     * @param {number} recipeId - Id de la receta.
+     * @returns {Promise<Object>} Receta.
+     */
     async getById(recipeId) {
         const { data, error } = await supabase
             .from('recipe')
@@ -100,6 +136,12 @@ export const recipeService = {
         return mapRecipe(data);
     },
 
+    /**
+     * Crea una receta con sus ingredientes y etiquetas.
+     *
+     * @param {Object} recipeData - Datos de la receta.
+     * @returns {Promise<Object>} Receta creada.
+     */
     async create(recipeData) {
         const profile = await getCurrentProfile();
 
@@ -127,6 +169,13 @@ export const recipeService = {
         return recipe;
     },
 
+    /**
+     * Actualiza una receta y, opcionalmente, sus ingredientes y etiquetas.
+     *
+     * @param {number} recipeId - Id de la receta.
+     * @param {Object} recipeData - Datos a actualizar.
+     * @returns {Promise<Object>} Receta actualizada.
+     */
     async update(recipeId, recipeData) {
         const { data, error } = await supabase
             .from('recipe')
@@ -154,6 +203,11 @@ export const recipeService = {
         return data;
     },
 
+    /**
+     * Elimina una receta.
+     *
+     * @param {number} recipeId - Id de la receta.
+     */
     async delete(recipeId) {
         const { error } = await supabase
             .from('recipe')

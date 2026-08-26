@@ -10,6 +10,14 @@ const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
+/**
+ * Formulario de edición del perfil, construido desde `profileFields.json`.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} [props.initialData] - Datos iniciales del perfil.
+ * @param {(data: Object) => void} [props.onSave] - Callback al guardar.
+ * @param {() => void} [props.onCancel] - Callback de cancelación.
+ */
 function ProfileForm({ initialData = {}, onSave, onCancel }) {
     const [profile, setProfile] = useState(() => {
         const initial = {};

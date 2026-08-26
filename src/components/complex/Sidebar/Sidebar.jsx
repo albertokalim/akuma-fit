@@ -2,10 +2,19 @@ import { useCallback } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import Avatar from '../../primitives/Avatar/Avatar.jsx';
 import ICON_MAP from '../../../config/iconMap.jsx';
-import { FiUser, FiX } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
 
 
- 
+/**
+ * Barra lateral de navegación por secciones del menú, con enlace a perfil.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Array<{id: string, label: string, icon: string}>} props.items - Ítems del menú.
+ * @param {boolean} props.isOpen - Si está abierta (móvil).
+ * @param {() => void} props.onClose - Callback de cierre.
+ * @param {string} [props.userName] - Nombre del usuario (para el enlace de perfil).
+ * @param {number} [props.profileId] - Id del perfil (para el avatar).
+ */
 function Sidebar({ items, isOpen, onClose, userName, profileId }) {
     const handleItemClick = useCallback(() => {
         if (onClose) onClose();
@@ -50,7 +59,6 @@ function Sidebar({ items, isOpen, onClose, userName, profileId }) {
                             <span className="sidebar-user-name">{userName}</span>
                             <span className="sidebar-user-hint">Editar perfil</span>
                         </div>
-                        <FiUser className="sidebar-user-icon" size={20} />
                     </Link>
                 )}
             </aside>

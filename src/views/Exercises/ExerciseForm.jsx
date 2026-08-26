@@ -16,6 +16,10 @@ const EXERCISE_CATEGORIES = [
     'Otros',
 ];
 
+/**
+ * Formulario de creación/edición de un ejercicio, con tags y vídeo de
+ * demostración.
+ */
 function ExerciseForm() {
     const navigate = useNavigate();
     const { id } = useParams();

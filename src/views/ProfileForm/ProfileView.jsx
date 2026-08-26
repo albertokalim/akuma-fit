@@ -6,6 +6,13 @@ import { authService } from '../../services/authService.js';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
 import ProfileForm from './ProfileForm.jsx';
 
+/**
+ * Vista del perfil del usuario: datos personales, email y avatar. Alterna
+ * entre vista y edición mediante `ProfileForm`.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {number} props.profileId - Id del perfil.
+ */
 function ProfileView({ profileId }) {
     const [isEditing, setIsEditing] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);

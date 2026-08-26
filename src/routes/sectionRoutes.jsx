@@ -2,8 +2,15 @@
 import { lazy, Suspense } from 'react';
 import Spinner from '../components/primitives/Spinner/Spinner.jsx';
 import PlaceholderComponent from '../components/primitives/PlaceholderComponent/PlaceholderComponent.jsx';
+import { useAuth } from '../context/useAuth.js';
 
-const Dashboard = lazy(() => import('../views/Dashboard/Dashboard.jsx'));
+const CoachDashboard = lazy(() => import('../views/Dashboard/CoachDashboard.jsx'));
+const ClientDashboard = lazy(() => import('../views/Dashboard/ClientDashboard.jsx'));
+
+function DashboardRouter() {
+    const { userRole } = useAuth();
+    return userRole === 'coach' ? <CoachDashboard /> : <ClientDashboard />;
+}
 const CheckIn = lazy(() => import('../views/CheckIn/CheckIn.jsx'));
 const NewCheckIn = lazy(() => import('../views/CheckIn/NewCheckIn.jsx'));
 const Progress = lazy(() => import('../views/Progress/Progress.jsx'));
@@ -17,6 +24,7 @@ const ExerciseForm = lazy(() => import('../views/Exercises/ExerciseForm.jsx'));
 const MyPlan = lazy(() => import('../views/MyPlan/MyPlan.jsx'));
 const Session = lazy(() => import('../views/Session/Session.jsx'));
 const Foods = lazy(() => import('../views/Foods/Foods.jsx'));
+const FoodFormPage = lazy(() => import('../views/Foods/FoodFormPage.jsx'));
 const Recipes = lazy(() => import('../views/Recipes/Recipes.jsx'));
 const RecipeForm = lazy(() => import('../views/Recipes/RecipeForm.jsx'));
 const MealPlans = lazy(() => import('../views/MealPlans/MealPlans.jsx'));
@@ -25,15 +33,31 @@ const Nutrition = lazy(() => import('../views/Nutrition/Nutrition.jsx'));
 const Calendar = lazy(() => import('../views/Calendar/Calendar.jsx'));
 const EventCreator = lazy(() => import('../views/Calendar/EventCreator.jsx'));
 
- 
+/**
+ * Envuelve un elemento cargado con `React.lazy` en un `Suspense` con un
+ * fallback consistente (spinner), para que la carga de secciones bajo demanda
+ * (code-splitting) no quede en blanco mientras se descarga el chunk.
+ *
+ * @param {React.ReactNode} element - Elemento perezoso a envolver.
+ * @returns {React.ReactNode} Elemento envuelto en `Suspense`.
+ */
 function withSuspense(element) {
     return <Suspense fallback={<Spinner />}>{element}</Suspense>;
 }
 
- 
+/**
+ * Fuente única de verdad del contenido de cada sección del menú.
+ * `menuConfig.json` define label/icon/orden por rol; aquí se define qué se
+ * renderiza para cada id de sección (rutas relativas a `/app`).
+ *
+ * Cada entrada es una lista de rutas: la primera es la "principal" (a la que
+ * apunta el enlace del sidebar); el resto son sub-vistas propias de esa
+ * sección. Las vistas se cargan con `React.lazy` para dividir el bundle por
+ * sección.
+ */
 export const SECTION_ROUTES = {
     dashboard: [
-        { path: 'dashboard', element: withSuspense(<Dashboard />) },
+        { path: 'dashboard', element: withSuspense(<DashboardRouter />) },
     ],
     checkin: [
         { path: 'checkin', element: withSuspense(<CheckIn />) },
@@ -60,6 +84,8 @@ export const SECTION_ROUTES = {
     ],
     alimentos: [
         { path: 'alimentos', element: withSuspense(<Foods />) },
+        { path: 'alimentos/new', element: withSuspense(<FoodFormPage />) },
+        { path: 'alimentos/:id/edit', element: withSuspense(<FoodFormPage />) },
     ],
     recetas: [
         { path: 'recetas', element: withSuspense(<Recipes />) },
@@ -89,5 +115,8 @@ export const SECTION_ROUTES = {
     ],
 };
 
- 
+/**
+ * Todas las rutas (aplanadas) de todas las secciones, para generar el
+ * <Routes> en App.
+ */
 export const ALL_SECTION_ROUTES = Object.values(SECTION_ROUTES).flat();

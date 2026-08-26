@@ -1,4 +1,8 @@
- 
+/**
+ * Opciones de medidas corporales compartidas entre las vistas de progreso
+ * (cliente) y reportes (coach), para evitar duplicar el mismo array en ambos
+ * archivos con el riesgo de que diverjan.
+ */
 export const MEASUREMENT_OPTIONS = [
     { key: 'weight', label: 'Peso (kg)', color: '#a78bfa' },
     { key: 'chest', label: 'Pecho (cm)', color: '#4ade80' },

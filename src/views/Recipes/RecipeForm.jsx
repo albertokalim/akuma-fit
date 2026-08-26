@@ -10,6 +10,10 @@ import { recipeTotalMacros, recipeServingMacros, formatMacros } from '../../util
 
 const DIET_TAG_CATEGORY = 'dieta';
 
+/**
+ * Formulario de creación/edición de una receta, con ingredientes (alimentos)
+ * y etiquetas, y previsualización de macros.
+ */
 function RecipeForm() {
     const navigate = useNavigate();
     const { id } = useParams();

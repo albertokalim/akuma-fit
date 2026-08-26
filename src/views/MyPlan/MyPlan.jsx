@@ -5,6 +5,10 @@ import { routineService } from '../../services/routineService.js';
 import ExerciseVideo from '../../components/complex/ExerciseVideo/ExerciseVideo.jsx';
 import { useAuth } from '../../context/useAuth.js';
 
+/**
+ * Vista "Mi Plan" del cliente: lista sus rutinas asignadas y permite navegar
+ * a los detalles de cada rutina y ejercicio.
+ */
 function MyPlan() {
     const { profileId } = useAuth();
     const [selectedRoutine, setSelectedRoutine] = useState(null);

@@ -5,8 +5,12 @@ import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
 
 import {FcGoogle} from "react-icons/fc";
 
+/** Expresión regular para validar el formato del email. */
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * Pantalla de inicio de sesión con validación de campos y errores traducidos.
+ */
 function Login() {
     const { login } = useAuth();
     const navigate = useNavigate();

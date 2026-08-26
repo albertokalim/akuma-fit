@@ -8,6 +8,14 @@ import { measurementService } from '../../services/measurementService.js';
 const ALL_FIELDS = FORM_SECTIONS.flatMap((section) => section.fields);
 const FIELD_LABELS_BY_ID = Object.fromEntries(ALL_FIELDS.map((field) => [field.id, field.label]));
 
+/**
+ * Formulario de registro de peso y medidas, construido desde
+ * `weightLogFields.json`.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {() => void} [props.onComplete] - Callback al completar.
+ * @param {() => void} [props.onCancel] - Callback de cancelación.
+ */
 function WeightLogForm({ onComplete, onCancel }) {
     const [measurement, setMeasurement] = useState({});
 

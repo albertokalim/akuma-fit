@@ -5,7 +5,15 @@ import { profileService } from '../services/profileService.js';
 import { assessmentService } from '../services/assessmentService.js';
 import { AuthContext } from './authContextInstance.js';
 
- 
+/**
+ * Proveedor del estado de sesión y perfil. Centraliza `email`, `profileId`,
+ * `userRole` y `assessmentCompleted`, y expone las acciones de autenticación
+ * (`login`, `logout`, `completeAssessment`), evitando el prop-drilling a
+ * través de App -> Home -> pantallas.
+ *
+ * @param {Object} props - Props del provider.
+ * @param {React.ReactNode} props.children - Hijos a envolver.
+ */
 export function AuthProvider({ children }) {
     const [status, setStatus] = useState('loading'); 
     const [user, setUser] = useState(null);

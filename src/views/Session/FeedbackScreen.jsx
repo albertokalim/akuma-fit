@@ -8,7 +8,13 @@ const FEELINGS = [
     { value: 'mal', label: 'Mal' },
 ];
 
- 
+/**
+ * Pantalla de feedback al finalizar la sesión: sensación general y notas.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {boolean} props.busy - Si está finalizando.
+ * @param {(feedback: {feeling: string, notes: string|null}) => void} props.onSubmit - Callback de envío.
+ */
 function FeedbackScreen({ busy, onSubmit }) {
     const [feeling, setFeeling] = useState(null);
     const [notes, setNotes] = useState('');

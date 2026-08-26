@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { FiX } from 'react-icons/fi';
+import { useNavigate, useParams } from 'react-router-dom';
 import { foodService } from '../../services/foodService.js';
 import TagPicker from '../../components/complex/TagPicker/TagPicker.jsx';
+import { useAsyncData } from '../../hooks/useAsyncData.js';
+import useFormSubmission from '../../hooks/useFormSubmission.js';
 
 const DIET_TAG_CATEGORY = 'dieta';
 
@@ -16,12 +18,6 @@ const EMPTY_FORM = {
     serving_size: '',
 };
 
-/**
- * Convierte una fila de alimento en los valores del formulario.
- *
- * @param {Object} food - Alimento.
- * @returns {Object} Valores del formulario.
- */
 function toFormValues(food) {
     return {
         name: food.name || '',
@@ -35,44 +31,42 @@ function toFormValues(food) {
     };
 }
 
-/**
- * Convierte un valor de formulario a número o `null` si está vacío/inválido.
- *
- * @param {string|number|null} value - Valor a convertir.
- * @returns {number|null} Número o `null`.
- */
 function toNumeric(value) {
     if (value === '' || value === null || value === undefined) return null;
     const numeric = Number(value);
     return Number.isNaN(numeric) ? null : numeric;
 }
 
-/**
- * Modal de creación/edición de un alimento con sus macros y etiquetas.
- *
- * @param {Object} props - Props del componente.
- * @param {Object} [props.food] - Alimento a editar (omitir para crear).
- * @param {() => void} props.onClose - Callback de cierre.
- * @param {() => void} props.onSaved - Callback tras guardar.
- */
-function FoodForm({ food, onClose, onSaved }) {
-    const isEditing = Boolean(food);
+function FoodFormPage() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const isEditing = Boolean(id);
 
-    const [values, setValues] = useState(() => (food ? toFormValues(food) : EMPTY_FORM));
-    const [selectedTags, setSelectedTags] = useState(food?.tags || []);
-    const [submitting, setSubmitting] = useState(false);
-    const [submitError, setSubmitError] = useState(null);
+    const [values, setValues] = useState(EMPTY_FORM);
+    const [selectedTags, setSelectedTags] = useState([]);
+
+    const loadData = async () => {
+        if (!isEditing) return true;
+
+        const food = await foodService.getById(id);
+        setValues(toFormValues(food));
+        setSelectedTags(food.tags || []);
+        return true;
+    };
+
+    const { loading } = useAsyncData(loadData, [id], null);
+
+    const { submitting, submitError, submitSuccess, handleSubmit } = useFormSubmission({
+        onSuccess: () => {
+            setTimeout(() => navigate('/app/alimentos'), 1200);
+        },
+    });
 
     const handleChange = (field, rawValue) => {
         setValues(prev => ({ ...prev, [field]: rawValue }));
     };
 
-    const handleSubmit = async () => {
-        if (!values.name.trim()) return;
-
-        setSubmitting(true);
-        setSubmitError(null);
-
+    const onSubmit = async () => {
         const payload = {
             name: values.name.trim(),
             brand: values.brand.trim(),
@@ -86,32 +80,34 @@ function FoodForm({ food, onClose, onSaved }) {
 
         const tagIds = selectedTags.map(tag => tag.id);
 
-        try {
-            if (isEditing) {
-                await foodService.update(food.id, payload, tagIds);
-            } else {
-                await foodService.create(payload, tagIds);
-            }
-            onSaved();
-        } catch (err) {
-            setSubmitError(err.message);
-            setSubmitting(false);
+        if (isEditing) {
+            await foodService.update(id, payload, tagIds);
+        } else {
+            await foodService.create(payload, tagIds);
         }
     };
 
     const isValid = values.name.trim() !== '';
 
-    return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content diet-modal" onClick={(event) => event.stopPropagation()}>
-                <div className="modal-header">
-                    <h2 className="modal-title">{isEditing ? 'Editar alimento' : 'Nuevo alimento'}</h2>
-                    <button className="btn-icon" onClick={onClose}>
-                        <FiX size={20} />
-                    </button>
-                </div>
+    if (loading) {
+        return <div className="loading-state">Cargando...</div>;
+    }
 
-                <div className="modal-body">
+    return (
+        <div className="diet-form-page">
+            <div className="page-container">
+                <h1 className="page-title">
+                    {isEditing ? 'Editar alimento' : 'Nuevo alimento'}
+                </h1>
+                <p className="page-description">
+                    {isEditing
+                        ? 'Modifica los datos nutricionales del alimento.'
+                        : 'Añade un nuevo alimento a la biblioteca.'}
+                </p>
+
+                <div className="form-section-card">
+                    <h2 className="section-subtitle">Información básica</h2>
+
                     <div className="diet-form-grid">
                         <div className="form-field diet-form-span-2">
                             <label>Nombre *</label>
@@ -146,8 +142,11 @@ function FoodForm({ food, onClose, onSaved }) {
                             />
                         </div>
                     </div>
+                </div>
 
-                    <h3 className="diet-form-subtitle">Macros por 100 g</h3>
+                <div className="form-section-card">
+                    <h2 className="section-subtitle">Macros por 100 g</h2>
+
                     <div className="diet-form-grid diet-form-macros">
                         <div className="form-field">
                             <label>Kcal</label>
@@ -205,33 +204,46 @@ function FoodForm({ food, onClose, onSaved }) {
                             />
                         </div>
                     </div>
+                </div>
 
-                    <h3 className="diet-form-subtitle">Tags</h3>
+                <div className="form-section-card">
+                    <h2 className="section-subtitle">Tags</h2>
                     <TagPicker
                         selectedTags={selectedTags}
                         onChange={setSelectedTags}
                         category={DIET_TAG_CATEGORY}
                         placeholder="Ej: sin gluten, alto en proteína..."
                     />
-
-                    {submitError && <div className="error-message">{submitError}</div>}
                 </div>
 
-                <div className="diet-modal-footer">
-                    <button className="btn-secondary" onClick={onClose} disabled={submitting}>
-                        Cancelar
-                    </button>
-                    <button
-                        className="btn-primary"
-                        onClick={handleSubmit}
-                        disabled={!isValid || submitting}
-                    >
-                        {submitting ? 'Guardando...' : isEditing ? 'Guardar cambios' : 'Crear alimento'}
-                    </button>
+                <div className="form-footer">
+                    {submitError && <div className="error-message">{submitError}</div>}
+                    {submitSuccess && (
+                        <div className="success-message">
+                            {isEditing ? '¡Alimento actualizado!' : '¡Alimento creado!'}
+                        </div>
+                    )}
+
+                    <div className="form-buttons">
+                        <button
+                            onClick={() => navigate('/app/alimentos')}
+                            disabled={submitting}
+                            className="btn-secondary"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            onClick={() => handleSubmit(onSubmit)}
+                            disabled={!isValid || submitting}
+                            className="btn-primary"
+                        >
+                            {submitting ? 'Guardando...' : isEditing ? 'Guardar cambios' : 'Crear alimento'}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
 
-export default FoodForm;
+export default FoodFormPage;

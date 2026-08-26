@@ -1,6 +1,13 @@
 import { getAdherenceClass, ADHERENCE_MAP } from '../../../utils/checkInStats.js';
 
- 
+/**
+ * Detalle de un check-in, en modo compacto (tarjeta de historial) o completo
+ * (bloques por categoría).
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.checkIn - Datos del check-in.
+ * @param {boolean} [props.compact=false] - Si se muestra el modo compacto.
+ */
 function CheckInDetailBlock({ checkIn, compact = false }) {
     if (!checkIn) return null;
 

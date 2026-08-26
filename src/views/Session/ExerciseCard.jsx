@@ -4,6 +4,25 @@ import ExerciseVideo from '../../components/complex/ExerciseVideo/ExerciseVideo.
 const RPE_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
  
+/**
+ * Tarjeta de un ejercicio durante la sesión: series editables, vídeo, RPE y
+ * acción de completar/desmarcar.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Object} props.exercise - Ejercicio (con `sets`).
+ * @param {Object} props.row - Fila de ejercicio completado.
+ * @param {number} props.index - Posición del ejercicio.
+ * @param {boolean} props.completed - Si está completado.
+ * @param {boolean} props.canComplete - Si se puede completar.
+ * @param {boolean} props.busy - Si hay una acción en curso.
+ * @param {Object} props.setValues - Valores de series por clave.
+ * @param {number|null} props.rpe - RPE seleccionado.
+ * @param {Function} props.onSetChange - Callback de cambio de serie.
+ * @param {Function} props.onSetBlur - Callback al salir de una serie.
+ * @param {Function} props.onRpeChange - Callback de cambio de RPE.
+ * @param {() => void} props.onComplete - Callback de completar.
+ * @param {() => void} props.onUnmark - Callback de desmarcar.
+ */
 function ExerciseCard({
     exercise,
     row,
@@ -114,7 +133,7 @@ function ExerciseCard({
 
                     <div className="session-exercise-actions">
                         <button
-                            className="btn-primary btn-block"
+                            className="btn-primary"
                             onClick={onComplete}
                             disabled={!canComplete || busy}
                         >

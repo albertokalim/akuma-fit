@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { FiUser, FiChevronLeft, FiChevronRight, FiRotateCw, FiCamera, FiUpload, FiX } from 'react-icons/fi';
 
 
+/** Posiciones corporales para las que se captura una foto. */
 const PHOTO_POSITIONS = [
     { id: 'front', label: 'Frontal', icon: FiUser },
     { id: 'left', label: 'Lateral Izquierdo', icon: FiChevronLeft },
@@ -9,6 +10,13 @@ const PHOTO_POSITIONS = [
     { id: 'back', label: 'Dorsal', icon: FiRotateCw }
 ];
 
+/**
+ * Captura de las 4 fotos corporales, mediante la cámara o subiendo un
+ * archivo, y notifica los cambios al padre.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {(photos: Object<string, string>) => void} props.onPhotosChange - Callback con las fotos (base64).
+ */
 function BodyPhotoCapture({ onPhotosChange }) {
     const [photos, setPhotos] = useState({});
     const [cameraOpen, setCameraOpen] = useState(false);

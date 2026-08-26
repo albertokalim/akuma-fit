@@ -4,10 +4,16 @@ import { authService } from '../../services/authService.js';
 import { translateSupabaseAuthError } from '../../utils/supabaseErrors.js';
 
 
+/** Expresión regular para validar el formato del email. */
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** Requisitos de la contraseña: mín. 8 caracteres con mayúscula, minúscula, número y símbolo. */
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
+/**
+ * Pantalla de registro de cuenta con validación de email, contraseña y
+ * confirmación.
+ */
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

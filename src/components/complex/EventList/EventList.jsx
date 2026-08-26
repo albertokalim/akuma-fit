@@ -1,5 +1,12 @@
 
 
+/**
+ * Lista de eventos con texto y hora.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.title - Título de la lista.
+ * @param {Array<{text: string, time: string}>} props.items - Eventos a listar.
+ */
 function EventList({ title, items }) {
     return (
         <div className="event-list">

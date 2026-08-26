@@ -1,6 +1,22 @@
 import { useEffect } from 'react';
 
 
+/**
+ * Campo de escala numérica (radio buttons de min a max) con validación.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.label - Etiqueta.
+ * @param {string} props.id - Id del campo.
+ * @param {number} [props.min=1] - Valor mínimo.
+ * @param {number} [props.max=10] - Valor máximo.
+ * @param {*} props.value - Valor seleccionado.
+ * @param {(event: Object) => void} props.onChange - Callback de cambio.
+ * @param {string} [props.leftLabel] - Etiqueta del extremo izquierdo.
+ * @param {string} [props.rightLabel] - Etiqueta del extremo derecho.
+ * @param {boolean} [props.required=false] - Si es obligatorio.
+ * @param {boolean} [props.hasError=false] - Si debe marcarse como error.
+ * @param {(id: string, isValid: boolean) => void} [props.onValidityChange] - Callback de validez.
+ */
 function ScaleField({ label, id, min = 1, max = 10, value, onChange, leftLabel = '', rightLabel = '', required = false, hasError = false, onValidityChange }) {
     const options = Array.from({ length: max - min + 1 }, (_, i) => ({
         value: (i + min).toString(),

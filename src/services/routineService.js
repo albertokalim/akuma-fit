@@ -27,6 +27,13 @@ const ROUTINES_BY_CLIENT_SELECT = `
     )
 `;
 
+/**
+ * Convierte la fila de Supabase en una rutina con su lista de ejercicios
+ * (`exercises`) ordenados por posición, cada uno con sus `sets` ordenados.
+ *
+ * @param {Object} routine - Fila de `routine` con embeds.
+ * @returns {Object} Rutina con `exercises`.
+ */
 function mapRoutineExercises(routine) {
     const exercises = (routine.routine_has_exercise_template || [])
         .slice()
@@ -50,7 +57,15 @@ function mapRoutineExercises(routine) {
     return { ...routineRest, exercises };
 }
 
+/**
+ * Servicio de acceso a datos de las rutinas de entrenamiento (`routine`).
+ */
 export const routineService = {
+    /**
+     * Obtiene la lista de clientes.
+     *
+     * @returns {Promise<Array>} Lista de clientes.
+     */
     async getClients() {
         const { data, error } = await supabase
             .from('profile')
@@ -62,6 +77,12 @@ export const routineService = {
         return data || [];
     },
 
+    /**
+     * Crea una rutina con su asignación a cliente, ejercicios y series.
+     *
+     * @param {Object} routineData - Datos de la rutina.
+     * @returns {Promise<Object>} Rutina creada.
+     */
     async create(routineData) {
         const { data: routine, error: routineError } = await supabase
             .from('routine')
@@ -136,6 +157,12 @@ export const routineService = {
         return routine;
     },
 
+    /**
+     * Obtiene las rutinas asignadas a un cliente, con ejercicios y series.
+     *
+     * @param {number} clientId - Id del perfil del cliente.
+     * @returns {Promise<Array>} Lista de rutinas.
+     */
     async getByClient(clientId) {
         const { data: routines, error } = await supabase
             .from('routine')
@@ -148,6 +175,12 @@ export const routineService = {
         return (routines || []).map(mapRoutineExercises);
     },
 
+    /**
+     * Obtiene una rutina por id con ejercicios y series.
+     *
+     * @param {number} routineId - Id de la rutina.
+     * @returns {Promise<Object|null>} Rutina o `null` si no existe.
+     */
     async getById(routineId) {
         const { data: routine, error } = await supabase
             .from('routine')

@@ -17,6 +17,10 @@ import { CHART_COLORS } from '../../config/chartColors.js';
 import { FiCheckCircle, FiTrendingUp, FiTarget, FiActivity, FiPlus } from 'react-icons/fi';
 
 
+/**
+ * Vista "Mis Check-Ins" del cliente: estadísticas, gráficos de adherencia y
+ * bienestar, insights e historial de check-ins.
+ */
 function CheckIn() {
     const navigate = useNavigate();
     const { items: checkIns, loading, error, load } = useResource(checkInService);

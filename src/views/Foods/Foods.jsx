@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiSearch, FiX, FiTag, FiUpload, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import Button from '../../components/primitives/Button/Button.jsx';
 import DataTable from '../../components/complex/DataTable/DataTable.jsx';
@@ -6,17 +7,19 @@ import { foodService } from '../../services/foodService.js';
 import { tagService } from '../../services/tagService.js';
 import { useAsyncData } from '../../hooks/useAsyncData.js';
 import { useDebouncedValue } from '../../hooks/useDebouncedValue.js';
-import FoodForm from './FoodForm.jsx';
 import FoodBulkImport from './FoodBulkImport.jsx';
 
 const DIET_TAG_CATEGORY = 'dieta';
 
+/**
+ * Biblioteca de alimentos del coach, con búsqueda, filtros por tags,
+ * edición, borrado e importación masiva.
+ */
 function Foods() {
+    const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');
     const debouncedSearchText = useDebouncedValue(searchText);
     const [selectedTagIds, setSelectedTagIds] = useState([]);
-    const [showForm, setShowForm] = useState(false);
-    const [editingFood, setEditingFood] = useState(null);
     const [showImport, setShowImport] = useState(false);
     const [reloadKey, setReloadKey] = useState(0);
 
@@ -49,8 +52,7 @@ function Foods() {
     };
 
     const handleEdit = (food) => {
-        setEditingFood(food);
-        setShowForm(true);
+        navigate(`/app/alimentos/${food.id}/edit`);
     };
 
     const handleDelete = async (food) => {
@@ -62,12 +64,6 @@ function Foods() {
         } catch (err) {
             window.alert(`No se pudo eliminar: ${err.message}`);
         }
-    };
-
-    const handleFormSaved = () => {
-        setShowForm(false);
-        setEditingFood(null);
-        reload();
     };
 
     const handleImportSaved = () => {
@@ -133,12 +129,7 @@ function Foods() {
                             <FiUpload size={16} />
                             <span>Importar</span>
                         </Button>
-                        <Button
-                            onClick={() => {
-                                setEditingFood(null);
-                                setShowForm(true);
-                            }}
-                        >
+                        <Button onClick={() => navigate('/app/alimentos/new')}>
                             <FiPlus size={18} />
                             <span>Nuevo alimento</span>
                         </Button>
@@ -203,17 +194,6 @@ function Foods() {
                     />
                 )}
             </div>
-
-            {showForm && (
-                <FoodForm
-                    food={editingFood}
-                    onClose={() => {
-                        setShowForm(false);
-                        setEditingFood(null);
-                    }}
-                    onSaved={handleFormSaved}
-                />
-            )}
 
             {showImport && (
                 <FoodBulkImport

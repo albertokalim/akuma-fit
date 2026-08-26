@@ -2,8 +2,7 @@ import { useState, useCallback } from 'react';
 
 /**
  * Hook genérico para cargar y gestionar recursos desde un servicio con
- * método `getAll()`. Sustituye a hooks específicos como `useCheckIns` o
- * `useMeasurements`.
+ * método `getAll()`.
  *
  * @param {Object} service - Servicio que implementa `getAll()`.
  * @returns {{items: Array, setItems: Function, loading: boolean, error: string|null, load: Function, reload: Function}} Estado y acciones del recurso.

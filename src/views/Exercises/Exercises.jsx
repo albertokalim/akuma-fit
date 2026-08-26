@@ -17,6 +17,9 @@ const EXERCISE_CATEGORIES = [
     'Otros',
 ];
 
+/**
+ * Listado de ejercicios del coach con búsqueda, filtros por categoría y tags.
+ */
 function Exercises() {
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');

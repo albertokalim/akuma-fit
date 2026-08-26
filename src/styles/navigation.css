@@ -131,10 +131,6 @@
     color: var(--color-text-muted);
 }
 
-.sidebar-user-icon {
-    color: var(--color-text-muted);
-}
-
  
 .header {
     display: flex;

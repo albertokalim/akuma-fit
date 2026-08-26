@@ -5,7 +5,18 @@ import CheckboxGroupField from '../CheckboxGroupField/CheckboxGroupField.jsx';
 import ScaleField from '../ScaleField/ScaleField.jsx';
 import BooleanCheckboxField from '../BooleanCheckboxField/BooleanCheckboxField.jsx';
 
- 
+/**
+ * Renderiza un formulario a partir de una configuración declarativa de
+ * secciones y campos, delegando en los componentes de campo según el tipo.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {Array<Object>} props.sections - Secciones con sus campos.
+ * @param {Object} props.values - Valores del formulario por grupo.
+ * @param {(group: string, event: Object) => void} props.onChange - Callback de cambio.
+ * @param {Object} props.fieldValidity - Validez por id de campo.
+ * @param {boolean} props.submitAttempted - Si ya se intentó enviar.
+ * @param {(id: string, isValid: boolean) => void} props.onValidityChange - Callback de validez.
+ */
 function DynamicForm({ 
     sections, 
     values, 

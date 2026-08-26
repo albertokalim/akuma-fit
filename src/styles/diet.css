@@ -239,6 +239,7 @@
     font-weight: 500;
 }
 
+.diet-form-page,
 .recipe-form-page {
     padding: var(--space-3xl);
     max-width: 900px;
@@ -652,7 +653,8 @@
 }
 
 @media (max-width: 768px) {
-    .diet-page {
+    .diet-page,
+    .diet-form-page {
         padding: var(--space-lg);
     }
 

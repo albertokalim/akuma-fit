@@ -4,6 +4,14 @@
     object-fit: cover;
 }
 
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+}
+
 .avatar-small {
     width: 32px;
     height: 32px;

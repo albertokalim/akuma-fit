@@ -5,8 +5,18 @@ import { avatarService } from '../../../services/avatarService.js';
 import { resizeImage, mimeToExtension } from '../../../utils/image.js';
 
 
+/** Tamaño máximo permitido de la imagen de perfil (5 MB). */
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
+/**
+ * Avatar de perfil editable: al hacer clic abre el selector de archivos para
+ * subir o reemplazar la foto, redimensionándola y gestionando el borrado de
+ * la anterior.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {number} props.profileId - Id del perfil.
+ * @param {'small'|'medium'|'large'} [props.size='large'] - Tamaño del avatar.
+ */
 function ProfileAvatar({ profileId, size = 'large' }) {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
