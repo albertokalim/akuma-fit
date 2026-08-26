@@ -2,8 +2,15 @@
 import { lazy, Suspense } from 'react';
 import Spinner from '../components/primitives/Spinner/Spinner.jsx';
 import PlaceholderComponent from '../components/primitives/PlaceholderComponent/PlaceholderComponent.jsx';
+import { useAuth } from '../context/useAuth.js';
 
-const Dashboard = lazy(() => import('../views/Dashboard/Dashboard.jsx'));
+const CoachDashboard = lazy(() => import('../views/Dashboard/CoachDashboard.jsx'));
+const ClientDashboard = lazy(() => import('../views/Dashboard/ClientDashboard.jsx'));
+
+function DashboardRouter() {
+    const { userRole } = useAuth();
+    return userRole === 'coach' ? <CoachDashboard /> : <ClientDashboard />;
+}
 const CheckIn = lazy(() => import('../views/CheckIn/CheckIn.jsx'));
 const NewCheckIn = lazy(() => import('../views/CheckIn/NewCheckIn.jsx'));
 const Progress = lazy(() => import('../views/Progress/Progress.jsx'));
@@ -50,7 +57,7 @@ function withSuspense(element) {
  */
 export const SECTION_ROUTES = {
     dashboard: [
-        { path: 'dashboard', element: withSuspense(<Dashboard />) },
+        { path: 'dashboard', element: withSuspense(<DashboardRouter />) },
     ],
     checkin: [
         { path: 'checkin', element: withSuspense(<CheckIn />) },
