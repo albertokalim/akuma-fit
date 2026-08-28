@@ -156,17 +156,30 @@ export const dashboardService = {
 
         if (clientsError) throw new Error(clientsError.message);
 
+        const clientIds = (clients || []).map(c => c.id);
+        if (clientIds.length === 0) return [];
+
+        const { data: recentCheckIns, error: checkInsError } = await supabase
+            .rpc('get_recent_checkins_per_profile', {
+                p_profile_ids: clientIds,
+                p_limit_per_profile: 3,
+            });
+
+        if (checkInsError) throw new Error(checkInsError.message);
+
+        const checkInsByProfile = new Map();
+        for (const ci of recentCheckIns || []) {
+            const list = checkInsByProfile.get(ci.profile_id) ?? [];
+            list.push(ci);
+            checkInsByProfile.set(ci.profile_id, list);
+        }
+
         const alerts = [];
 
         for (const client of clients || []) {
-            const { data: checkIns, error: checkInsError } = await supabase
-                .from('check_in')
-                .select('*')
-                .eq('profile_id', client.id)
-                .order('created_at', { ascending: false })
-                .limit(3);
+            const checkIns = checkInsByProfile.get(client.id);
 
-            if (checkInsError || !checkIns || checkIns.length === 0) continue;
+            if (!checkIns || checkIns.length === 0) continue;
 
             const clientName = `${client.name} ${client.surname || ''}`.trim();
 

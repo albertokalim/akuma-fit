@@ -294,6 +294,77 @@ CREATE TABLE public.meal_plan_item (
                                        CONSTRAINT meal_plan_item_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.recipe(id),
                                        CONSTRAINT meal_plan_item_food_id_fkey FOREIGN KEY (food_id) REFERENCES public.food(id)
 );
+-- Índices de rendimiento (añadidos manualmente, no generados por pg_dump).
+-- Cada uno referencia la query real en services/ que lo motiva.
+-- Nota: se evaluaron y descartaron por redundancia los índices simples sobre
+-- meal_plan_day.meal_plan_id, meal_plan_slot.day_id, meal_plan_item.slot_id y
+-- training_session.profile_id, ya que existen índices compuestos
+-- (*_unique_order y training_session_profile_status_idx) cuya columna líder
+-- ya cubre esas búsquedas.
+CREATE INDEX idx_profile_role
+  ON public.profile (role);
+-- profile.role: dashboardService.getClients/getStats/getAlerts, mealPlanService.getClients
+
+CREATE INDEX idx_check_in_profile_created
+  ON public.check_in (profile_id, created_at DESC);
+-- check_in.profile_id + created_at: dashboardService.getAlerts
+
+CREATE INDEX idx_training_session_status_started
+  ON public.training_session (status, started_at);
+-- training_session.status + started_at: dashboardService.getExtendedStats / getCompletedSessions
+
+CREATE INDEX idx_calendar_event_profile_dtstart
+  ON public.calendar_event (profile_id, dtstart);
+-- calendar_event.profile_id + dtstart: listado de eventos por perfil y rango de fechas
+
+CREATE INDEX idx_calendar_event_exception_event
+  ON public.calendar_event_exception (event_id);
+-- calendar_event_exception.event_id: expansión de excepciones de una serie recurrente
+
+-- Devuelve los últimos N check-ins de cada profile_id indicado, en una sola
+-- consulta (evita el patrón N+1 de una query por cliente). Usada por
+-- dashboardService.getAlerts(). SECURITY INVOKER (por defecto): se apoya en
+-- las políticas RLS existentes de check_in (el coach ya tiene acceso de
+-- lectura completo vía la política "Coaches can view all check-ins").
+CREATE OR REPLACE FUNCTION public.get_recent_checkins_per_profile(
+    p_profile_ids bigint[],
+    p_limit_per_profile integer DEFAULT 3
+)
+ RETURNS SETOF public.check_in
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT
+        ci.id,
+        ci.created_at,
+        ci.how_do_you_feel,
+        ci.hunger_level,
+        ci.rest_quality,
+        ci.comments,
+        ci.profile_id,
+        ci.diet_adherence,
+        ci.training_adherence,
+        ci.diet_adherence_reason,
+        ci.training_adherence_reason,
+        ci.gym_performance,
+        ci.avg_daily_steps,
+        ci.cardio_adherence,
+        ci.avg_sleep_hours,
+        ci.energy_level,
+        ci.next_week_goal
+    FROM (
+        SELECT
+            c.*,
+            ROW_NUMBER() OVER (
+                PARTITION BY c.profile_id
+                ORDER BY c.created_at DESC
+            ) AS rn
+        FROM public.check_in c
+        WHERE c.profile_id = ANY(p_profile_ids)
+    ) ci
+    WHERE ci.rn <= p_limit_per_profile;
+$function$;
+
 -- Módulo de eventos / calendario.
 --
 -- `calendar_event` es el evento "maestro": almacena la regla de recurrencia
