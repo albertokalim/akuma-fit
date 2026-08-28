@@ -1,7 +1,6 @@
 {
   "coach": [
     { "id": "dashboard", "label": "Dashboard", "icon": "dashboard" },
-    { "id": "clients", "label": "Clientes", "icon": "clients" },
     { "id": "client-checkins", "label": "Check-Ins Clientes", "icon": "checkin" },
     { "id": "calendario", "label": "Calendario", "icon": "calendar" },
     { "id": "plans", "label": "Rutinas", "icon": "plans" },
