@@ -5,7 +5,7 @@ Una app con React + Vite y Supabase. Hecha para entrenadores personales.
 ## Puesta en marcha
 
 1. `npm install`
-2. Crea `.env.local` en la raíz con los datos de tu proyecto Supabase:
+2. Copia `.env.example` a `.env.local` (en la raíz) y rellena las variables con los datos de tu proyecto Supabase (`.env.local` está en el repo con los valores vacíos):
    ```
    VITE_SUPABASE_URL=https://<project-id>.supabase.co
    VITE_SUPABASE_PUBLISHABLE_KEY=<publishable key>
