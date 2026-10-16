@@ -56,6 +56,17 @@ describe('expandRRule', () => {
         expect(expandRRule(master, '2026-09-01', '2026-09-30')).toEqual([]);
     });
 
+    it('expande un evento freq "once" sin bucle infinito', () => {
+        const master = { freq: 'once', dtstart: '2026-09-01', recurrence_interval: 1 };
+        expect(expandRRule(master, '2026-09-01', '2026-09-30')).toEqual(['2026-09-01']);
+        expect(expandRRule(master, '2026-10-01', '2026-10-31')).toEqual([]);
+    });
+
+    it('ignora frecuencias desconocidas', () => {
+        const master = { freq: 'daily', dtstart: '2026-09-01', recurrence_interval: 1 };
+        expect(expandRRule(master, '2026-09-01', '2026-09-30')).toEqual([]);
+    });
+
     it('expande semanal por día de la semana', () => {
         const master = { freq: 'weekly', byday: 1, dtstart: '2026-08-03', recurrence_interval: 1 };
         expect(expandRRule(master, '2026-08-01', '2026-08-31')).toEqual([

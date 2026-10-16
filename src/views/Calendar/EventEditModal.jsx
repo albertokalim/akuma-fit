@@ -19,7 +19,7 @@ import { formatDate } from '../../utils/data.js';
  */
 function EventEditModal({ occurrence, onClose, onSaved }) {
     const { date, event } = occurrence;
-    const isRecurring = !!event.freq;
+    const isRecurring = !!event.freq && event.freq !== 'once';
 
     const [scope, setScope] = useState(isRecurring ? 'this' : 'series');
     const [title, setTitle] = useState(event.title || '');

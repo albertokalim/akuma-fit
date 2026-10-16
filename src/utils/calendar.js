@@ -136,6 +136,8 @@ export const completionRange = (year, month0) => {
 const clampDay = (year, month0, day) =>
     new Date(year, month0, Math.min(day, daysInMonth(year, month0)));
 
+const RECURRING_FREQS = ['weekly', 'monthly', 'yearly'];
+
 /**
  * Alinea el cursor a la primera ocurrencia que respeta la regla RRULE a partir
  * de `dtstart` (semántica RFC 5545: DTSTART es la primera instancia).
@@ -220,7 +222,7 @@ const stepOccurrence = (master, cursor) => {
  * Expande la regla de recurrencia de un maestro a las fechas (ISO) que caen
  * dentro de `[fromISO, toISO]`.
  *
- * Soporta `once` (`freq` nulo), `weekly`, `monthly` y `yearly`, respetando
+ * Soporta `once` (`freq` nulo o `'once'`), `weekly`, `monthly` y `yearly`, respetando
  * `recurrence_interval`, `count` (número máximo de ocurrencias) y `until`
  * (fecha de fin, inclusive).
  *
@@ -232,11 +234,14 @@ const stepOccurrence = (master, cursor) => {
 export const expandRRule = (master, fromISO, toISO) => {
     if (!master || !master.dtstart) return [];
 
-    if (!master.freq) {
+    if (!master.freq || master.freq === 'once') {
         return master.dtstart >= fromISO && master.dtstart <= toISO
             ? [master.dtstart]
             : [];
     }
+
+    // Frecuencias desconocidas no avanzarían el cursor y provocarían un bucle infinito.
+    if (!RECURRING_FREQS.includes(master.freq)) return [];
 
     const count = master.count ?? null;
     const until = master.until ?? null;
